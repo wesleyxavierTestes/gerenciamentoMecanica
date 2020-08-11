@@ -3,9 +3,9 @@ package com.mecanica.domain.services;
 import java.util.Optional;
 import java.util.UUID;
 
-import com.mecanica.data.repositorys.IBaseRepository;
 import com.mecanica.domain.entities.BaseEntity;
 import com.mecanica.domain.services.BaseService;
+import com.mecanica.infra.repositorys.IBaseRepository;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
