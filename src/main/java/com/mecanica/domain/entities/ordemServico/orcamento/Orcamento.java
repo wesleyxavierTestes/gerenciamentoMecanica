@@ -1,6 +1,4 @@
-package com.mecanica.domain.entities.servico.orcamento;
-
-import java.util.Set;
+package com.mecanica.domain.entities.ordemServico.orcamento;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -8,12 +6,10 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import com.mecanica.domain.entities.avaliacao.Avaliacao;
-import com.mecanica.domain.entities.itemServico.orcamento.ItemOrcamento;
-import com.mecanica.domain.entities.servico.AbstractServico;
+import com.mecanica.domain.entities.ordemServico.AbstractOrdemServico;
 import com.mecanica.domain.enuns.EnumSituacaoOrcamento;
 
 import lombok.AllArgsConstructor;
@@ -26,7 +22,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Orcamento extends AbstractServico {
+public class Orcamento extends AbstractOrdemServico {
 
     @Enumerated(EnumType.STRING)
     private EnumSituacaoOrcamento situacao;
@@ -36,7 +32,4 @@ public class Orcamento extends AbstractServico {
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Avaliacao avaliacao;
-
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<ItemOrcamento> itensOrcamento;
 }

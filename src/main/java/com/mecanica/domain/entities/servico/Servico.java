@@ -1,30 +1,23 @@
-package com.mecanica.domain.entities.itemServico;
+package com.mecanica.domain.entities.servico;
 
 import java.math.BigDecimal;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
 
 import com.mecanica.domain.entities.BaseEntity;
 import com.mecanica.domain.entities.categoria.Categoria;
-import com.mecanica.domain.entities.servico.AbstractServico;
 
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@Builder
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
 @Entity
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public abstract class AbstractItemServico extends BaseEntity {
-    
+public class Servico extends BaseEntity {
     @Column(nullable = false)
     private BigDecimal valor;
 
@@ -34,6 +27,11 @@ public abstract class AbstractItemServico extends BaseEntity {
     @ManyToOne
     private Categoria categoria;
 
-    @ManyToOne
-    private AbstractServico servico;
+    @Column(nullable = false)
+    private String codigoPrestacaoServico;
+
+    @Override
+    public Servico clone() throws CloneNotSupportedException {
+        return (Servico) super.clone();
+    }
 }

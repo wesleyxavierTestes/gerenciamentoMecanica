@@ -1,4 +1,4 @@
-package com.mecanica.domain.entities.servico.ordemServico;
+package com.mecanica.domain.entities.ordemServico.ordemServico;
 
 import java.util.Set;
 
@@ -11,9 +11,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import com.mecanica.domain.entities.diasTrabalhados.DiasTrabalhados;
-import com.mecanica.domain.entities.itemServico.ordemServico.ItemOrdemServico;
 import com.mecanica.domain.entities.mecanico.Mecanico;
-import com.mecanica.domain.entities.servico.AbstractServico;
+import com.mecanica.domain.entities.ordemServico.AbstractOrdemServico;
 import com.mecanica.domain.enuns.EnumSituacaoOrdemServico;
 
 import lombok.AllArgsConstructor;
@@ -26,7 +25,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class OrdemServico extends AbstractServico {
+public class OrdemServico extends AbstractOrdemServico {
     
     @Enumerated(EnumType.STRING)
     private EnumSituacaoOrdemServico situacao;
@@ -34,9 +33,8 @@ public class OrdemServico extends AbstractServico {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<DiasTrabalhados> diasTrabalhados;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<ItemOrdemServico> itensOrdemServico;
-
     @ManyToOne(fetch = FetchType.LAZY)
     private Mecanico mecanico;
+
+    private String observacao;
 }

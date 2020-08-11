@@ -31,4 +31,6 @@ public class Avaliacao extends BaseEntity {
     
     @ManyToOne
     private Mecanico ordemServico;
+
+    private String observacao;
 }
