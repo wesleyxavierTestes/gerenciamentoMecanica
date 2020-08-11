@@ -10,6 +10,9 @@ import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonSetter;
+import com.mecanica.domain.entities.categoria.CategoriaProduto;
 import com.mecanica.domain.entities.estoque.AbstractEstoque;
 import com.mecanica.domain.entities.estoque.IEstoque;
 import com.mecanica.domain.entities.produto.baseentity.AbstractProduto;
@@ -39,4 +42,11 @@ public class Produto extends AbstractProduto {
 
     @Column(nullable = false)
     private BigDecimal custo;
+
+    @JsonSetter("categoria")
+    public void setJsonCategoria(CategoriaProduto categoria) {
+        this.setCategoria(categoria);
+    }    
+
+    
 }

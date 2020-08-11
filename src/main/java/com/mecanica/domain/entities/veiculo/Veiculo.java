@@ -1,14 +1,15 @@
 package com.mecanica.domain.entities.veiculo;
 
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
 
 import com.mecanica.domain.entities.BaseEntity;
-import com.mecanica.domain.entities.cliente.ICliente;
+import com.mecanica.domain.entities.cliente.Cliente;
 import com.mecanica.domain.entities.pessoa.Pessoa;
+import com.mecanica.utils.ErrorMessage;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,21 +23,27 @@ import lombok.Setter;
 @Entity
 public class Veiculo extends BaseEntity {
     
+    @NotNull(message = ErrorMessage.OBRIGATORIO)
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = Pessoa.class)
-    private ICliente cliente;
+    private Cliente cliente;
     
+    @NotNull(message = ErrorMessage.OBRIGATORIO)
     @Column(nullable = false)
     private String placa;
 
+    @NotNull(message = ErrorMessage.OBRIGATORIO)
     @Column(nullable = false)
     private String renavam;
     
+    @NotNull(message = ErrorMessage.OBRIGATORIO)
     @Column(nullable = false)
     private String modelo;
     
+    @NotNull(message = ErrorMessage.OBRIGATORIO)
     @Column(nullable = false)
     private String marca;
     
+    @NotNull(message = ErrorMessage.OBRIGATORIO)
     @Column(nullable = false)
 	private String ano;
 }

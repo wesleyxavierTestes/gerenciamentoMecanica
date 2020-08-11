@@ -21,7 +21,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @MappedSuperclass
-public abstract class BaseEntity {
+public abstract class BaseEntity implements IBaseEntity {
     
     @Id
     @GeneratedValue(generator = "uuid2")
@@ -31,5 +31,5 @@ public abstract class BaseEntity {
     @Column(nullable = false)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
-    private LocalDateTime dataCadastro;
+    private LocalDateTime dataCadastro = LocalDateTime.now();
 }

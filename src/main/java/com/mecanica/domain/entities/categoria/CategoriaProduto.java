@@ -10,6 +10,6 @@ import lombok.Setter;
 @Setter
 @Entity
 @DiscriminatorValue("produto")
-public class CategoriaProduto extends AbstractCategoria {
+public class CategoriaProduto extends Categoria {
     
 }

@@ -1,5 +1,6 @@
 package com.mecanica.domain.services;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -18,7 +19,7 @@ public class BaseService<T extends BaseEntity, Y extends IBaseRepository<T>> {
         this.repository = repository;
     }
 
-    public Page<T> findAll(int page) {
+    public Page<T> list(int page) {
         PageRequest paginacao = PageRequest.of((page - 1), 10);
         
         Page<T> list = this.repository.findAll(paginacao);
@@ -38,6 +39,7 @@ public class BaseService<T extends BaseEntity, Y extends IBaseRepository<T>> {
 
     public T save(T entity) {
         
+        entity.setDataCadastro(LocalDateTime.now());
         entity = this.repository.save(entity);
         
         return entity;

@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -15,7 +16,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import com.mecanica.domain.entities.BaseEntity;
-import com.mecanica.domain.entities.cliente.ICliente;
+import com.mecanica.domain.entities.cliente.Cliente;
 import com.mecanica.domain.entities.funcionario.Funcionario;
 import com.mecanica.domain.entities.funcionario.IFuncionario;
 import com.mecanica.domain.entities.pessoa.Pessoa;
@@ -31,7 +32,7 @@ import lombok.Setter;
 public abstract class AbstractOrdemServico extends BaseEntity {
     
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = Pessoa.class)
-    private ICliente cliente;
+    private Cliente cliente;
 
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = Funcionario.class)
     private IFuncionario atendente;
@@ -48,6 +49,17 @@ public abstract class AbstractOrdemServico extends BaseEntity {
 
     @Column(nullable = false)
     private BigDecimal valorTotal;
+
+    public BigDecimal getValorTotal() {
+        if (!Objects.nonNull(valorDesconto)) {
+            valorDesconto = BigDecimal.ZERO;
+        }
+        BigDecimal valor = this.getValor();
+        if (!Objects.nonNull(valor)) {
+            valor = BigDecimal.ZERO;
+        }
+        return valor.subtract(this.valorDesconto);
+    }
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Servico> Servicos = new ArrayList<>();
