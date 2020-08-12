@@ -2,6 +2,8 @@ package com.mecanica.controller.atendimento;
 
 import java.util.UUID;
 
+import javax.validation.Valid;
+
 import com.mecanica.controller.BaseController;
 import com.mecanica.domain.entities.veiculo.Veiculo;
 import com.mecanica.domain.services.veiculo.VeiculoService;
@@ -45,9 +47,7 @@ public class VeiculoController extends BaseController {
     }
 
     @PostMapping("save")
-    public ResponseEntity<Object> saveServico(@RequestBody Veiculo entity) {
-        if (!validations.by(entity).isValid())
-            return ResponseEntity.ok(validations.getErros());
+    public ResponseEntity<Object> saveServico(@RequestBody @Valid Veiculo entity) {
 
         _serviceVeiculo.save(entity);
 
@@ -55,9 +55,7 @@ public class VeiculoController extends BaseController {
     }
 
     @PutMapping("update")
-    public ResponseEntity<Object> update(@RequestBody Veiculo entity) {
-        if (!validations.by(entity).isValid())
-            return ResponseEntity.ok(validations.getErros());
+    public ResponseEntity<Object> update(@RequestBody @Valid Veiculo entity) {
 
         entity = this._serviceVeiculo.update(entity);
 

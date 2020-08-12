@@ -3,7 +3,6 @@ package com.mecanica.domain.entities.servico.command;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import com.mecanica.domain.entities.ordemServico.ordemServico.OrdemServico;
@@ -15,10 +14,12 @@ final class ServicosInvoker {
     private static List<IServicoCommand> comandos = new ArrayList<>();
     
     public static void setComando(IServicoCommand command) {
+        
         comandos.add(command);
     }
 
     public static void exists(IServicoCommand command) {
+
         comandos.add(command);
     }
 

@@ -2,7 +2,7 @@ package com.mecanica.domain.entities.servico.command;
 
 import com.mecanica.domain.entities.ordemServico.orcamento.Orcamento;
 
-public class InformarOrcamentoCliente extends Command<Orcamento>  {
+public class InformarOrcamentoCliente extends ServiceCommand<Orcamento>  {
 
     public InformarOrcamentoCliente(Orcamento ordemServico) {
         super(ordemServico);

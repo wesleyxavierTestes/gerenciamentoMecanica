@@ -12,6 +12,7 @@ import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.mecanica.domain.entities.categoria.CategoriaProduto;
+import com.mecanica.domain.entities.categoria.ICategoria;
 import com.mecanica.domain.entities.estoque.AbstractEstoque;
 import com.mecanica.domain.entities.estoque.IEstoque;
 import com.mecanica.domain.entities.produto.baseentity.AbstractProduto;
@@ -44,8 +45,11 @@ public class Produto extends AbstractProduto {
 
     @JsonSetter("categoria")
     public void setJsonCategoria(CategoriaProduto categoria) {
-        this.setCategoria(categoria);
-    }    
+        this.setICategoria((ICategoria)categoria);
+    }
 
-    
+    @Override
+    public <T extends ICategoria> void setICategoria(T categoria) {
+        this.setCategoria((ICategoria)categoria);
+    }
 }

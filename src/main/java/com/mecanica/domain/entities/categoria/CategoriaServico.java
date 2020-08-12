@@ -8,8 +8,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@Entity
+@Entity(name = "CategoriaServico")
 @DiscriminatorValue("servico")
-public class CategoriaServico extends Categoria {
-    
+public class CategoriaServico extends Categoria {    
 }

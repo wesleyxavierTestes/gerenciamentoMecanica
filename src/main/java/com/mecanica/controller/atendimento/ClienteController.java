@@ -36,6 +36,14 @@ public class ClienteController extends BaseController {
         return ResponseEntity.ok(list);
     }
 
+    @GetMapping("list/filter")
+    public ResponseEntity<Page<Cliente>> listFilter(@RequestParam(name = "page") int page, @RequestParam(name = "nome") String nome) {
+
+        Page<Cliente> list = this._serviceCliente.findAllByNome(nome, page);
+
+        return ResponseEntity.ok(list);
+    }
+
     @GetMapping("find")
     public ResponseEntity<Cliente> find(@RequestParam(name = "id") String id) {
 

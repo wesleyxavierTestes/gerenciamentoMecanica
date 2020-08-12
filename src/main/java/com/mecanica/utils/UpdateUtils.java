@@ -7,12 +7,14 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-public class Update {
-    public <T, Y> Y by(final T entity, final Y entityUpdate) {
+import com.mecanica.application.exceptions.ValidacaoControllerBaseException;
+
+public class UpdateUtils {
+    public static <T, Y> void by(final T entity, final Y entityUpdate) {
         try {
-            return Erro(entity, entityUpdate);
+            new UpdateUtils().Erro(entity, entityUpdate);
         } catch (Exception e) {
-            return entityUpdate;
+            throw new ValidacaoControllerBaseException("Falha ao atualizar");
         }
     }
 
@@ -30,7 +32,7 @@ public class Update {
      * @throws IllegalArgumentException
      * @throws Exception
      */
-    private <T, Y> Y Erro(final T entity, final Y entityUpdate)
+    private <T, Y> void Erro(final T entity, final Y entityUpdate)
             throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
         if (Objects.nonNull(entity)) {
             List<Field> entityDeclaredFields = getDeclaredFields(entity);
@@ -38,18 +40,23 @@ public class Update {
 
             for (final Field field : entityDeclaredFields) {
                 Constructor[] classes = field.getClass().getConstructors();
-                Optional<Field> fieldUpdate = declaredFields.stream().filter(c -> c.getName().equals(field.getName()))
-                        .findFirst();
+                Optional<Field> optionalFieldUpdate = declaredFields.stream()
+                        .filter(c -> c.getName().equals(field.getName())).findFirst();
 
-                if (fieldUpdate.isPresent()) {
-                    final Field listField = fieldUpdate.get();
-                    listField.setAccessible(true);
+                if (optionalFieldUpdate.isPresent()) {
+                    final Field fieldUpdate = optionalFieldUpdate.get();
+                    fieldUpdate.setAccessible(true);
                     Object objectValue = field.get(entity);
-                    listField.set(entityUpdate, objectValue);
+                    Object objectValueUpdate = fieldUpdate.get(entityUpdate);
+                    
+                    if (Objects.nonNull(objectValue) && !objectValue.equals(objectValueUpdate)) {
+                        fieldUpdate.set(entityUpdate, objectValue);
+                    } else if (Objects.nonNull(objectValueUpdate) && !objectValueUpdate.equals(objectValue)) {
+                        fieldUpdate.set(entityUpdate, objectValue);
+                    }
                 }
             }
         }
-        return entityUpdate;
     }
 
     /**
@@ -83,7 +90,7 @@ public class Update {
             }
             superclass = superclass.getSuperclass();
         }
-            
+
         return fields;
     }
 }

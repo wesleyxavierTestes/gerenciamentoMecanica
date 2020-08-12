@@ -10,11 +10,11 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public abstract class Command<T extends AbstractOrdemServico> implements IServicoCommand<T> {
+public abstract class ServiceCommand<T extends AbstractOrdemServico> implements IServicoCommand<T> {
 
     private final T ordemServico;
 
-    public Command(T ordemServico) {
+    public ServiceCommand(T ordemServico) {
         this.ordemServico = ordemServico;
     }
 

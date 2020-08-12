@@ -5,7 +5,9 @@ import java.util.UUID;
 import javax.validation.Valid;
 
 import com.mecanica.application.exceptions.RegraBaseException;
+import com.mecanica.application.validation.categoriaProduto.CategoriaProdutoValidations;
 import com.mecanica.controller.BaseController;
+import com.mecanica.domain.entities.categoria.CategoriaProduto;
 import com.mecanica.domain.entities.produto.Produto;
 import com.mecanica.domain.services.produto.ProdutoService;
 
@@ -25,11 +27,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("api/produto")
 public class ProdutoController extends BaseController {
 
-    private final ProdutoService _service;
+    private final ProdutoService _serviceProduto;
+    private final CategoriaProdutoValidations _serviceCategoriaProduto;
 
     @Autowired
-    public ProdutoController(ProdutoService service) {
-        _service = service;
+    public ProdutoController(
+        ProdutoService service,
+        CategoriaProdutoValidations serviceCategoriaProduto) {
+        _serviceProduto = service;
+        _serviceCategoriaProduto = serviceCategoriaProduto;
     }
 
     @ExceptionHandler(RegraBaseException.class)
@@ -40,7 +46,7 @@ public class ProdutoController extends BaseController {
     @GetMapping("list")
     public ResponseEntity<Page<Produto>> list(@RequestParam(name = "page") int page) {
 
-        Page<Produto> list = this._service.list(page);
+        Page<Produto> list = this._serviceProduto.list(page);
 
         return ResponseEntity.ok(list);
     }
@@ -48,23 +54,27 @@ public class ProdutoController extends BaseController {
     @GetMapping("find")
     public ResponseEntity<Produto> find(@RequestParam(name = "id") String id) {
 
-        Produto entity = this._service.find(UUID.fromString(id));
+        Produto entity = this._serviceProduto.find(UUID.fromString(id));
 
         return ResponseEntity.ok(entity);
     }
 
     @PostMapping("save")
     public ResponseEntity<Object> save(@RequestBody @Valid Produto entity) {
-
-        entity = this._service.save(entity);
+        String categoriaId = entity.getCategoria().getId().toString();
+        CategoriaProduto categoria = _serviceCategoriaProduto.findValidExistsById(categoriaId);
+        
+        entity = this._serviceProduto.save(entity, categoria);
 
         return ResponseEntity.ok(entity);
     }
 
     @PutMapping("update")
     public ResponseEntity<Object> update(@RequestBody @Valid Produto entity) {
+        String categoriaId = entity.getCategoria().getId().toString();
+        CategoriaProduto categoria = _serviceCategoriaProduto.findValidExistsById(categoriaId);
 
-        entity = this._service.update(entity);
+        entity = this._serviceProduto.update(entity, categoria);
 
         return ResponseEntity.ok(entity);
     }

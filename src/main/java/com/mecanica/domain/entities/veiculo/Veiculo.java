@@ -23,7 +23,7 @@ import lombok.Setter;
 public class Veiculo extends BaseEntity {
     
     @NotNull(message = ErrorCustomMessage.OBRIGATORIO)
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private Cliente cliente;
     
     @NotNull(message = ErrorCustomMessage.OBRIGATORIO)

@@ -1,5 +1,7 @@
 package com.mecanica.domain.entities.categoria;
 
-public interface ICategoria {
+import com.mecanica.domain.entities.IBaseEntity;
+
+public interface ICategoria extends IBaseEntity {
 
 }

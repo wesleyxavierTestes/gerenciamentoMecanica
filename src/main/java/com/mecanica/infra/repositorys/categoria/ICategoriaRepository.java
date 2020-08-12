@@ -1,19 +1,20 @@
 
-package com.mecanica.infra.repositorys.cliente;
+package com.mecanica.infra.repositorys.categoria;
 
-import com.mecanica.domain.entities.cliente.Cliente;
+import com.mecanica.domain.entities.categoria.ICategoria;
 import com.mecanica.infra.repositorys.IBaseRepository;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.repository.NoRepositoryBean;
 
-@Repository
-public interface IClienteRepository extends IBaseRepository<Cliente> {
+@NoRepositoryBean
+public interface ICategoriaRepository<T extends ICategoria> extends IBaseRepository<T> {
     @Query(
         value = "select c from #{#entityName} c where lower(c.nome) like %?1%",
         countQuery = "select c from #{#entityName} c where lower(c.nome) like %?1%"
     )
-    Page<Cliente> findAllByNome(String nome, PageRequest pge);
+    Page<T> findAllByNome(String nome, PageRequest pge);
+    
 }

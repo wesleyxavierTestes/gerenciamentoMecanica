@@ -10,7 +10,7 @@ import com.mecanica.domain.entities.veiculo.Veiculo;
 import com.mecanica.domain.enuns.EnumDiagnosticoAvaliacao;
 import com.mecanica.domain.enuns.EnumSituacaoOrcamento;
 
-public class OrcamentoEsperaAvaliacao extends Command<Orcamento> {
+public class OrcamentoEsperaAvaliacao extends ServiceCommand<Orcamento> {
 
     private Cliente cliente;
     private Veiculo veiculo;

@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.List;
 import java.util.UUID;
 
 import com.mecanica.domain.entities.categoria.CategoriaProduto;
@@ -18,7 +17,6 @@ public class UpdateTest {
     
     @Test
     public void testConversaoCategoriaUpdate() {
-        Update update = new Update();
         CategoriaProduto entityUpdate = new CategoriaProduto();
         CategoriaProduto entity = new CategoriaProduto();
         entity.setId(UUID.randomUUID());
@@ -26,7 +24,7 @@ public class UpdateTest {
 
         assertNotEquals(entity.getNome(), entityUpdate.getNome());
 
-        update.by(entity, entityUpdate);
+        UpdateUtils.by(entity, entityUpdate);
         Class<?>[] classes = entityUpdate.getClass().getDeclaredClasses();
 
         assertEquals(entity.getNome(), entityUpdate.getNome());
@@ -35,7 +33,6 @@ public class UpdateTest {
 
     @Test
     public void testConversaoClienteUpdate() {
-        Update update = new Update();
         Cliente entityUpdate = new Cliente();
         Cliente entity = new Cliente();
         entity.setId(UUID.randomUUID());
@@ -46,14 +43,14 @@ public class UpdateTest {
 
         assertNotEquals(entity.getNome(), entityUpdate.getNome());
 
-        update.by(entity, entityUpdate);
+        UpdateUtils.by(entity, entityUpdate);
 
         assertEquals(entity.getNome(), entityUpdate.getNome());
     }
 
     @Test
     public void testClienteInstance() {
-        Update update = new Update();
+        UpdateUtils update = new UpdateUtils();
         Cliente[] entityUpdate = {new Cliente()};
 
         boolean condition = entityUpdate instanceof Pessoa[];

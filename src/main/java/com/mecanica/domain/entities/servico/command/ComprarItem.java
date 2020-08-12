@@ -2,7 +2,7 @@ package com.mecanica.domain.entities.servico.command;
 
 import com.mecanica.domain.entities.ordemServico.ordemServico.OrdemServico;
 
-public class ComprarItem extends Command<OrdemServico> {
+public class ComprarItem extends ServiceCommand<OrdemServico> {
 
     public ComprarItem(OrdemServico ordemServico) {
         super(ordemServico);
