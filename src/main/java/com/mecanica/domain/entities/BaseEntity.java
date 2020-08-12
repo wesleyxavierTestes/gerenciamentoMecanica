@@ -26,10 +26,10 @@ public abstract class BaseEntity implements IBaseEntity {
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
-    private UUID id;
+    protected UUID id;
 
     @Column(nullable = false)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
-    private LocalDateTime dataCadastro = LocalDateTime.now();
+    protected LocalDateTime dataCadastro = LocalDateTime.now();
 }

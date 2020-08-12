@@ -28,23 +28,23 @@ import lombok.Setter;
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class Pessoa extends BaseEntity {
     @Column(nullable = false, length = 150)
-    private String nome;
+    protected String nome;
 
     @Column(nullable = true, length = 100)
-    private String email;
+    protected String email;
 
     @Column(nullable = true, length = 9)
-    private String rg;
+    protected String rg;
 
     @Column(nullable = true, length = 11)
-    private String cpf;
+    protected String cpf;
   
     @Column(nullable = true, length = 14)
-    private String cnpj;
+    protected String cnpj;
 
     @Enumerated(EnumType.STRING)
-    private EnumTipoPessoa tipoPessoa;
+    protected EnumTipoPessoa tipoPessoa;
    
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Endereco endereco;
+    protected Endereco endereco;
 }

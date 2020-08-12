@@ -32,23 +32,23 @@ import lombok.Setter;
 public abstract class AbstractOrdemServico extends BaseEntity {
     
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = Pessoa.class)
-    private Cliente cliente;
+    protected Cliente cliente;
 
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = Funcionario.class)
-    private IFuncionario atendente;
+    protected IFuncionario atendente;
 
-    private LocalDateTime dataInicial;
-    private LocalDateTime dataFinalizacao;    
+    protected LocalDateTime dataInicial;
+    protected LocalDateTime dataFinalizacao;    
 
     public BigDecimal getValor() {
         return this.Servicos.stream().map(Servico::getValor).reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     @Column(nullable = false)
-    private BigDecimal valorDesconto;
+    protected BigDecimal valorDesconto;
 
     @Column(nullable = false)
-    private BigDecimal valorTotal;
+    protected BigDecimal valorTotal;
 
     public BigDecimal getValorTotal() {
         if (!Objects.nonNull(valorDesconto)) {
@@ -62,5 +62,5 @@ public abstract class AbstractOrdemServico extends BaseEntity {
     }
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Servico> Servicos = new ArrayList<>();
+    protected List<Servico> Servicos = new ArrayList<>();
 }

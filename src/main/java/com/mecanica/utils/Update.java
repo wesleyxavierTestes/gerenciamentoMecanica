@@ -1,13 +1,14 @@
 package com.mecanica.utils;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Stream;
+import java.util.Optional;
 
 public class Update {
-    public <T> T by(final T entity, final T entityUpdate) {
+    public <T, Y> Y by(final T entity, final Y entityUpdate) {
         try {
             return Erro(entity, entityUpdate);
         } catch (Exception e) {
@@ -29,16 +30,19 @@ public class Update {
      * @throws IllegalArgumentException
      * @throws Exception
      */
-    private <T> T Erro(final T entity, final T entityUpdate)
+    private <T, Y> Y Erro(final T entity, final Y entityUpdate)
             throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
         if (Objects.nonNull(entity)) {
-            for (final Field field : getDeclaredFields(entity)) {
-                final Stream<String> declaredFields = Arrays.asList(entityUpdate.getClass().getFields())
-                .stream().map(Field::getName)
-                .filter(c -> c.equals(field.getName()));
-                if (declaredFields.count() == 1) {
-                    final String fieldNameEntity = field.getName();
-                    final Field listField = entityUpdate.getClass().getDeclaredField(fieldNameEntity);
+            List<Field> entityDeclaredFields = getDeclaredFields(entity);
+            List<Field> declaredFields = getDeclaredFields(entityUpdate);
+
+            for (final Field field : entityDeclaredFields) {
+                Constructor[] classes = field.getClass().getConstructors();
+                Optional<Field> fieldUpdate = declaredFields.stream().filter(c -> c.getName().equals(field.getName()))
+                        .findFirst();
+
+                if (fieldUpdate.isPresent()) {
+                    final Field listField = fieldUpdate.get();
                     listField.setAccessible(true);
                     Object objectValue = field.get(entity);
                     listField.set(entityUpdate, objectValue);
@@ -56,7 +60,30 @@ public class Update {
      * @return
      */
     private <T> List<Field> getDeclaredFields(final T entity) {
-        final List<Field> declaredFields = Arrays.asList(entity.getClass().getFields());
-        return declaredFields;
+        Class<? extends Object> entityClass = entity.getClass();
+        List<Field> fields = new ArrayList<>();
+        Field[] fieldsEntityClass = entityClass.getFields();
+        if (fieldsEntityClass != null && fieldsEntityClass.length > 0) {
+            for (Field field : fieldsEntityClass) {
+                field.setAccessible(true);
+                fields.add(field);
+            }
+        }
+        Class<?> superclass = entityClass.getSuperclass();
+        while (superclass != null) {
+            Field[] declaredFields = superclass.getDeclaredFields();
+            if (declaredFields != null && declaredFields.length > 0) {
+                for (Field field : declaredFields) {
+                    if (fields == null) {
+                        fields = new ArrayList<>();
+                    }
+                    field.setAccessible(true);
+                    fields.add(field);
+                }
+            }
+            superclass = superclass.getSuperclass();
+        }
+            
+        return fields;
     }
 }
