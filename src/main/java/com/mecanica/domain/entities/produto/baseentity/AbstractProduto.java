@@ -13,6 +13,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
@@ -53,7 +54,9 @@ public abstract class AbstractProduto extends BaseEntity implements IProduto {
     @Enumerated(EnumType.STRING)
     protected EnumTipoProduto tipoProduto;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL , targetEntity = AbstractProduto.class)
+    @OneToMany(
+        fetch = FetchType.EAGER, cascade = CascadeType.ALL , targetEntity = AbstractProduto.class)
+        @JoinTable(name = "ProdutoItens")
     protected List<IProduto> itens = new ArrayList<>();
 
     public AbstractProduto setTipoProduto(EnumTipoProduto tipoProduto) {

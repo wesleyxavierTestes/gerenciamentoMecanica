@@ -1,14 +1,18 @@
 package com.mecanica.domain.entities.servico.command;
 
-import com.mecanica.domain.entities.ordemServico.AbstractOrdemServico;
+import com.mecanica.domain.entities.ordemServico.ordemServico.OrdemServico;
 
-public class ComprarItem implements ICommand {
+public class ComprarItem extends Command<OrdemServico> {
+
+    public ComprarItem(OrdemServico ordemServico) {
+        super(ordemServico);
+        // TODO Auto-generated constructor stub
+    }
 
     @Override
-    public <T extends AbstractOrdemServico> boolean Acao(T ordemServico) {
+    public boolean Acao(OrdemServico ordemServico) {
         // TODO Auto-generated method stub
         return false;
     }
 
-    
 }

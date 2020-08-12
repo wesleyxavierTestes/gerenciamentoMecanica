@@ -2,15 +2,14 @@ package com.mecanica.domain.entities.pessoa;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToOne;
-import javax.persistence.Table;
 
 import com.mecanica.domain.entities.BaseEntity;
 import com.mecanica.domain.enuns.EnumTipoPessoa;
@@ -24,8 +23,8 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@MappedSuperclass
+// @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class Pessoa extends BaseEntity {
     @Column(nullable = false, length = 150)
     protected String nome;

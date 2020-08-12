@@ -2,6 +2,8 @@ package com.mecanica.controller.cadastros;
 
 import java.util.UUID;
 
+import javax.validation.Valid;
+
 import com.mecanica.application.exceptions.RegraBaseException;
 import com.mecanica.controller.BaseController;
 import com.mecanica.domain.entities.estoque.AbstractEstoque;
@@ -77,9 +79,7 @@ public class EstoqueController extends BaseController {
     }
 
     @PostMapping("save/entrada")
-    public ResponseEntity<Object> save_entrada(@RequestBody EstoqueEntrada entity) {
-        if (!validations.by(entity).isValid())
-            return ResponseEntity.ok(validations.getErros());
+    public ResponseEntity<Object> saveEntrada(@RequestBody @Valid EstoqueEntrada entity) {;
 
         entity = this._serviceEntrada.save(entity);
 
@@ -87,9 +87,7 @@ public class EstoqueController extends BaseController {
     }
 
     @PutMapping("update/entrada")
-    public ResponseEntity<Object> update_entrada(@RequestBody EstoqueEntrada entity) {
-        if (!validations.by(entity).isValid())
-            return ResponseEntity.ok(validations.getErros());
+    public ResponseEntity<Object> updateEntrada(@RequestBody @Valid EstoqueEntrada entity) {
 
         entity = this._serviceEntrada.update(entity);
 
@@ -97,9 +95,7 @@ public class EstoqueController extends BaseController {
     }
 
     @PostMapping("save/saida")
-    public ResponseEntity<Object> save_saida(@RequestBody EstoqueSaida entity) {
-        if (!validations.by(entity).isValid())
-            return ResponseEntity.ok(validations.getErros());
+    public ResponseEntity<Object> saveSaida(@RequestBody @Valid EstoqueSaida entity) {
 
         entity = this._serviceSaida.save(entity);
 
@@ -107,9 +103,7 @@ public class EstoqueController extends BaseController {
     }
 
     @PutMapping("update/saida")
-    public ResponseEntity<Object> update_saida(@RequestBody EstoqueSaida entity) {
-        if (!validations.by(entity).isValid())
-            return ResponseEntity.ok(validations.getErros());
+    public ResponseEntity<Object> updateSaida(@RequestBody @Valid EstoqueSaida entity) {
 
         entity = this._serviceSaida.update(entity);
 

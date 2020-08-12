@@ -2,6 +2,8 @@ package com.mecanica.controller.cadastros;
 
 import java.util.UUID;
 
+import javax.validation.Valid;
+
 import com.mecanica.controller.BaseController;
 import com.mecanica.domain.entities.servico.Servico;
 import com.mecanica.domain.services.servico.ServicoService;
@@ -45,9 +47,7 @@ public class ServicoController extends BaseController {
     }
 
     @PostMapping("save")
-    public ResponseEntity<Object> saveServico(@RequestBody Servico entity) {
-        if (!validations.by(entity).isValid())
-            return ResponseEntity.ok(validations.getErros());
+    public ResponseEntity<Object> saveServico(@RequestBody @Valid Servico entity) {
 
         _serviceServico.save(entity);
 
@@ -55,9 +55,7 @@ public class ServicoController extends BaseController {
     }
 
     @PutMapping("update")
-    public ResponseEntity<Object> update(@RequestBody Servico entity) {
-        if (!validations.by(entity).isValid())
-            return ResponseEntity.ok(validations.getErros());
+    public ResponseEntity<Object> update(@RequestBody @Valid Servico entity) {
 
         entity = this._serviceServico.update(entity);
 

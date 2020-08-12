@@ -2,6 +2,8 @@ package com.mecanica.controller.avaliacao;
 
 import java.util.UUID;
 
+import javax.validation.Valid;
+
 import com.mecanica.controller.BaseController;
 import com.mecanica.domain.entities.ordemServico.orcamento.Orcamento;
 import com.mecanica.domain.services.ordemServico.orcamento.OrcamentoService;
@@ -45,9 +47,7 @@ public class OrcamentoController extends BaseController {
     }
 
     @PostMapping("save")
-    public ResponseEntity<Object> saveServico(@RequestBody Orcamento entity) {
-        if (!validations.by(entity).isValid())
-            return ResponseEntity.ok(validations.getErros());
+    public ResponseEntity<Object> saveServico(@RequestBody @Valid Orcamento entity) {
 
         _serviceOrcamento.save(entity);
 
@@ -55,9 +55,7 @@ public class OrcamentoController extends BaseController {
     }
 
     @PutMapping("update")
-    public ResponseEntity<Object> update(@RequestBody Orcamento entity) {
-        if (!validations.by(entity).isValid())
-            return ResponseEntity.ok(validations.getErros());
+    public ResponseEntity<Object> update(@RequestBody @Valid Orcamento entity) {
 
         entity = this._serviceOrcamento.update(entity);
 

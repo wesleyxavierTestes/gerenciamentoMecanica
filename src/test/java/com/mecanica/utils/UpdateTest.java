@@ -2,12 +2,15 @@ package com.mecanica.utils;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.List;
 import java.util.UUID;
 
 import com.mecanica.domain.entities.categoria.CategoriaProduto;
 import com.mecanica.domain.entities.cliente.Cliente;
 import com.mecanica.domain.entities.pessoa.Endereco;
+import com.mecanica.domain.entities.pessoa.Pessoa;
 
 import org.junit.jupiter.api.Test;
 
@@ -46,5 +49,14 @@ public class UpdateTest {
         update.by(entity, entityUpdate);
 
         assertEquals(entity.getNome(), entityUpdate.getNome());
+    }
+
+    @Test
+    public void testClienteInstance() {
+        Update update = new Update();
+        Cliente[] entityUpdate = {new Cliente()};
+
+        boolean condition = entityUpdate instanceof Pessoa[];
+        assertTrue(condition);
     }
 }

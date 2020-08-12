@@ -10,7 +10,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import com.mecanica.domain.entities.BaseEntity;
-import com.mecanica.utils.ErrorMessage;
+import com.mecanica.utils.ErrorCustomMessage;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,8 +27,8 @@ import lombok.Setter;
 @DiscriminatorColumn(name = "categoria_tipo")
 public class Categoria extends BaseEntity implements ICategoria {
     
-    @NotNull(message = ErrorMessage.OBRIGATORIO)
-    @NotEmpty(message = ErrorMessage.OBRIGATORIO)
+    @NotNull(message = ErrorCustomMessage.OBRIGATORIO)
+    @NotEmpty(message = ErrorCustomMessage.OBRIGATORIO)
     @Column(unique = true)
     protected String nome;
 }

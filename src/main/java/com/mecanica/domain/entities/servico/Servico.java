@@ -11,10 +11,7 @@ import lombok.Setter;
 
 @Setter
 @Entity
-public class Servico extends AbstractProduto {
-
-    @ManyToOne
-    private CategoriaServico categoria;
+public class Servico extends AbstractProduto implements IServico {
 
     @JsonSetter("categoria")
     public void setJsonCategoria(CategoriaServico categoria) {

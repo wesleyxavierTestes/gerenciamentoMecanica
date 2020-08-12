@@ -8,8 +8,7 @@ import javax.validation.constraints.NotNull;
 
 import com.mecanica.domain.entities.BaseEntity;
 import com.mecanica.domain.entities.cliente.Cliente;
-import com.mecanica.domain.entities.pessoa.Pessoa;
-import com.mecanica.utils.ErrorMessage;
+import com.mecanica.utils.ErrorCustomMessage;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,27 +22,27 @@ import lombok.Setter;
 @Entity
 public class Veiculo extends BaseEntity {
     
-    @NotNull(message = ErrorMessage.OBRIGATORIO)
-    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Pessoa.class)
+    @NotNull(message = ErrorCustomMessage.OBRIGATORIO)
+    @ManyToOne(fetch = FetchType.LAZY)
     private Cliente cliente;
     
-    @NotNull(message = ErrorMessage.OBRIGATORIO)
+    @NotNull(message = ErrorCustomMessage.OBRIGATORIO)
     @Column(nullable = false)
     private String placa;
 
-    @NotNull(message = ErrorMessage.OBRIGATORIO)
+    @NotNull(message = ErrorCustomMessage.OBRIGATORIO)
     @Column(nullable = false)
     private String renavam;
     
-    @NotNull(message = ErrorMessage.OBRIGATORIO)
+    @NotNull(message = ErrorCustomMessage.OBRIGATORIO)
     @Column(nullable = false)
     private String modelo;
     
-    @NotNull(message = ErrorMessage.OBRIGATORIO)
+    @NotNull(message = ErrorCustomMessage.OBRIGATORIO)
     @Column(nullable = false)
     private String marca;
     
-    @NotNull(message = ErrorMessage.OBRIGATORIO)
+    @NotNull(message = ErrorCustomMessage.OBRIGATORIO)
     @Column(nullable = false)
 	private String ano;
 }

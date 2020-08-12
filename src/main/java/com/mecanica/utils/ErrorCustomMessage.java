@@ -5,12 +5,12 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public final class ErrorMessage {
+public final class ErrorCustomMessage {
 
     private String propriedade;
     private String mensagem;
 
-    private ErrorMessage() {}
+    private ErrorCustomMessage() {}
 
     public static final String OBRIGATORIO = "Item Obrigatório";
     

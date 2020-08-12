@@ -23,14 +23,14 @@ import lombok.Setter;
 @Entity
 public class Avaliacao extends BaseEntity {
     
-    private LocalDateTime dataInicial;
+    private LocalDateTime dataInicial = LocalDateTime.now();
     private LocalDateTime dataFinalizacao;   
 
     @Enumerated(EnumType.STRING)
     private EnumDiagnosticoAvaliacao diagnostico;
     
     @ManyToOne
-    private Mecanico ordemServico;
+    private Mecanico mecanico;
 
     private String observacao;
 }

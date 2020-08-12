@@ -1,5 +1,7 @@
 package com.mecanica.controller.cadastros;
 
+import javax.validation.Valid;
+
 import com.mecanica.controller.BaseController;
 import com.mecanica.domain.entities.categoria.CategoriaProduto;
 import com.mecanica.domain.entities.categoria.CategoriaServico;
@@ -64,9 +66,7 @@ public class CategoriaController extends BaseController {
     }
 
     @PostMapping("save/servico")
-    public ResponseEntity<Object> saveServico(@RequestBody CategoriaServico entity) {
-        if (!validations.by(entity).isValid())
-            return ResponseEntity.ok(validations.getErros());
+    public ResponseEntity<Object> saveServico(@RequestBody @Valid CategoriaServico entity) {
 
         _categoriaServico.save(entity);
 
@@ -84,9 +84,7 @@ public class CategoriaController extends BaseController {
     }
 
     @PutMapping("update/produto")
-    public ResponseEntity<Object> update(@RequestBody CategoriaProduto entity) {
-        if (!validations.by(entity).isValid())
-            return ResponseEntity.ok(validations.getErros());
+    public ResponseEntity<Object> update(@RequestBody @Valid CategoriaProduto entity) {
 
         entity = this._categoriaProduto.update(entity);
 
@@ -94,10 +92,8 @@ public class CategoriaController extends BaseController {
     }
 
     @PutMapping("update/servico")
-    public ResponseEntity<Object> update(@RequestBody CategoriaServico entity) {
-        if (!validations.by(entity).isValid())
-            return ResponseEntity.ok(validations.getErros());
-
+    public ResponseEntity<Object> update(@RequestBody @Valid CategoriaServico entity) {
+        
         entity = this._categoriaServico.update(entity);
 
         return ResponseEntity.ok(entity);

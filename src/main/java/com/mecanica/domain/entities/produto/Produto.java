@@ -10,7 +10,6 @@ import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
-import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.mecanica.domain.entities.categoria.CategoriaProduto;
 import com.mecanica.domain.entities.estoque.AbstractEstoque;

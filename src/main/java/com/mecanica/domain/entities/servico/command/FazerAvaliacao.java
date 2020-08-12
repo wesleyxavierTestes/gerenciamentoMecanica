@@ -2,11 +2,10 @@ package com.mecanica.domain.entities.servico.command;
 
 import com.mecanica.domain.entities.ordemServico.orcamento.Orcamento;
 
-public class CriarOrdemServico extends Command<Orcamento>  {
+public class FazerAvaliacao extends Command<Orcamento>  {
 
-    public CriarOrdemServico(Orcamento ordemServico) {
+    public FazerAvaliacao(Orcamento ordemServico) {
         super(ordemServico);
-        // TODO Auto-generated constructor stub
     }
 
     @Override
@@ -14,5 +13,7 @@ public class CriarOrdemServico extends Command<Orcamento>  {
         // TODO Auto-generated method stub
         return false;
     }
-        
+
+    
+    
 }

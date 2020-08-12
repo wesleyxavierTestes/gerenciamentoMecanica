@@ -2,6 +2,8 @@ package com.mecanica.controller.cadastros;
 
 import java.util.UUID;
 
+import javax.validation.Valid;
+
 import com.mecanica.application.exceptions.RegraBaseException;
 import com.mecanica.controller.BaseController;
 import com.mecanica.domain.entities.produto.Produto;
@@ -52,9 +54,7 @@ public class ProdutoController extends BaseController {
     }
 
     @PostMapping("save")
-    public ResponseEntity<Object> save(@RequestBody Produto entity) {
-        if (!validations.by(entity).isValid())
-            return ResponseEntity.ok(validations.getErros());
+    public ResponseEntity<Object> save(@RequestBody @Valid Produto entity) {
 
         entity = this._service.save(entity);
 
@@ -62,9 +62,7 @@ public class ProdutoController extends BaseController {
     }
 
     @PutMapping("update")
-    public ResponseEntity<Object> update(@RequestBody Produto entity) {
-        if (!validations.by(entity).isValid())
-            return ResponseEntity.ok(validations.getErros());
+    public ResponseEntity<Object> update(@RequestBody @Valid Produto entity) {
 
         entity = this._service.update(entity);
 
