@@ -56,12 +56,11 @@ public class AvaliacaoController extends BaseController {
 
     @GetMapping("pedidoAvaliacao")
     public ResponseEntity<Object> pedidoAvaliacao(
-            @RequestParam(name = "funcionarioId") String funcionarioId,
+            @RequestParam(name = "funcionarioCpf") String funcionarioCpf,
             @RequestParam(name = "clienteId") String clienteId, 
             @RequestParam(name = "veiculoId") String veiculoId,
             @RequestParam(name = "causas") String causas) {
-
-        Funcionario atendente = _serviceFuncionario.findValidExistsById(funcionarioId);
+        Funcionario atendente = _serviceFuncionario.findValidExistsByCpf(funcionarioCpf);
         Cliente cliente = _serviceCliente.findValidExistsById(clienteId);
         Veiculo veiculo = _serviceVeiculo.findValidExistsById(veiculoId);
 
@@ -75,20 +74,20 @@ public class AvaliacaoController extends BaseController {
     /**
      * Valida Se existe mecânico
      * Configura Avaliação feito pelo mecanico
-     * @param mecanicoId
-     * @param orcamentoId
+     * @param mecanicoCpf
+     * @param orcamentoIdentificacao
      * @param avaliacao
      * @return
      */
     @PostMapping("save")
     public ResponseEntity<Object> save(
-        @RequestParam(name = "mecanicoId") String mecanicoId,
-        @RequestParam(name = "orcamentoId") String orcamentoId, 
+        @RequestParam(name = "mecanicoCpf") String mecanicoCpf,
+        @RequestParam(name = "orcamentoIdentificacao") String orcamentoIdentificacao, 
         @RequestBody @Valid Avaliacao avaliacao) {
         
-        Mecanico mecanico = _serviceMecanico.findValidExistsById(mecanicoId);
+        Mecanico mecanico = _serviceMecanico.findValidExistsByCpf(mecanicoCpf);
 
-        Orcamento entity = this._serviceOrcamento.configurarAvaliacao(orcamentoId, avaliacao, mecanico);
+        Orcamento entity = this._serviceOrcamento.configurarAvaliacao(orcamentoIdentificacao, avaliacao, mecanico);
 
         _serviceOrcamento.save(entity);
 
