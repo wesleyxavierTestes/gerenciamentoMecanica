@@ -15,6 +15,7 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotNull;
 
 import com.mecanica.domain.entities.BaseEntity;
 import com.mecanica.domain.entities.cliente.Cliente;
@@ -23,6 +24,7 @@ import com.mecanica.domain.entities.funcionario.IFuncionario;
 import com.mecanica.domain.entities.servico.IServico;
 import com.mecanica.domain.entities.servico.Servico;
 import com.mecanica.domain.entities.veiculo.Veiculo;
+import com.mecanica.utils.ErrorCustomMessage;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -32,6 +34,10 @@ import lombok.Setter;
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class AbstractOrdemServico extends BaseEntity {
+
+    @NotNull(message = ErrorCustomMessage.OBRIGATORIO)
+    @Column(nullable = false)
+    private String identificacao;
     
     @ManyToOne(fetch = FetchType.LAZY)
     protected Cliente cliente;
