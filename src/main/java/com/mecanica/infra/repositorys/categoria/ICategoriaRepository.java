@@ -15,6 +15,6 @@ public interface ICategoriaRepository<T extends ICategoria> extends IBaseReposit
         value = "select c from #{#entityName} c where lower(c.nome) like %?1%",
         countQuery = "select c from #{#entityName} c where lower(c.nome) like %?1%"
     )
-    Page<T> findAllByNome(String nome, PageRequest pge);
+    Page<T> findAllByNomeContains(String nome, PageRequest pge);
     
 }

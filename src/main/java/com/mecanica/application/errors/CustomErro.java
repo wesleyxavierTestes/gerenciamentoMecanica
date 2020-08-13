@@ -1,4 +1,4 @@
-package com.mecanica.application.validation;
+package com.mecanica.application.errors;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -15,5 +15,5 @@ public interface IClienteRepository extends IBaseRepository<Cliente> {
         value = "select c from #{#entityName} c where lower(c.nome) like %?1%",
         countQuery = "select c from #{#entityName} c where lower(c.nome) like %?1%"
     )
-    Page<Cliente> findAllByNome(String nome, PageRequest pge);
+    Page<Cliente> findAllByNomeContains(String nome, PageRequest pge);
 }

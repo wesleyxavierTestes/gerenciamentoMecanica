@@ -1,4 +1,4 @@
-package com.mecanica.utils;
+package com.mecanica.application.config;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -9,10 +9,10 @@ import java.util.Optional;
 
 import com.mecanica.application.exceptions.ValidacaoControllerBaseException;
 
-public class UpdateUtils {
+public class UpdateConfig {
     public static <T, Y> void by(final T entity, final Y entityUpdate) {
         try {
-            new UpdateUtils().Erro(entity, entityUpdate);
+            new UpdateConfig().Erro(entity, entityUpdate);
         } catch (Exception e) {
             throw new ValidacaoControllerBaseException("Falha ao atualizar");
         }

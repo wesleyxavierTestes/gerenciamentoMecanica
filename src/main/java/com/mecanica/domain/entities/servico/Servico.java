@@ -1,11 +1,14 @@
 package com.mecanica.domain.entities.servico;
 
 import javax.persistence.Entity;
+import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.mecanica.domain.entities.categoria.CategoriaServico;
 import com.mecanica.domain.entities.categoria.ICategoria;
 import com.mecanica.domain.entities.produto.baseentity.AbstractProduto;
+import com.mecanica.utils.CustomConst;
+import com.mecanica.application.errors.ErrorCustomMessage;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,6 +27,7 @@ public class Servico extends AbstractProduto implements IServico {
         this.setCategoria((ICategoria)categoria);
     }
 
+    @Size(max = CustomConst.SIZE200, message = ErrorCustomMessage.MAXSIZE + CustomConst.SIZE200)
     private String observacao;
 
     @Override

@@ -12,7 +12,7 @@ spring:
     username: trainee
   jpa:    
     database: POSTGRESQL
-    show-sql: false
+    show-sql: true
     generate-ddl: true
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
@@ -28,7 +28,7 @@ spring:
     username: sa
   jpa:    
     database: H2
-    show-sql: false
+    show-sql: true
     generate-ddl: true
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
@@ -43,7 +43,7 @@ spring:
     username: sa
   jpa:    
     database: H2
-    show-sql: false
+    show-sql: true
     generate-ddl: true
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate:

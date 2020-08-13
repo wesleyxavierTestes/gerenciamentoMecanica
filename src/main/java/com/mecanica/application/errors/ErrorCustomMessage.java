@@ -1,4 +1,4 @@
-package com.mecanica.utils;
+package com.mecanica.application.errors;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,5 +13,6 @@ public final class ErrorCustomMessage {
     private ErrorCustomMessage() {}
 
     public static final String OBRIGATORIO = "Item Obrigatório";
+    public static final String MAXSIZE = "tamanho máximo de ";
     
 }

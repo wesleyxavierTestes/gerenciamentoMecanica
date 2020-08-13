@@ -2,17 +2,16 @@ package com.mecanica.domain.entities.pessoa;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.NotNull;
 
 import com.mecanica.domain.entities.BaseEntity;
 import com.mecanica.domain.enuns.EnumTipoPessoa;
+import com.mecanica.application.errors.ErrorCustomMessage;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,11 +23,13 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @MappedSuperclass
-// @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class Pessoa extends BaseEntity {
+
+    @NotNull(message = ErrorCustomMessage.OBRIGATORIO)
     @Column(nullable = false, length = 150)
     protected String nome;
 
+    @NotNull(message = ErrorCustomMessage.OBRIGATORIO)
     @Column(nullable = true, length = 100)
     protected String email;
 
@@ -41,6 +42,10 @@ public abstract class Pessoa extends BaseEntity {
     @Column(nullable = true, length = 14)
     protected String cnpj;
 
+    @Column(nullable = true, length = 14)
+    protected String telefone;
+
+    @NotNull(message = ErrorCustomMessage.OBRIGATORIO)
     @Enumerated(EnumType.STRING)
     protected EnumTipoPessoa tipoPessoa;
    
