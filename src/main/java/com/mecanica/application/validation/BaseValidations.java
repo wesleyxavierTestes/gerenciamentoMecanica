@@ -17,7 +17,6 @@ public abstract class BaseValidations<T extends BaseEntity, Y extends BaseServic
         _service = service;
     }
 
-
     public T findValidExistsById(String clienteId) {
         T entity = (T)this._service.find(UUID.fromString(clienteId));
         if (!Objects.nonNull(entity))

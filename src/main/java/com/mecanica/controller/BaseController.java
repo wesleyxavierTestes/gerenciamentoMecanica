@@ -24,6 +24,6 @@ public abstract class BaseController {
     @ExceptionHandler(ValidacaoControllerBaseException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<Object> handlerError(ValidacaoControllerBaseException ex) {
-        return ResponseEntity.badRequest().body("Veículo inexistênte");
+        return ResponseEntity.badRequest().body(ex.getMessage());
     }
 }

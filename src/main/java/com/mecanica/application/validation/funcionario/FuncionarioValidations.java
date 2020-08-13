@@ -1,5 +1,8 @@
 package com.mecanica.application.validation.funcionario;
 
+import java.util.Objects;
+
+import com.mecanica.application.exceptions.ValidacaoControllerBaseException;
 import com.mecanica.application.validation.BaseValidations;
 import com.mecanica.domain.entities.funcionario.Funcionario;
 import com.mecanica.domain.services.funcionario.FuncionarioService;
@@ -16,5 +19,13 @@ public class FuncionarioValidations extends BaseValidations<Funcionario, Funcion
     @Override
     public String getNome() {
         return "Funcionario";
+    }
+
+    public Funcionario findValidExistsByCpf(String cpf) {
+        Funcionario entity = this._service.findByCpf(cpf);
+        if (!Objects.nonNull(entity))
+            throw new ValidacaoControllerBaseException(this.getNome()+" inexistênte");
+
+        return entity;
     }
 }

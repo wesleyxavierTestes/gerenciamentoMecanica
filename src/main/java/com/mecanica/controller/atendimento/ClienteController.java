@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 @RequestMapping("/api/cliente")
 public class ClienteController extends BaseController {
@@ -53,7 +55,11 @@ public class ClienteController extends BaseController {
     }
 
     @PostMapping("save")
-    public ResponseEntity<Object> saveServico(@RequestBody Cliente entity) {
+    @ApiOperation(
+        value = "Salva um Cliente", 
+        response = Cliente.class
+    )
+    public ResponseEntity<Object> save(@RequestBody Cliente entity) {
         if (!validations.by(entity).isValid())
             return ResponseEntity.ok(validations.getErros());
 
