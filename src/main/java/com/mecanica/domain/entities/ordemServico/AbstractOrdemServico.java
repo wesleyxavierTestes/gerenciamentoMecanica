@@ -16,6 +16,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import com.mecanica.domain.entities.BaseEntity;
 import com.mecanica.domain.entities.cliente.Cliente;
@@ -24,7 +25,8 @@ import com.mecanica.domain.entities.funcionario.IFuncionario;
 import com.mecanica.domain.entities.servico.IServico;
 import com.mecanica.domain.entities.servico.Servico;
 import com.mecanica.domain.entities.veiculo.Veiculo;
-import com.mecanica.utils.ErrorCustomMessage;
+import com.mecanica.utils.CustomConst;
+import com.mecanica.application.errors.ErrorCustomMessage;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -36,9 +38,10 @@ import lombok.Setter;
 public abstract class AbstractOrdemServico extends BaseEntity {
 
     @NotNull(message = ErrorCustomMessage.OBRIGATORIO)
+    @Size(max = CustomConst.SIZE50, message = ErrorCustomMessage.MAXSIZE + CustomConst.SIZE50)
     @Column(nullable = false)
     private String identificacao;
-    
+
     @ManyToOne(fetch = FetchType.LAZY)
     protected Cliente cliente;
 
@@ -52,11 +55,11 @@ public abstract class AbstractOrdemServico extends BaseEntity {
     protected LocalDateTime dataFinalizacao;
 
     @Column(nullable = false)
-    protected BigDecimal valorDesconto;
+    protected BigDecimal valorDesconto = BigDecimal.ZERO;
 
     @Column(nullable = false)
-    protected BigDecimal valorTotal;
-    
+    protected BigDecimal valorTotal = BigDecimal.ZERO;
+
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, targetEntity = Servico.class)
     @JoinTable(name = "ServicoItens")
     protected List<IServico> servicoItens = new ArrayList<>();
@@ -74,5 +77,12 @@ public abstract class AbstractOrdemServico extends BaseEntity {
             valor = BigDecimal.ZERO;
         }
         return valor.subtract(this.valorDesconto);
+    }
+
+    public void setServicoItem(IServico servico) {
+        if (!Objects.nonNull(servicoItens))
+            servicoItens = new ArrayList<>();
+
+        this.servicoItens.add(servico);
     }
 }

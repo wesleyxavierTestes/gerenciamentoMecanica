@@ -34,10 +34,19 @@ public class ServicoController extends BaseController {
         _serviceCategoriaServico = serviceCategoriaServico;
     }
 
+    @GetMapping("list/filter/nome")
+    public ResponseEntity<Page<Servico>> listFilter(
+        @RequestParam(name = "page") int page, @RequestParam(name = "nome") String nome) {
+
+        Page<Servico> list = this._serviceServico.findAllByNomeContains(nome, page);
+
+        return ResponseEntity.ok(list);
+    }
+
     @GetMapping("list")
     public ResponseEntity<Page<Servico>> list(@RequestParam(name = "page") int page) {
 
-        Page<Servico> list = this._serviceServico.list(page);
+        Page<Servico> list = this._serviceServico.findAll(page);
 
         return ResponseEntity.ok(list);
     }
@@ -51,7 +60,7 @@ public class ServicoController extends BaseController {
     }
 
     @PostMapping("save")
-    public ResponseEntity<Object> saveServico(@RequestBody @Valid Servico entity) {
+    public ResponseEntity<Servico> save(@RequestBody @Valid Servico entity) {
         String categoriaId = entity.getCategoria().getId().toString();
         CategoriaServico categoria = _serviceCategoriaServico.findValidExistsById(categoriaId);
 
@@ -61,7 +70,7 @@ public class ServicoController extends BaseController {
     }
 
     @PutMapping("update")
-    public ResponseEntity<Object> update(@RequestBody @Valid Servico entity) {
+    public ResponseEntity<Servico> update(@RequestBody @Valid Servico entity) {
         String categoriaId = entity.getCategoria().getId().toString();
         CategoriaServico categoria = _serviceCategoriaServico.findValidExistsById(categoriaId);
 

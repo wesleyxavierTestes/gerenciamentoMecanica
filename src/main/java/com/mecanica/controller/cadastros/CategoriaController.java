@@ -35,15 +35,16 @@ public class CategoriaController extends BaseController {
     @GetMapping("list/servico")
     public ResponseEntity<Page<CategoriaServico>> listServico(@RequestParam(name = "page") int page) {
 
-        Page<CategoriaServico> list = this._categoriaServico.list(page);
+        Page<CategoriaServico> list = this._categoriaServico.findAll(page);
 
         return ResponseEntity.ok(list);
     }
 
     @GetMapping("list/servico/filter")
-    public ResponseEntity<Page<CategoriaServico>> listServicoFilter(@RequestParam(name = "page") int page) {
+    public ResponseEntity<Page<CategoriaServico>> listServicoFilter(
+        @RequestParam(name = "page") int page, @RequestParam(name = "nome") String nome) {
 
-        Page<CategoriaServico> list = this._categoriaServico.list(page);
+        Page<CategoriaServico> list = this._categoriaServico.findAllByNomeContains(nome, page);
 
         return ResponseEntity.ok(list);
     }
@@ -51,7 +52,7 @@ public class CategoriaController extends BaseController {
     @GetMapping("list/produto")
     public ResponseEntity<Page<CategoriaProduto>> listProduto(@RequestParam(name = "page") int page) {
 
-        Page<CategoriaProduto> list = this._categoriaProduto.list(page);
+        Page<CategoriaProduto> list = this._categoriaProduto.findAll(page);
 
         return ResponseEntity.ok(list);
     }
@@ -60,13 +61,13 @@ public class CategoriaController extends BaseController {
     public ResponseEntity<Page<CategoriaProduto>> listProdutoFilter(@RequestParam(name = "page") int page,
             @RequestParam(name = "nome") String nome) {
 
-        Page<CategoriaProduto> list = this._categoriaProduto.findByNome(nome, page);
+        Page<CategoriaProduto> list = this._categoriaProduto.findAllByNomeContains(nome, page);
 
         return ResponseEntity.ok(list);
     }
 
     @PostMapping("save/servico")
-    public ResponseEntity<Object> saveServico(@RequestBody @Valid CategoriaServico entity) {
+    public ResponseEntity<CategoriaServico> saveServico(@RequestBody @Valid CategoriaServico entity) {
 
         _categoriaServico.save(entity);
 
@@ -74,9 +75,7 @@ public class CategoriaController extends BaseController {
     }
 
     @PostMapping("save/produto")
-    public ResponseEntity<Object> saveServico(@RequestBody() CategoriaProduto entity) {
-        if (!validations.by(entity).isValid())
-            return ResponseEntity.ok(validations.getErros());
+    public ResponseEntity<CategoriaProduto> saveProduto(@RequestBody() @Valid CategoriaProduto entity) {
 
         _categoriaProduto.save(entity);
 
@@ -84,7 +83,7 @@ public class CategoriaController extends BaseController {
     }
 
     @PutMapping("update/produto")
-    public ResponseEntity<Object> update(@RequestBody @Valid CategoriaProduto entity) {
+    public ResponseEntity<CategoriaProduto> update(@RequestBody @Valid CategoriaProduto entity) {
 
         entity = this._categoriaProduto.update(entity);
 
@@ -92,7 +91,7 @@ public class CategoriaController extends BaseController {
     }
 
     @PutMapping("update/servico")
-    public ResponseEntity<Object> update(@RequestBody @Valid CategoriaServico entity) {
+    public ResponseEntity<CategoriaServico> update(@RequestBody @Valid CategoriaServico entity) {
         
         entity = this._categoriaServico.update(entity);
 

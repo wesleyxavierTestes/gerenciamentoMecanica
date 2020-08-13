@@ -4,13 +4,16 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
+import com.mecanica.application.config.UpdateConfig;
 import com.mecanica.domain.entities.IBaseEntity;
 import com.mecanica.domain.services.BaseService;
 import com.mecanica.infra.repositorys.IBaseRepository;
-import com.mecanica.utils.UpdateUtils;
-
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.ExampleMatcher.StringMatcher;
+import org.springframework.transaction.annotation.Transactional;
 
 public abstract class BaseService<T extends IBaseEntity, Y extends IBaseRepository<T>> {
 
@@ -20,10 +23,27 @@ public abstract class BaseService<T extends IBaseEntity, Y extends IBaseReposito
         this.repository = repository;
     }
 
-    public Page<T> list(int page) {
+    public Page<T> findAll(int page) {
         PageRequest paginacao = PageRequest.of((page - 1), 10);
         
         Page<T> list = this.repository.findAll(paginacao);
+
+        return list;
+    }
+
+    public Page<T> findAllFilter(T produtoExample, int page) {
+        
+        Example<T> example = Example.of(produtoExample,
+                                ExampleMatcher.matching()
+                                    .withIgnoreCase()
+                                    .withIgnorePaths("id")
+                                    .withIgnorePaths("dataCadastro")
+                                    .withIgnoreNullValues()
+                                    .withStringMatcher(StringMatcher.CONTAINING));
+
+        PageRequest paginacao = PageRequest.of((page - 1), 10);
+        
+        Page<T> list = this.repository.findAll(example, paginacao);
 
         return list;
     }
@@ -38,6 +58,7 @@ public abstract class BaseService<T extends IBaseEntity, Y extends IBaseReposito
         return entity.get();
     }
 
+    @Transactional
     public T save(T entity) {
         
         entity.setDataCadastro(LocalDateTime.now());
@@ -46,6 +67,7 @@ public abstract class BaseService<T extends IBaseEntity, Y extends IBaseReposito
         return entity;
     }
 
+    @Transactional
     public T update(T entity) {
         Optional<T> optionalEntityUpdate = this.repository.findById(entity.getId());
         if (!optionalEntityUpdate.isPresent()) {
@@ -54,15 +76,16 @@ public abstract class BaseService<T extends IBaseEntity, Y extends IBaseReposito
 
         T entityUpdate = optionalEntityUpdate.get();
 
-        UpdateUtils.by(entity, entityUpdate);
+        UpdateConfig.by(entity, entityUpdate);
 
         entityUpdate = this.repository.save(entityUpdate);
 
         return entityUpdate;
     }
 
+    @Transactional
     public T update(T entity, T entityUpdate) {
-        UpdateUtils.by(entity, entityUpdate);
+        UpdateConfig.by(entity, entityUpdate);
 
         entityUpdate = this.repository.save(entityUpdate);
 

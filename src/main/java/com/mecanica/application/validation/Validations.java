@@ -12,6 +12,8 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
+import com.mecanica.application.errors.CustomErro;
+
 public class Validations {
 
     private boolean valid;

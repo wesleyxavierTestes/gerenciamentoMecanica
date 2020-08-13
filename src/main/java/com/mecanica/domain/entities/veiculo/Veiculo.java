@@ -2,13 +2,12 @@ package com.mecanica.domain.entities.veiculo;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
 import com.mecanica.domain.entities.BaseEntity;
 import com.mecanica.domain.entities.cliente.Cliente;
-import com.mecanica.utils.ErrorCustomMessage;
+import com.mecanica.application.errors.ErrorCustomMessage;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

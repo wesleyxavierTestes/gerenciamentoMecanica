@@ -30,10 +30,20 @@ public class MecanicoController extends BaseController {
         _serviceMecanico = mecanicoComum;
     }
 
+    @GetMapping("list/filter")
+    public ResponseEntity<Page<Mecanico>> listFilter(
+        @RequestParam(name = "page") int page, 
+        @RequestBody Mecanico cliente) {
+
+        Page<Mecanico> list = this._serviceMecanico.findAllFilter(cliente, page);
+
+        return ResponseEntity.ok(list);
+    }
+
     @GetMapping("list")
     public ResponseEntity<Page<Mecanico>> list(@RequestParam(name = "page") int page) {
 
-        Page<Mecanico> list = this._serviceMecanico.list(page);
+        Page<Mecanico> list = this._serviceMecanico.findAll(page);
 
         return ResponseEntity.ok(list);
     }
@@ -47,7 +57,7 @@ public class MecanicoController extends BaseController {
     }
 
     @PostMapping("save")
-    public ResponseEntity<Object> saveServico(@RequestBody @Valid Mecanico entity) {
+    public ResponseEntity<Mecanico> save(@RequestBody @Valid Mecanico entity) {
 
         _serviceMecanico.save(entity);
 
@@ -55,7 +65,7 @@ public class MecanicoController extends BaseController {
     }
 
     @PutMapping("update")
-    public ResponseEntity<Object> update(@RequestBody @Valid Mecanico entity) {
+    public ResponseEntity<Mecanico> update(@RequestBody @Valid Mecanico entity) {
 
         entity = this._serviceMecanico.update(entity);
 

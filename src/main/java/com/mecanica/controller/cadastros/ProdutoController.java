@@ -43,10 +43,20 @@ public class ProdutoController extends BaseController {
         return ResponseEntity.badRequest().body(ex.getMessage());
     }
 
+    @GetMapping("list/filter")
+    public ResponseEntity<Page<Produto>> listFilter(
+        @RequestParam(name = "page") int page, 
+        @RequestBody Produto cliente) {
+
+        Page<Produto> list = this._serviceProduto.findAllFilter(cliente, page);
+
+        return ResponseEntity.ok(list);
+    }
+
     @GetMapping("list")
     public ResponseEntity<Page<Produto>> list(@RequestParam(name = "page") int page) {
 
-        Page<Produto> list = this._serviceProduto.list(page);
+        Page<Produto> list = this._serviceProduto.findAll(page);
 
         return ResponseEntity.ok(list);
     }
@@ -60,7 +70,7 @@ public class ProdutoController extends BaseController {
     }
 
     @PostMapping("save")
-    public ResponseEntity<Object> save(@RequestBody @Valid Produto entity) {
+    public ResponseEntity<Produto> save(@RequestBody @Valid Produto entity) {
         String categoriaId = entity.getCategoria().getId().toString();
         CategoriaProduto categoria = _serviceCategoriaProduto.findValidExistsById(categoriaId);
         
@@ -70,7 +80,7 @@ public class ProdutoController extends BaseController {
     }
 
     @PutMapping("update")
-    public ResponseEntity<Object> update(@RequestBody @Valid Produto entity) {
+    public ResponseEntity<Produto> update(@RequestBody @Valid Produto entity) {
         String categoriaId = entity.getCategoria().getId().toString();
         CategoriaProduto categoria = _serviceCategoriaProduto.findValidExistsById(categoriaId);
 

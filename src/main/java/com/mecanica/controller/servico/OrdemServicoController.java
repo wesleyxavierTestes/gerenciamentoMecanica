@@ -30,10 +30,20 @@ public class OrdemServicoController extends BaseController {
         _serviceOrdemServico = ordemServicoComum;
     }
 
+    @GetMapping("list/filter")
+    public ResponseEntity<Page<OrdemServico>> listFilter(
+        @RequestParam(name = "page") int page, 
+        @RequestBody OrdemServico cliente) {
+
+        Page<OrdemServico> list = this._serviceOrdemServico.findAllFilter(cliente, page);
+
+        return ResponseEntity.ok(list);
+    }
+
     @GetMapping("list")
     public ResponseEntity<Page<OrdemServico>> list(@RequestParam(name = "page") int page) {
 
-        Page<OrdemServico> list = this._serviceOrdemServico.list(page);
+        Page<OrdemServico> list = this._serviceOrdemServico.findAll(page);
 
         return ResponseEntity.ok(list);
     }
@@ -47,7 +57,7 @@ public class OrdemServicoController extends BaseController {
     }
 
     @PostMapping("save")
-    public ResponseEntity<Object> saveServico(@RequestBody @Valid OrdemServico entity) {
+    public ResponseEntity<OrdemServico> save(@RequestBody @Valid OrdemServico entity) {
 
         _serviceOrdemServico.save(entity);
 
@@ -55,7 +65,7 @@ public class OrdemServicoController extends BaseController {
     }
 
     @PutMapping("update")
-    public ResponseEntity<Object> update(@RequestBody @Valid OrdemServico entity) {
+    public ResponseEntity<OrdemServico> update(@RequestBody @Valid OrdemServico entity) {
 
         entity = this._serviceOrdemServico.update(entity);
 

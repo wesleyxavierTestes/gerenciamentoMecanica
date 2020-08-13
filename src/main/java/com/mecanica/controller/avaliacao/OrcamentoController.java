@@ -30,10 +30,19 @@ public class OrcamentoController extends BaseController {
         _serviceOrcamento = orcamentoComum;
     }
 
+    @GetMapping("list/filter")
+    public ResponseEntity<Page<Orcamento>> listFilter(@RequestParam(name = "page") int page,
+            @RequestBody Orcamento cliente) {
+
+        Page<Orcamento> list = this._serviceOrcamento.findAllFilter(cliente, page);
+
+        return ResponseEntity.ok(list);
+    }
+
     @GetMapping("list")
     public ResponseEntity<Page<Orcamento>> list(@RequestParam(name = "page") int page) {
 
-        Page<Orcamento> list = this._serviceOrcamento.list(page);
+        Page<Orcamento> list = this._serviceOrcamento.findAll(page);
 
         return ResponseEntity.ok(list);
     }
@@ -46,8 +55,16 @@ public class OrcamentoController extends BaseController {
         return ResponseEntity.ok(entity);
     }
 
+    @PostMapping("aceite")
+    public ResponseEntity<Orcamento> aceite(@RequestBody @Valid Orcamento entity) {
+
+        // _serviceOrcamento.save(entity);
+
+        return ResponseEntity.ok(entity);
+    }
+
     @PostMapping("save")
-    public ResponseEntity<Object> saveServico(@RequestBody @Valid Orcamento entity) {
+    public ResponseEntity<Orcamento> save(@RequestBody @Valid Orcamento entity) {
 
         _serviceOrcamento.save(entity);
 
@@ -55,7 +72,7 @@ public class OrcamentoController extends BaseController {
     }
 
     @PutMapping("update")
-    public ResponseEntity<Object> update(@RequestBody @Valid Orcamento entity) {
+    public ResponseEntity<Orcamento> update(@RequestBody @Valid Orcamento entity) {
 
         entity = this._serviceOrcamento.update(entity);
 

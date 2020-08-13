@@ -49,7 +49,7 @@ public class EstoqueController extends BaseController {
     @GetMapping("list")
     public ResponseEntity<Page<AbstractEstoque>> list(@RequestParam(name = "page") int page) {
 
-        Page<AbstractEstoque> list = this._service.list(page);
+        Page<AbstractEstoque> list = this._service.findAll(page);
 
         return ResponseEntity.ok(list);
     }
@@ -57,7 +57,7 @@ public class EstoqueController extends BaseController {
     @GetMapping("list/entrada")
     public ResponseEntity<Page<EstoqueEntrada>> listEntrada(@RequestParam(name = "page") int page) {
 
-        Page<EstoqueEntrada> list = this._serviceEntrada.list(page);
+        Page<EstoqueEntrada> list = this._serviceEntrada.findAll(page);
 
         return ResponseEntity.ok(list);
     }
@@ -65,7 +65,7 @@ public class EstoqueController extends BaseController {
     @GetMapping("list/saida")
     public ResponseEntity<Page<EstoqueSaida>> listSaida(@RequestParam(name = "page") int page) {
 
-        Page<EstoqueSaida> list = this._serviceSaida.list(page);
+        Page<EstoqueSaida> list = this._serviceSaida.findAll(page);
 
         return ResponseEntity.ok(list);
     }
@@ -79,7 +79,7 @@ public class EstoqueController extends BaseController {
     }
 
     @PostMapping("save/entrada")
-    public ResponseEntity<Object> saveEntrada(@RequestBody @Valid EstoqueEntrada entity) {;
+    public ResponseEntity<EstoqueEntrada> saveEntrada(@RequestBody @Valid EstoqueEntrada entity) {;
 
         entity = this._serviceEntrada.save(entity);
 
@@ -87,7 +87,7 @@ public class EstoqueController extends BaseController {
     }
 
     @PutMapping("update/entrada")
-    public ResponseEntity<Object> updateEntrada(@RequestBody @Valid EstoqueEntrada entity) {
+    public ResponseEntity<EstoqueEntrada> updateEntrada(@RequestBody @Valid EstoqueEntrada entity) {
 
         entity = this._serviceEntrada.update(entity);
 
@@ -95,7 +95,7 @@ public class EstoqueController extends BaseController {
     }
 
     @PostMapping("save/saida")
-    public ResponseEntity<Object> saveSaida(@RequestBody @Valid EstoqueSaida entity) {
+    public ResponseEntity<EstoqueSaida> saveSaida(@RequestBody @Valid EstoqueSaida entity) {
 
         entity = this._serviceSaida.save(entity);
 
@@ -103,7 +103,7 @@ public class EstoqueController extends BaseController {
     }
 
     @PutMapping("update/saida")
-    public ResponseEntity<Object> updateSaida(@RequestBody @Valid EstoqueSaida entity) {
+    public ResponseEntity<EstoqueSaida> updateSaida(@RequestBody @Valid EstoqueSaida entity) {
 
         entity = this._serviceSaida.update(entity);
 

@@ -1,6 +1,5 @@
 package com.mecanica.infra.repositorys;
 
-import java.util.List;
 import java.util.UUID;
 
 import com.mecanica.domain.entities.IBaseEntity;

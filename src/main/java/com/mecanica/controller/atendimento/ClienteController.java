@@ -2,6 +2,8 @@ package com.mecanica.controller.atendimento;
 
 import java.util.UUID;
 
+import javax.validation.Valid;
+
 import com.mecanica.controller.BaseController;
 import com.mecanica.domain.entities.cliente.Cliente;
 import com.mecanica.domain.services.cliente.ClienteService;
@@ -30,18 +32,29 @@ public class ClienteController extends BaseController {
         _serviceCliente = clienteComum;
     }
 
-    @GetMapping("list")
-    public ResponseEntity<Page<Cliente>> list(@RequestParam(name = "page") int page) {
+    @GetMapping("list/filter")
+    public ResponseEntity<Page<Cliente>> listFilter(
+        @RequestParam(name = "page") int page, 
+        @RequestBody Cliente cliente) {
 
-        Page<Cliente> list = this._serviceCliente.list(page);
+        Page<Cliente> list = this._serviceCliente.findAllFilter(cliente, page);
 
         return ResponseEntity.ok(list);
     }
 
-    @GetMapping("list/filter")
-    public ResponseEntity<Page<Cliente>> listFilter(@RequestParam(name = "page") int page, @RequestParam(name = "nome") String nome) {
+    @GetMapping("list")
+    public ResponseEntity<Page<Cliente>> list(@RequestParam(name = "page") int page) {
 
-        Page<Cliente> list = this._serviceCliente.findAllByNome(nome, page);
+        Page<Cliente> list = this._serviceCliente.findAll(page);
+
+        return ResponseEntity.ok(list);
+    }
+
+    @GetMapping("list/filter/nome")
+    public ResponseEntity<Page<Cliente>> listFilter(
+        @RequestParam(name = "page") int page, @RequestParam(name = "nome") String nome) {
+
+        Page<Cliente> list = this._serviceCliente.findAllByNomeContains(nome, page);
 
         return ResponseEntity.ok(list);
     }
@@ -59,9 +72,7 @@ public class ClienteController extends BaseController {
         value = "Salva um Cliente", 
         response = Cliente.class
     )
-    public ResponseEntity<Object> save(@RequestBody Cliente entity) {
-        if (!validations.by(entity).isValid())
-            return ResponseEntity.ok(validations.getErros());
+    public ResponseEntity<Cliente> save(@RequestBody @Valid Cliente entity) {
 
         _serviceCliente.save(entity);
 
@@ -69,9 +80,7 @@ public class ClienteController extends BaseController {
     }
 
     @PutMapping("update")
-    public ResponseEntity<Object> update(@RequestBody Cliente entity) {
-        if (!validations.by(entity).isValid())
-            return ResponseEntity.ok(validations.getErros());
+    public ResponseEntity<Cliente> update(@RequestBody Cliente entity) {
 
         entity = this._serviceCliente.update(entity);
 

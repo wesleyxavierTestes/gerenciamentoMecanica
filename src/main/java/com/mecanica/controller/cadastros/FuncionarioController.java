@@ -30,10 +30,20 @@ public class FuncionarioController extends BaseController {
         _serviceFuncionario = funcionarioComum;
     }
 
+    @GetMapping("list/filter")
+    public ResponseEntity<Page<Funcionario>> listFilter(
+        @RequestParam(name = "page") int page, 
+        @RequestBody Funcionario cliente) {
+
+        Page<Funcionario> list = this._serviceFuncionario.findAllFilter(cliente, page);
+
+        return ResponseEntity.ok(list);
+    }
+
     @GetMapping("list")
     public ResponseEntity<Page<Funcionario>> list(@RequestParam(name = "page") int page) {
 
-        Page<Funcionario> list = this._serviceFuncionario.list(page);
+        Page<Funcionario> list = this._serviceFuncionario.findAll(page);
 
         return ResponseEntity.ok(list);
     }
@@ -47,7 +57,7 @@ public class FuncionarioController extends BaseController {
     }
 
     @PostMapping("save")
-    public ResponseEntity<Object> saveServico(@RequestBody @Valid Funcionario entity) {
+    public ResponseEntity<Funcionario> save(@RequestBody @Valid Funcionario entity) {
 
         _serviceFuncionario.save(entity);
 
@@ -55,7 +65,7 @@ public class FuncionarioController extends BaseController {
     }
 
     @PutMapping("update")
-    public ResponseEntity<Object> update(@RequestBody @Valid Funcionario entity) {
+    public ResponseEntity<Funcionario> update(@RequestBody @Valid Funcionario entity) {
 
         entity = this._serviceFuncionario.update(entity);
 
