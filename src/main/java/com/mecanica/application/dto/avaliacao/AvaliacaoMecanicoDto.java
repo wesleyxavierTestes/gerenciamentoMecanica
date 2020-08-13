@@ -1,4 +1,4 @@
-package com.mecanica.dto.avaliacao;
+package com.mecanica.application.dto.avaliacao;
 
 import java.util.List;
 

@@ -3,7 +3,6 @@ package com.mecanica.domain.services.ordemServico.orcamento;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
 import javax.validation.Valid;
 
@@ -13,14 +12,16 @@ import com.mecanica.domain.entities.cliente.Cliente;
 import com.mecanica.domain.entities.funcionario.IFuncionario;
 import com.mecanica.domain.entities.mecanico.Mecanico;
 import com.mecanica.domain.entities.ordemServico.orcamento.Orcamento;
-import com.mecanica.domain.entities.servico.IServico;
 import com.mecanica.domain.entities.servico.ServicoOrcamento;
-import com.mecanica.domain.processos.avaliacao.FazerAvaliacao;
-import com.mecanica.domain.processos.avaliacao.OrcamentoEsperaAvaliacao;
-import com.mecanica.domain.processos.avaliacao.PedidoIncluirServicos;
 import com.mecanica.domain.entities.veiculo.Veiculo;
 import com.mecanica.domain.enuns.EnumDiagnosticoAvaliacao;
 import com.mecanica.domain.enuns.EnumSituacaoOrcamento;
+import com.mecanica.domain.processos.avaliacao.AvaliacaoVeiculoSemConcerto;
+import com.mecanica.domain.processos.avaliacao.ClienteAceitarOrcamento;
+import com.mecanica.domain.processos.avaliacao.ClienteNegarOrcamento;
+import com.mecanica.domain.processos.avaliacao.FazerAvaliacao;
+import com.mecanica.domain.processos.avaliacao.OrcamentoEsperaAvaliacao;
+import com.mecanica.domain.processos.avaliacao.PedidoIncluirServicos;
 import com.mecanica.domain.services.BaseService;
 import com.mecanica.infra.repositorys.ordemServico.orcamento.IOrcamentoRepository;
 
@@ -111,7 +112,8 @@ public class OrcamentoService extends BaseService<Orcamento, IOrcamentoRepositor
     }
 
     public Orcamento findByIdentificacao(String identificacao) {
-        return this.repository.findByIdentificacao(identificacao);
+        Orcamento entity = this.repository.findByIdentificacao(identificacao);
+        return entity;
     }
 
     public Page<Orcamento> findAllByClienteIdOrNomeOrCpfOrCnpj(String clienteNome,
@@ -124,34 +126,26 @@ public class OrcamentoService extends BaseService<Orcamento, IOrcamentoRepositor
     public Orcamento aceitarOrcamento(String identificacao) {
         Orcamento entity = this.findByIdentificacao(identificacao);
 
-        entity.setSituacao(EnumSituacaoOrcamento.Aceito);
+        ClienteAceitarOrcamento aceite = new ClienteAceitarOrcamento(entity);
 
-        List<IServico> servicos = entity.getServicoItens();
-        for (IServico servico : servicos) {
-            ((ServicoOrcamento) servico).setSituacao(EnumSituacaoOrcamento.Aceito);
-        }
-
-        entity.setServicoItens(servicos);
-
-        entity.setDataFinalizacao(LocalDateTime.now());
-
-        return entity;
+        return aceite.getordemServico();
     }
 
     public Orcamento negarOrcamento(String identificacao) {
         Orcamento entity = this.findByIdentificacao(identificacao);
 
-        entity.setSituacao(EnumSituacaoOrcamento.Negado);
+        ClienteNegarOrcamento negar = new ClienteNegarOrcamento(entity);
 
-        List<IServico> servicos = entity.getServicoItens();
-        for (IServico servico : servicos) {
-            ((ServicoOrcamento) servico).setSituacao(EnumSituacaoOrcamento.Negado);
-        }
-
-        entity.setServicoItens(servicos);
-
-        entity.setDataFinalizacao(LocalDateTime.now());
-
-        return entity;
+        return negar.getordemServico();
     }
+
+	public Orcamento veiculoSemConcerto(String identificacao, Mecanico mecanico) {
+        Orcamento entity = this.findByIdentificacao(identificacao);
+
+        AvaliacaoVeiculoSemConcerto semConcerto = new AvaliacaoVeiculoSemConcerto(entity);
+
+        semConcerto.veiculoSemConcerto(mecanico);
+
+		return semConcerto.getordemServico();
+	}
 }

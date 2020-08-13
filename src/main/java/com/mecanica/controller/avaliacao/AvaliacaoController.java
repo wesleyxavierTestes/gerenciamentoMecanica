@@ -2,6 +2,7 @@ package com.mecanica.controller.avaliacao;
 
 import javax.validation.Valid;
 
+import com.mecanica.application.dto.avaliacao.AvaliacaoMecanicoDto;
 import com.mecanica.application.validation.cliente.ClienteValidations;
 import com.mecanica.application.validation.funcionario.FuncionarioValidations;
 import com.mecanica.application.validation.mecanico.MecanicoValidations;
@@ -16,7 +17,6 @@ import com.mecanica.domain.entities.veiculo.Veiculo;
 import com.mecanica.domain.enuns.EnumSituacaoOrcamento;
 import com.mecanica.domain.services.cliente.ClienteHistoricoRetornoService;
 import com.mecanica.domain.services.ordemServico.orcamento.OrcamentoService;
-import com.mecanica.dto.avaliacao.AvaliacaoMecanicoDto;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -86,7 +86,7 @@ public class AvaliacaoController extends BaseController {
     @PostMapping("incluir/avaliacao")
     public ResponseEntity<Orcamento> incluirAvaliacao(
             @RequestParam(name = "mecanicoCpf") String mecanicoCpf,
-            @RequestParam(name = "orcamentoIdentificacao") String identificacao,
+            @RequestParam(name = "identificacao") String identificacao,
             @RequestBody @Valid AvaliacaoMecanicoDto avaliacaoMecanico) {
 
         Mecanico mecanico = _serviceMecanico.findValidExistsByCpf(mecanicoCpf);
@@ -97,6 +97,19 @@ public class AvaliacaoController extends BaseController {
         entity = this._serviceOrcamento.configurarSituacaoOrcamento(entity);
 
         _serviceOrcamento.save(entity);
+
+        return ResponseEntity.ok(entity);
+    }
+
+    @GetMapping("semconcerto")
+    public ResponseEntity<Orcamento> semconcerto(
+        @RequestParam(name = "mecanicoCpf") String mecanicoCpf,
+        @RequestParam(name = "identificacao") String identificacao
+        ) {
+        Mecanico mecanico = _serviceMecanico.findValidExistsByCpf(mecanicoCpf);
+        Orcamento entity = this._serviceOrcamento.veiculoSemConcerto(identificacao, mecanico);
+
+        _serviceOrcamento.update(entity);
 
         return ResponseEntity.ok(entity);
     }
