@@ -15,7 +15,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 	"om.mecanica.controller.atendimento",
 	"com.mecanica.controller.avaliacao",
 	"com.mecanica.domain.services",
-	"com.mecanica.application.validation"
+	"com.mecanica.application.validation",
+	"com.mecanica.application.config"
 })
 @EntityScan("com.mecanica.domain.entities")
 @EnableJpaRepositories("com.mecanica.infra.repositorys")
