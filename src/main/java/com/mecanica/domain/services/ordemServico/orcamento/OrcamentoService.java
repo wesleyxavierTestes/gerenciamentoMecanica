@@ -3,6 +3,7 @@ package com.mecanica.domain.services.ordemServico.orcamento;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 import javax.validation.Valid;
 
@@ -12,6 +13,7 @@ import com.mecanica.domain.entities.cliente.Cliente;
 import com.mecanica.domain.entities.funcionario.IFuncionario;
 import com.mecanica.domain.entities.mecanico.Mecanico;
 import com.mecanica.domain.entities.ordemServico.orcamento.Orcamento;
+import com.mecanica.domain.entities.servico.IServico;
 import com.mecanica.domain.entities.servico.ServicoOrcamento;
 import com.mecanica.domain.processos.avaliacao.FazerAvaliacao;
 import com.mecanica.domain.processos.avaliacao.OrcamentoEsperaAvaliacao;
@@ -51,7 +53,7 @@ public class OrcamentoService extends BaseService<Orcamento, IOrcamentoRepositor
     }
 
     /**
-     * Busca O orçamento prévio
+     * Busca O orçamento prévio Avalia o mesmo
      * 
      * @param orcamentoId
      * @param avaliacao
@@ -87,19 +89,21 @@ public class OrcamentoService extends BaseService<Orcamento, IOrcamentoRepositor
     }
 
     /**
-     * Configura situação para Avaliado quando 
-     * Avaliação for diferente de Análise e ainda não houver data de finalização
+     * Configura situação para Avaliado quando Avaliação for diferente de Análise e
+     * ainda não houver data de finalização
+     * 
      * @param entity
      * @return
      */
     public Orcamento configurarSituacaoOrcamento(Orcamento entity) {
         Avaliacao avaliacao = entity.getAvaliacao();
 
-        if (avaliacao.getDiagnostico() != EnumDiagnosticoAvaliacao.Analise && !Objects.nonNull(avaliacao.getDataFinalizacao())) {
-            entity.setSituacao(EnumSituacaoOrcamento.Avaliado); 
-            
+        if (avaliacao.getDiagnostico() != EnumDiagnosticoAvaliacao.Analise
+                && !Objects.nonNull(avaliacao.getDataFinalizacao())) {
+            entity.setSituacao(EnumSituacaoOrcamento.Avaliado);
+
             avaliacao.setDataFinalizacao(LocalDateTime.now());
-            
+
             entity.setAvaliacao(avaliacao);
         }
 
@@ -108,5 +112,46 @@ public class OrcamentoService extends BaseService<Orcamento, IOrcamentoRepositor
 
     public Orcamento findByIdentificacao(String identificacao) {
         return this.repository.findByIdentificacao(identificacao);
+    }
+
+    public Page<Orcamento> findAllByClienteIdOrNomeOrCpfOrCnpj(String clienteNome,
+            String clienteCpfCnpj, int page) {
+
+        return this.repository.findAllByClienteIdOrNomeOrCpfOrCnpj(clienteNome, clienteCpfCnpj,
+                PageRequest.of((page - 1), 10));
+    }
+
+    public Orcamento aceitarOrcamento(String identificacao) {
+        Orcamento entity = this.findByIdentificacao(identificacao);
+
+        entity.setSituacao(EnumSituacaoOrcamento.Aceito);
+
+        List<IServico> servicos = entity.getServicoItens();
+        for (IServico servico : servicos) {
+            ((ServicoOrcamento) servico).setSituacao(EnumSituacaoOrcamento.Aceito);
+        }
+
+        entity.setServicoItens(servicos);
+
+        entity.setDataFinalizacao(LocalDateTime.now());
+
+        return entity;
+    }
+
+    public Orcamento negarOrcamento(String identificacao) {
+        Orcamento entity = this.findByIdentificacao(identificacao);
+
+        entity.setSituacao(EnumSituacaoOrcamento.Negado);
+
+        List<IServico> servicos = entity.getServicoItens();
+        for (IServico servico : servicos) {
+            ((ServicoOrcamento) servico).setSituacao(EnumSituacaoOrcamento.Negado);
+        }
+
+        entity.setServicoItens(servicos);
+
+        entity.setDataFinalizacao(LocalDateTime.now());
+
+        return entity;
     }
 }

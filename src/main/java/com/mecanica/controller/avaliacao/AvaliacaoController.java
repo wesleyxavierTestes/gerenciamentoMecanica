@@ -60,7 +60,8 @@ public class AvaliacaoController extends BaseController {
     }
 
     @GetMapping("pedidoAvaliacao")
-    public ResponseEntity<Orcamento> pedidoAvaliacao(@RequestParam(name = "funcionarioCpf") String funcionarioCpf,
+    public ResponseEntity<Orcamento> pedidoAvaliacao(
+            @RequestParam(name = "funcionarioCpf") String funcionarioCpf,
             @RequestParam(name = "clienteId") String clienteId,
             @RequestParam(name = "veiculoRenavam") String veiculoRenavam,
             @RequestParam(name = "causas") String causas) {
@@ -83,7 +84,8 @@ public class AvaliacaoController extends BaseController {
      * @return
      */
     @PostMapping("incluir/avaliacao")
-    public ResponseEntity<Orcamento> incluirAvaliacao(@RequestParam(name = "mecanicoCpf") String mecanicoCpf,
+    public ResponseEntity<Orcamento> incluirAvaliacao(
+            @RequestParam(name = "mecanicoCpf") String mecanicoCpf,
             @RequestParam(name = "orcamentoIdentificacao") String identificacao,
             @RequestBody @Valid AvaliacaoMecanicoDto avaliacaoMecanico) {
 

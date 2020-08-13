@@ -42,13 +42,13 @@ public abstract class AbstractOrdemServico extends BaseEntity {
     @Column(nullable = false)
     private String identificacao;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     protected Cliente cliente;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     protected Veiculo veiculo;
 
-    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Funcionario.class)
+    @ManyToOne(targetEntity = Funcionario.class)
     protected IFuncionario atendente;
 
     protected LocalDateTime dataInicial = LocalDateTime.now();;
@@ -60,7 +60,7 @@ public abstract class AbstractOrdemServico extends BaseEntity {
     @Column(nullable = false)
     protected BigDecimal valorTotal = BigDecimal.ZERO;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, targetEntity = Servico.class)
+    @OneToMany(cascade = CascadeType.ALL, targetEntity = Servico.class)
     @JoinTable(name = "ServicoItens")
     protected List<IServico> servicoItens = new ArrayList<>();
 

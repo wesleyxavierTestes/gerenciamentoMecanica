@@ -55,10 +55,33 @@ public class OrcamentoController extends BaseController {
         return ResponseEntity.ok(entity);
     }
 
-    @PostMapping("aceite")
-    public ResponseEntity<Orcamento> aceite(@RequestBody @Valid Orcamento entity) {
+    @GetMapping("list/cliente")
+    public ResponseEntity<Page<Orcamento>> listCliente(@RequestParam(name = "page") int page,
+            @RequestParam(name = "clienteNome") String clienteNome,
+            @RequestParam(name = "clienteCpfCnpj") String clienteCpfCnpj) {
 
-        // _serviceOrcamento.save(entity);
+        Page<Orcamento> list = this._serviceOrcamento
+                .findAllByClienteIdOrNomeOrCpfOrCnpj(clienteNome, clienteCpfCnpj, page);
+                
+        return ResponseEntity.ok(list);
+    }
+
+    @GetMapping("aceite")
+    public ResponseEntity<Orcamento> aceite(@RequestParam(name = "identificacao") String identificacao) {
+
+        Orcamento entity = this._serviceOrcamento.aceitarOrcamento(identificacao);
+
+        _serviceOrcamento.update(entity);
+
+        return ResponseEntity.ok(entity);
+    }
+
+    @GetMapping("negar")
+    public ResponseEntity<Orcamento> negar(@RequestParam(name = "identificacao") String identificacao) {
+
+        Orcamento entity = this._serviceOrcamento.negarOrcamento(identificacao);
+
+        _serviceOrcamento.update(entity);
 
         return ResponseEntity.ok(entity);
     }
