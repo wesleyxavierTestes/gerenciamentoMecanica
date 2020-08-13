@@ -4,6 +4,7 @@ import com.mecanica.application.exceptions.ValidacaoControllerBaseException;
 import com.mecanica.application.validation.Validations;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -25,5 +26,17 @@ public abstract class BaseController {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<Object> handlerError(ValidacaoControllerBaseException ex) {
         return ResponseEntity.badRequest().body(ex.getMessage());
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<Object> illegalArgumentException(IllegalArgumentException ex) {
+        return ResponseEntity.badRequest().body(ex.getMessage().replace("UUID", ""));
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<Object> dataIntegrityViolationException(DataIntegrityViolationException ex) {
+        return ResponseEntity.badRequest().body(ex.getRootCause().getMessage());
     }
 }
