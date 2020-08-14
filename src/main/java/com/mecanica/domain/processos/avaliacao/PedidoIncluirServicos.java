@@ -34,6 +34,9 @@ public class PedidoIncluirServicos<T extends AbstractOrdemServico> {
             }
 
             this.ordemServico.setServicoItem(servico);
+
+            this.ordemServico.setValor(this.ordemServico.getSomaValor());
+            this.ordemServico.setValorTotal(this.ordemServico.getSomaValorTotal());
         }
     }
 }

@@ -1,5 +1,8 @@
 package com.mecanica.application.validation.orcamento;
 
+import java.util.Objects;
+
+import com.mecanica.application.exceptions.ValidacaoControllerBaseException;
 import com.mecanica.application.validation.BaseValidations;
 import com.mecanica.application.validation.cliente.ClienteValidations;
 import com.mecanica.application.validation.funcionario.FuncionarioValidations;
@@ -42,7 +45,7 @@ public class OrcamentoValidations extends BaseValidations<Orcamento, OrcamentoSe
 
         Avaliacao avaliacao = entity.getAvaliacao();
         Mecanico mecanico = avaliacao.getMecanico();
-        if (mecanico !=  null) {
+        if (mecanico != null) {
             mecanico = _serviceMecanico.findValidExistsById(mecanico.getId().toString());
             avaliacao.setMecanico(mecanico);
         }
@@ -58,5 +61,16 @@ public class OrcamentoValidations extends BaseValidations<Orcamento, OrcamentoSe
         Veiculo veiculo = entity.getVeiculo();
         veiculo = _serviceVeiculo.findValidExistsById(veiculo.getId().toString());
         entity.setVeiculo(veiculo);
+    }
+
+    public Orcamento findValidExistsByIdentificacao(String identificacao) {
+        try {
+            Orcamento entity = this._service.findByIdentificacao(identificacao);
+            if (!Objects.nonNull(entity))
+                throw new ValidacaoControllerBaseException(this.getNome() + " inexistênte");
+            return entity;
+        } catch (Exception e) {
+            throw new ValidacaoControllerBaseException(this.getNome() + " inexistênte");
+        }
     }
 }

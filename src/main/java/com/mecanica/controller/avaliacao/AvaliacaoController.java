@@ -8,6 +8,7 @@ import com.mecanica.application.dto.avaliacao.AvaliacaoMecanicoDto;
 import com.mecanica.application.validation.cliente.ClienteValidations;
 import com.mecanica.application.validation.funcionario.FuncionarioValidations;
 import com.mecanica.application.validation.mecanico.MecanicoValidations;
+import com.mecanica.application.validation.orcamento.OrcamentoValidations;
 import com.mecanica.application.validation.veiculo.VeiculoValidations;
 import com.mecanica.controller.BaseController;
 import com.mecanica.domain.entities.avaliacao.Avaliacao;
@@ -20,7 +21,6 @@ import com.mecanica.domain.entities.servico.ServicoOrcamento;
 import com.mecanica.domain.entities.veiculo.Veiculo;
 import com.mecanica.domain.enuns.EnumSituacaoOrcamento;
 import com.mecanica.domain.services.cliente.ClienteHistoricoRetornoService;
-import com.mecanica.domain.services.ordemServico.orcamento.OrcamentoService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -39,7 +39,7 @@ import io.swagger.annotations.ApiParam;
 @RequestMapping("/api/avaliacao")
 public class AvaliacaoController extends BaseController {
 
-    private final OrcamentoService _serviceOrcamento;
+    private final OrcamentoValidations _serviceOrcamento;
     private final FuncionarioValidations _serviceFuncionario;
     private final MecanicoValidations _serviceMecanico;
     private final ClienteValidations _serviceCliente;
@@ -47,7 +47,7 @@ public class AvaliacaoController extends BaseController {
     private final ClienteHistoricoRetornoService _clienteHistoricoRetornoService;
 
     @Autowired
-    public AvaliacaoController(OrcamentoService orcamentoComum, ClienteValidations serviceCliente,
+    public AvaliacaoController(OrcamentoValidations orcamentoComum, ClienteValidations serviceCliente,
             VeiculoValidations serviceVeiculo, FuncionarioValidations serviceFuncionario,
             MecanicoValidations serviceMecanico, ClienteHistoricoRetornoService clienteHistoricoRetornoService) {
         _serviceOrcamento = orcamentoComum;
@@ -63,7 +63,7 @@ public class AvaliacaoController extends BaseController {
     public ResponseEntity<Page<Orcamento>> list(
             @ApiParam(example = "1", value = "Número pagina para paginação: Mínimo: 1") @RequestParam(name = "page") int page) {
 
-        Page<Orcamento> list = this._serviceOrcamento.findAllSituacao(EnumSituacaoOrcamento.Aguardando, page);
+        Page<Orcamento> list = this._serviceOrcamento.get_service().findAllSituacao(EnumSituacaoOrcamento.Aguardando, page);
 
         return ResponseEntity.ok(list);
     }
@@ -78,9 +78,9 @@ public class AvaliacaoController extends BaseController {
         Funcionario atendente = _serviceFuncionario.findValidExistsByCpf(funcionarioCpf);
         Cliente cliente = _serviceCliente.findValidExistsById(clienteId);
         Veiculo veiculo = _serviceVeiculo.findValidExistsByRenavam(veiculoRenavam);
-        Orcamento entity = this._serviceOrcamento.criarPedidoAvaliacao(atendente, cliente, veiculo, causas);
+        Orcamento entity = this._serviceOrcamento.get_service().criarPedidoAvaliacao(atendente, cliente, veiculo, causas);
 
-        _serviceOrcamento.save(entity);
+        _serviceOrcamento.get_service().save(entity);
 
         return ResponseEntity.ok(entity);
     }
@@ -100,17 +100,17 @@ public class AvaliacaoController extends BaseController {
             @ApiParam(example = "Tafarel Rivelino Ronaldo dinho 123123", value = "Código de Identificação: default:  ddMMyyyyHHmmss dd = dia/ MM = mês/ yyyy = Ano/ HH = hora/ mm =Minuto/ ss = Segundo") @RequestParam(name = "identificacao") String identificacao,
             @RequestBody @Valid AvaliacaoMecanicoDto avaliacaoMecanico) {
         Mecanico mecanico = _serviceMecanico.findValidExistsByCpf(mecanicoCpf);
-        Orcamento entity = this._serviceOrcamento.findByIdentificacao(identificacao);
+        Orcamento entity = this._serviceOrcamento.findValidExistsByIdentificacao(identificacao);
         
         Avaliacao avaliacao = avaliacaoMecanico.getAvaliacao();
         int dias = avaliacaoMecanico.getDias();
         List<ServicoOrcamento> servicos = avaliacaoMecanico.getServicos();
 
-        entity = this._serviceOrcamento.configurarAvaliacao(entity, avaliacao, mecanico, dias);
-        entity = this._serviceOrcamento.configurarServicos(entity, servicos);
-        entity = this._serviceOrcamento.configurarSituacaoOrcamento(entity);
+        entity = this._serviceOrcamento.get_service().configurarAvaliacao(entity, avaliacao, mecanico, dias);
+        entity = this._serviceOrcamento.get_service().configurarServicos(entity, servicos);
+        entity = this._serviceOrcamento.get_service().configurarSituacaoOrcamento(entity);
 
-        _serviceOrcamento.save(entity);        
+        _serviceOrcamento.get_service().save(entity);        
 
         return ResponseEntity.ok(entity);
     }
@@ -125,9 +125,9 @@ public class AvaliacaoController extends BaseController {
             @RequestParam(name = "identificacao") String identificacao) {
         Mecanico mecanico = _serviceMecanico.findValidExistsByCpf(mecanicoCpf);
         
-        Orcamento entity = this._serviceOrcamento.veiculoSemConcerto(identificacao, mecanico);
+        Orcamento entity = this._serviceOrcamento.get_service().veiculoSemConcerto(identificacao, mecanico);
 
-        _serviceOrcamento.update(entity);
+        _serviceOrcamento.get_service().update(entity);
 
         return ResponseEntity.ok(entity);
     }
@@ -147,7 +147,7 @@ public class AvaliacaoController extends BaseController {
             @RequestBody @Valid ClienteHistoricoRetorno clienteHistoricoRetorno) {
 
         Funcionario atendente = _serviceFuncionario.findValidExistsByCpf(funcionarioCpf);
-        Orcamento orcamento = this._serviceOrcamento.findByIdentificacao(clienteHistoricoRetorno.getIdentificacao());
+        Orcamento orcamento = this._serviceOrcamento.findValidExistsByIdentificacao(clienteHistoricoRetorno.getIdentificacao());
 
         ClienteHistoricoRetorno entity = this._clienteHistoricoRetornoService.informarCliente(atendente, orcamento,
                 clienteHistoricoRetorno);

@@ -9,10 +9,8 @@ import java.util.Objects;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
@@ -20,14 +18,15 @@ import javax.validation.constraints.Size;
 
 import com.mecanica.domain.entities.BaseEntity;
 import com.mecanica.domain.entities.cliente.Cliente;
-import com.mecanica.domain.entities.financeiro.AbstractFinanceiro;
-import com.mecanica.domain.entities.financeiro.IFinanceiro;
 import com.mecanica.domain.entities.funcionario.Funcionario;
 import com.mecanica.domain.entities.funcionario.IFuncionario;
 import com.mecanica.domain.entities.servico.IServico;
 import com.mecanica.domain.entities.servico.Servico;
 import com.mecanica.domain.entities.veiculo.Veiculo;
 import com.mecanica.utils.CustomConst;
+
+import org.modelmapper.ModelMapper;
+
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSetter;
@@ -39,7 +38,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class AbstractOrdemServico extends BaseEntity {
 
@@ -75,29 +73,26 @@ public abstract class AbstractOrdemServico extends BaseEntity {
     protected LocalDateTime dataFinalizacao;
 
     @Column(nullable = false)
+    protected BigDecimal valor = BigDecimal.ZERO;
+
+    @Column(nullable = false)
     protected BigDecimal valorDesconto = BigDecimal.ZERO;
 
     @Column(nullable = false)
     protected BigDecimal valorTotal = BigDecimal.ZERO;
 
-    @OneToMany(cascade = CascadeType.DETACH, targetEntity = Servico.class)
-    @JoinTable(name = "ServicoItens")
+    @OneToMany(cascade = CascadeType.ALL, targetEntity = Servico.class)
     protected List<IServico> servicoItens = new ArrayList<>();
 
-    @OneToMany(
-        fetch = FetchType.EAGER, cascade = CascadeType.ALL , targetEntity = AbstractFinanceiro.class)
-        @JoinTable(name = "FinanceiroItens")
-    protected List<IFinanceiro> itens = new ArrayList<>();
-
-    public BigDecimal getValor() {
+    public BigDecimal getSomaValor() {
         return this.servicoItens.stream().map(IServico::getValor).reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
-    public BigDecimal getValorTotal() {
+    public BigDecimal getSomaValorTotal() {
         if (!Objects.nonNull(valorDesconto)) {
             valorDesconto = BigDecimal.ZERO;
         }
-        BigDecimal valor = this.getValor();
+        BigDecimal valor = this.getSomaValor();
         if (!Objects.nonNull(valor)) {
             valor = BigDecimal.ZERO;
         }
@@ -109,5 +104,9 @@ public abstract class AbstractOrdemServico extends BaseEntity {
             servicoItens = new ArrayList<>();
 
         this.servicoItens.add(servico);
+    }
+
+    public <T extends AbstractOrdemServico> T getClone(Class<T> type) {
+        return new ModelMapper().map(this, type);
     }
 }

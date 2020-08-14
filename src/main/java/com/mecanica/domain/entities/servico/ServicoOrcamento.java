@@ -21,8 +21,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-
-
 public class ServicoOrcamento extends Servico {
 
     @NotNull(message = ErrorCustomMessage.OBRIGATORIO)

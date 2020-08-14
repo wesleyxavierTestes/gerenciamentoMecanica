@@ -9,5 +9,5 @@ import org.springframework.data.repository.NoRepositoryBean;
 @NoRepositoryBean
 public interface IBaseFuncionarioRepository<T extends Funcionario> extends IBaseRepository<T> {
 
-    T findByCpf(String cpf);
+    T findByCpfEquals(String cpf);
 }

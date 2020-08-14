@@ -12,6 +12,6 @@ public class BaseFuncionarioService<T  extends Funcionario, Y extends IBaseFunci
     }
 
     public T findByCpf(String cpf) {
-		return this.repository.findByCpf(cpf);
+		return this.repository.findByCpfEquals(cpf);
 	}
 }

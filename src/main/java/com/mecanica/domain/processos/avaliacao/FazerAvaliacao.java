@@ -15,5 +15,8 @@ public class FazerAvaliacao extends ServiceProcessos<Orcamento>  {
         ordemServico.setDiasEstimadoServico(dias);
         avaliacao.setMecanico(mecanico);
         ordemServico.setAvaliacao(avaliacao);
+
+        this.ordemServico.setValor(this.ordemServico.getSomaValor());
+        this.ordemServico.setValorTotal(this.ordemServico.getSomaValorTotal());
 	}
 }

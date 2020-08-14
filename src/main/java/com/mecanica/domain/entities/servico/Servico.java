@@ -11,7 +11,7 @@ import com.mecanica.domain.entities.ordemServico.AbstractOrdemServico;
 import com.mecanica.domain.entities.produto.baseentity.AbstractProduto;
 import com.mecanica.utils.CustomConst;
 
-
+import org.modelmapper.ModelMapper;
 
 import com.mecanica.application.errors.ErrorCustomMessage;
 
@@ -25,8 +25,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-
-
 public class Servico extends AbstractProduto implements IServico {
 
     @ManyToOne
@@ -45,4 +43,9 @@ public class Servico extends AbstractProduto implements IServico {
         this.setCategoria((ICategoria) categoria);
     }
 
+    @Override
+    public <T extends IServico> T getClone(Class<T> type) {
+        
+        return new ModelMapper().map(this, type);
+    }
 }

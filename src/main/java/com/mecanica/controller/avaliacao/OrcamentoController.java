@@ -121,11 +121,11 @@ public class OrcamentoController extends BaseController {
 
         Orcamento entity = this._serviceOrcamento.aceitarOrcamento(identificacao);
 
-        //_serviceOrcamento.update(entity);
+        _serviceOrcamento.update(entity);
 
         OrdemServico ordemServico =_serviceOrdemServico.registrarNovaOrdemServicoViaOrcamento(entity);
 
-       // this._serviceOrdemServico.save(ordemServico);
+       this._serviceOrdemServico.save(ordemServico);
 
         return ResponseEntity.ok(entity);
     }

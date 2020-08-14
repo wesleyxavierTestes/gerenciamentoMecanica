@@ -10,7 +10,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.mecanica.domain.entities.BaseEntity;
-import com.mecanica.domain.entities.ordemServico.AbstractOrdemServico;
+import com.mecanica.domain.entities.ordemServico.ordemServico.OrdemServico;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -26,7 +26,7 @@ import lombok.Setter;
 public abstract class AbstractFinanceiro extends BaseEntity implements IFinanceiro {
 
     @ManyToOne
-    protected AbstractOrdemServico ordemServico;
+    protected OrdemServico ordemServico;
 
     @Column(nullable = false)
     protected int quantidade;

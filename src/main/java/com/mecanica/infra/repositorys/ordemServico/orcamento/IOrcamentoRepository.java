@@ -1,7 +1,5 @@
 package com.mecanica.infra.repositorys.ordemServico.orcamento;
 
-import java.util.List;
-
 import com.mecanica.domain.entities.ordemServico.orcamento.Orcamento;
 import com.mecanica.infra.repositorys.ordemServico.AbstractOrdemServicoRepository;
 
@@ -12,8 +10,7 @@ import org.springframework.stereotype.Repository;
 public interface IOrcamentoRepository extends AbstractOrdemServicoRepository<Orcamento> {
 
 	@Query(
-		nativeQuery = true,
-		value = "select o from orcamento o where o.situacao = ?1 limit 1"
+		value = "select o from Orcamento o where o.identificacao like ?1"
 	)
 	Orcamento findByIdentificacao(String identificacao);
 
