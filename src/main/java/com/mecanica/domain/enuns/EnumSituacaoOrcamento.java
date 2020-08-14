@@ -4,5 +4,6 @@ public enum EnumSituacaoOrcamento {
     Aguardando,
     Avaliado,
     Negado, 
-    Aceito
+    Aceito,
+    SemConserto
 }

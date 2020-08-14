@@ -4,8 +4,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
-import javax.validation.Valid;
-
 import com.mecanica.application.exceptions.RegraBaseException;
 import com.mecanica.domain.entities.avaliacao.Avaliacao;
 import com.mecanica.domain.entities.cliente.Cliente;
@@ -61,7 +59,7 @@ public class OrcamentoService extends BaseService<Orcamento, IOrcamentoRepositor
      * @param mecanico
      * @return
      */
-    public Orcamento configurarAvaliacao(Orcamento entity, @Valid final Avaliacao avaliacao, final Mecanico mecanico) {
+    public Orcamento configurarAvaliacao(Orcamento entity, final Avaliacao avaliacao, final Mecanico mecanico, int dias) {
 
         if (entity.getSituacao() != EnumSituacaoOrcamento.Aguardando) {
             throw new RegraBaseException("Orçamento Finalizado");
@@ -69,7 +67,7 @@ public class OrcamentoService extends BaseService<Orcamento, IOrcamentoRepositor
 
         final FazerAvaliacao fazerAvaliacao = new FazerAvaliacao(entity);
 
-        fazerAvaliacao.incluirDados(mecanico, avaliacao);
+        fazerAvaliacao.incluirDados(dias, mecanico, avaliacao);
 
         return fazerAvaliacao.getordemServico();
     }
@@ -123,6 +121,11 @@ public class OrcamentoService extends BaseService<Orcamento, IOrcamentoRepositor
                 PageRequest.of((page - 1), 10));
     }
 
+    /**
+     * Caso o cliente aceite orçamento 
+     * @param identificacao
+     * @return
+     */
     public Orcamento aceitarOrcamento(String identificacao) {
         Orcamento entity = this.findByIdentificacao(identificacao);
 
@@ -133,6 +136,11 @@ public class OrcamentoService extends BaseService<Orcamento, IOrcamentoRepositor
         return aceite.getordemServico();
     }
 
+    /**
+     * * Caso o cliente negue orçamento 
+     * @param identificacao
+     * @return
+     */
     public Orcamento negarOrcamento(String identificacao) {
         Orcamento entity = this.findByIdentificacao(identificacao);
 
@@ -143,6 +151,12 @@ public class OrcamentoService extends BaseService<Orcamento, IOrcamentoRepositor
         return negar.getordemServico();
     }
 
+    /**
+     * Caso o Mecânico verificar que não há conserto
+     * @param identificacao
+     * @param mecanico
+     * @return
+     */
 	public Orcamento veiculoSemConcerto(String identificacao, Mecanico mecanico) {
         Orcamento entity = this.findByIdentificacao(identificacao);
 

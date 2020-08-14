@@ -2,7 +2,6 @@ package com.mecanica.domain.entities.pessoa;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-
 import javax.validation.constraints.NotNull;
 
 import com.mecanica.domain.entities.BaseEntity;
@@ -23,43 +22,41 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-
 public class Endereco extends BaseEntity {
 
     @NotNull(message = ErrorCustomMessage.OBRIGATORIO)
-    @Column(nullable = true, length = 8)
-    private String cep;
-
-    @NotNull(message = ErrorCustomMessage.OBRIGATORIO)
-    @Column(nullable = true, length = 50)
-    private String numero;
-
-    @NotNull(message = ErrorCustomMessage.OBRIGATORIO)
-    @Column(nullable = false, length = 100)
-    private String logradouro;
-
-    @NotNull(message = ErrorCustomMessage.OBRIGATORIO)
-    @Column(nullable = true, length = 100)
-    private String complemento;
-
-    @NotNull(message = ErrorCustomMessage.OBRIGATORIO)
-    @Column(nullable = false, length = 200)
-    private String bairro;
+    @Column(nullable = false, length = 8)
+    private String cep = "";
 
     @NotNull(message = ErrorCustomMessage.OBRIGATORIO)
     @Column(nullable = false, length = 50)
-    private String localidade;
+    private String numero = "";
+
+    @NotNull(message = ErrorCustomMessage.OBRIGATORIO)
+    @Column(nullable = false, length = 100)
+    private String logradouro = "";
+
+    @Column(nullable = true, length = 100)
+    private String complemento = "";
+
+    @NotNull(message = ErrorCustomMessage.OBRIGATORIO)
+    @Column(nullable = false, length = 200)
+    private String bairro = "";
+
+    @NotNull(message = ErrorCustomMessage.OBRIGATORIO)
+    @Column(nullable = false, length = 50)
+    private String localidade = "";
 
     @NotNull(message = ErrorCustomMessage.OBRIGATORIO)
     @Column(nullable = false, length = 2)
-    private String uf;
+    private String uf = "";
 
     @Column(nullable = true, length = 30)
-    private String unidade;
+    private String unidade = "";
 
     @Column(nullable = true, length = 30)
-    private String ibge;
+    private String ibge = "";
 
     @Column(nullable = true, length = 14)
-    private String gia;
+    private String gia = "";
 }

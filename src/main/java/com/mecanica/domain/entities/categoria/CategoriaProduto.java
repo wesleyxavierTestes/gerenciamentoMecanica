@@ -11,9 +11,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity(name = "CategoriaProduto")
-
 @DiscriminatorValue("produto")
-
 public class CategoriaProduto extends Categoria {
 
 }

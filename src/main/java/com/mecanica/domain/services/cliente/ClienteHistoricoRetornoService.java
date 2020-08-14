@@ -19,6 +19,13 @@ public class ClienteHistoricoRetornoService
         super(repository);
     }
 
+    /**
+     * Registra o contato realizado com o cliente
+     * @param atendente
+     * @param orcamento
+     * @param clienteHistoricoRetorno
+     * @return
+     */
     public ClienteHistoricoRetorno informarCliente(Funcionario atendente, Orcamento orcamento,
             ClienteHistoricoRetorno clienteHistoricoRetorno) {
         return new InformarOrcamentoCliente(orcamento).incluirOrcamento(atendente, clienteHistoricoRetorno);

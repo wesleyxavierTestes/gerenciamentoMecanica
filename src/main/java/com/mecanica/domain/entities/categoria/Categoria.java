@@ -11,8 +11,6 @@ import javax.validation.constraints.NotNull;
 
 import com.mecanica.domain.entities.BaseEntity;
 
-
-
 import com.mecanica.application.errors.ErrorCustomMessage;
 
 import lombok.AllArgsConstructor;
@@ -26,10 +24,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @Inheritance(strategy = InheritanceType.JOINED)
 @Entity(name = "categoria")
-
 @Table(name = "categoria")
 @DiscriminatorColumn(name = "categoria_tipo")
-
 public class Categoria extends BaseEntity implements ICategoria {
 
     @NotNull(message = ErrorCustomMessage.OBRIGATORIO)

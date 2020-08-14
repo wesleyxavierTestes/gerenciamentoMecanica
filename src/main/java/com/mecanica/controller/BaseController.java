@@ -1,5 +1,8 @@
 package com.mecanica.controller;
 
+import java.util.List;
+
+import com.mecanica.application.errors.CustomErro;
 import com.mecanica.application.exceptions.RegraBaseException;
 import com.mecanica.application.exceptions.ValidacaoControllerBaseException;
 import com.mecanica.application.validation.Validations;
@@ -23,7 +26,11 @@ public abstract class BaseController {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ApiIgnore
     public Object handlerError(MethodArgumentNotValidException ex) {
-        return ResponseEntity.ok(validations.by(ex.getBindingResult().getTarget()).getErros());
+        List<CustomErro> erros = validations.by(ex.getBindingResult().getTarget()).getErros();
+        if (erros.isEmpty()) {
+            return ResponseEntity.badRequest().body("Verifique os parametros obrigatórios");
+        }
+        return ResponseEntity.badRequest().body(erros);
     }
 
     @ExceptionHandler(ValidacaoControllerBaseException.class)

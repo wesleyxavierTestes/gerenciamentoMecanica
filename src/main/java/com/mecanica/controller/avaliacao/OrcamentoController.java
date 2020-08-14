@@ -3,10 +3,12 @@ package com.mecanica.controller.avaliacao;
 import java.util.UUID;
 
 import javax.validation.Valid;
+import javax.websocket.server.PathParam;
 
 import com.mecanica.application.validation.orcamento.OrcamentoValidations;
 import com.mecanica.controller.BaseController;
 import com.mecanica.domain.entities.ordemServico.orcamento.Orcamento;
+import com.mecanica.domain.enuns.EnumSituacaoOrcamento;
 import com.mecanica.domain.services.ordemServico.orcamento.OrcamentoService;
 import com.mecanica.domain.services.ordemServico.ordemServico.OrdemServicoService;
 
@@ -61,6 +63,19 @@ public class OrcamentoController extends BaseController {
         return ResponseEntity.ok(list);
     }
 
+    @GetMapping("list/situacao")
+    @ApiOperation(value = "Lista models mediante a situação e mediante a paginação. Default: 10 itens")
+    public ResponseEntity<Page<Orcamento>> listAceites(
+        @ApiParam(example = "Aceito", value = "Situação do Orçamento")
+        @RequestParam(name = "situacao") EnumSituacaoOrcamento situacao,
+        @ApiParam(example = "1", value = "Número pagina para paginação: Mínimo: 1") 
+        @RequestParam(name = "page") int page) {
+
+        Page<Orcamento> list = this._serviceOrcamento.findAllSituacao(situacao, page);
+
+        return ResponseEntity.ok(list);
+    }
+
     @GetMapping("find")
     @ApiOperation(value = "Busca um único _model_ referente ao específico id")
     public ResponseEntity<Orcamento> find(
@@ -109,9 +124,9 @@ public class OrcamentoController extends BaseController {
         return ResponseEntity.ok(entity);
     }
 
-    @GetMapping("negar")
+    @GetMapping("rejeitar")
     @ApiOperation(value = "Registra que o cliente negou o orçamento")
-    public ResponseEntity<Orcamento> negar(
+    public ResponseEntity<Orcamento> rejeitar(
             @ApiParam(example = "Tafarel Rivelino Ronaldo dinho 123123", value = "Código de Identificação: default:  ddMMyyyyHHmmss dd = dia/ MM = mês/ yyyy = Ano/ HH = hora/ mm =Minuto/ ss = Segundo") @RequestParam(name = "identificacao") String identificacao) {
 
         Orcamento entity = this._serviceOrcamento.negarOrcamento(identificacao);

@@ -18,8 +18,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-
-
 public class DiasTrabalhados extends BaseEntity {
 
     @ManyToOne

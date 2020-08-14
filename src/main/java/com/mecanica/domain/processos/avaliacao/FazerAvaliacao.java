@@ -11,7 +11,8 @@ public class FazerAvaliacao extends ServiceProcessos<Orcamento>  {
         super(ordemServico);
     }
 
-	public void incluirDados(Mecanico mecanico, Avaliacao avaliacao) {
+	public void incluirDados(int dias, Mecanico mecanico, Avaliacao avaliacao) {
+        ordemServico.setDiasEstimadoServico(dias);
         avaliacao.setMecanico(mecanico);
         ordemServico.setAvaliacao(avaliacao);
 	}

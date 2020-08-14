@@ -15,6 +15,10 @@ public class OrdemServicoService extends BaseService<OrdemServico, IOrdemServico
         super(repository);
     }
 
+    /**
+     * Cria uma nova Ordem de serviço mediante orçamento
+     * @param entity
+     */
 	public void registrarNovaOrdemServicoViaOrcamento(Orcamento entity) {
 
         CriarOrdemServico criarOrdemServico = new CriarOrdemServico(entity);

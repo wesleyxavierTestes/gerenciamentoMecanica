@@ -17,7 +17,6 @@ public class ClienteService extends BaseService<Cliente, IClienteRepository> {
     }
 
 	public Page<Cliente> findAllByNomeContains(String nome, int page) {
-
 		return this.repository.findAllByNomeContains(nome, PageRequest.of((page - 1), 10));
 	}
 }

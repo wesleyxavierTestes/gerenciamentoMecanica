@@ -51,7 +51,8 @@ public class ProdutoController extends BaseController {
     @GetMapping("list")
     @ApiOperation(value = "Lista models mediante paginação. Default: 10 itens")
     public ResponseEntity<Page<Produto>> list(
-            @ApiParam(example = "1", value = "Número pagina para paginação: Mínimo: 1") @RequestParam(name = "page") int page) {
+            @ApiParam(example = "1", value = "Número pagina para paginação: Mínimo: 1")
+            @RequestParam(name = "page") int page) {
 
         Page<Produto> list = this._serviceProduto.findAll(page);
 

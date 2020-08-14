@@ -21,8 +21,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-
-
 public class ClienteHistoricoRetorno extends BaseEntity {
 
     @NotNull(message = ErrorCustomMessage.OBRIGATORIO)

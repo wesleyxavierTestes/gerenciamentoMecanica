@@ -27,5 +27,4 @@ public class AvaliacaoMecanicoDto {
     private List<ServicoOrcamento> servicos;
 
     private int dias;
-    
 }

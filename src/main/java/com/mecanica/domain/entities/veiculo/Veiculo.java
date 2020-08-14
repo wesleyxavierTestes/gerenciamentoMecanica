@@ -42,7 +42,7 @@ public class Veiculo extends BaseEntity {
     private String placa;
 
     @NotNull(message = ErrorCustomMessage.OBRIGATORIO)
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String renavam;
 
     @NotNull(message = ErrorCustomMessage.OBRIGATORIO)

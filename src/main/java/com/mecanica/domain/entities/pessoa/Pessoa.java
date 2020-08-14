@@ -5,6 +5,7 @@ import javax.persistence.Column;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
@@ -36,19 +37,19 @@ public abstract class Pessoa extends BaseEntity {
     @Column(nullable = true, length = 9)
     protected String rg;
 
-    @Column(nullable = true, length = 11)
+    @Column(nullable = true, unique = true, length = 11)
     protected String cpf;
   
-    @Column(nullable = true, length = 14)
+    @Column(nullable = true, unique = true, length = 14)
     protected String cnpj;
 
     @Column(nullable = true, length = 14)
     protected String telefone;
 
-    @NotNull(message = ErrorCustomMessage.OBRIGATORIO)
     @Enumerated(EnumType.STRING)
     protected EnumTipoPessoa tipoPessoa;
    
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "endereco_id")
     protected Endereco endereco;
 }

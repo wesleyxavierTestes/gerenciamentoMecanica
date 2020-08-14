@@ -30,5 +30,6 @@ public class AvaliacaoVeiculoSemConcerto extends ServiceProcessos<Orcamento> {
         avaliacao.setMecanico(mecanico);
 
         ordemServico.setAvaliacao(avaliacao);
+        ordemServico.setSituacao(EnumSituacaoOrcamento.SemConserto);
     }
 }

@@ -21,7 +21,6 @@ import lombok.Setter;
 @DiscriminatorColumn(name = "setor")
 @DiscriminatorValue("Geral")
 @Entity(name = "funcionario")
-
 @Table(name = "funcionario")
 public class Funcionario extends Pessoa implements IFuncionario {
 

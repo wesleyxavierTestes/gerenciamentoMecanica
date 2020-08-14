@@ -1,5 +1,7 @@
 package com.mecanica.controller.avaliacao;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import com.mecanica.application.dto.avaliacao.AvaliacaoMecanicoDto;
@@ -8,11 +10,13 @@ import com.mecanica.application.validation.funcionario.FuncionarioValidations;
 import com.mecanica.application.validation.mecanico.MecanicoValidations;
 import com.mecanica.application.validation.veiculo.VeiculoValidations;
 import com.mecanica.controller.BaseController;
+import com.mecanica.domain.entities.avaliacao.Avaliacao;
 import com.mecanica.domain.entities.cliente.Cliente;
 import com.mecanica.domain.entities.cliente.ClienteHistoricoRetorno;
 import com.mecanica.domain.entities.funcionario.Funcionario;
 import com.mecanica.domain.entities.mecanico.Mecanico;
 import com.mecanica.domain.entities.ordemServico.orcamento.Orcamento;
+import com.mecanica.domain.entities.servico.ServicoOrcamento;
 import com.mecanica.domain.entities.veiculo.Veiculo;
 import com.mecanica.domain.enuns.EnumSituacaoOrcamento;
 import com.mecanica.domain.services.cliente.ClienteHistoricoRetornoService;
@@ -92,21 +96,21 @@ public class AvaliacaoController extends BaseController {
     @PostMapping("incluir/avaliacao")
     @ApiOperation(value = "Permite um mecânico incluir a avaliação e Serviços ou indicar que não há conserto")
     public ResponseEntity<Orcamento> incluirAvaliacao(
-            @ApiParam(example = "xxxxxxxxxx", value = "cpf do mecânico cadastrado") 
-            @RequestParam(name = "mecanicoCpf") String mecanicoCpf,
-            @ApiParam(example = "Tafarel Rivelino Ronaldo dinho 123123", 
-            value = "Código de Identificação: default:  ddMMyyyyHHmmss dd = dia/ MM = mês/ yyyy = Ano/ HH = hora/ mm =Minuto/ ss = Segundo") 
-            @RequestParam(name = "identificacao") String identificacao,
+            @ApiParam(example = "xxxxxxxxxx", value = "cpf do mecânico cadastrado") @RequestParam(name = "mecanicoCpf") String mecanicoCpf,
+            @ApiParam(example = "Tafarel Rivelino Ronaldo dinho 123123", value = "Código de Identificação: default:  ddMMyyyyHHmmss dd = dia/ MM = mês/ yyyy = Ano/ HH = hora/ mm =Minuto/ ss = Segundo") @RequestParam(name = "identificacao") String identificacao,
             @RequestBody @Valid AvaliacaoMecanicoDto avaliacaoMecanico) {
-
         Mecanico mecanico = _serviceMecanico.findValidExistsByCpf(mecanicoCpf);
         Orcamento entity = this._serviceOrcamento.findByIdentificacao(identificacao);
+        
+        Avaliacao avaliacao = avaliacaoMecanico.getAvaliacao();
+        int dias = avaliacaoMecanico.getDias();
+        List<ServicoOrcamento> servicos = avaliacaoMecanico.getServicos();
 
-        entity = this._serviceOrcamento.configurarAvaliacao(entity, avaliacaoMecanico.getAvaliacao(), mecanico);
-        entity = this._serviceOrcamento.configurarServicos(entity, avaliacaoMecanico.getServicos());
+        entity = this._serviceOrcamento.configurarAvaliacao(entity, avaliacao, mecanico, dias);
+        entity = this._serviceOrcamento.configurarServicos(entity, servicos);
         entity = this._serviceOrcamento.configurarSituacaoOrcamento(entity);
 
-        _serviceOrcamento.save(entity);
+        _serviceOrcamento.save(entity);        
 
         return ResponseEntity.ok(entity);
     }
@@ -114,9 +118,13 @@ public class AvaliacaoController extends BaseController {
     @GetMapping("semconcerto")
     @ApiOperation(value = "O Avaliador indica que o veículo não tem conserto")
     public ResponseEntity<Orcamento> semconcerto(
-            @ApiParam(example = "xxxxxxxxxx", value = "cpf do mecânico cadastrado") @RequestParam(name = "mecanicoCpf") String mecanicoCpf,
-            @ApiParam(example = "Tafarel Rivelino Ronaldo dinho 123123", value = "Código de Identificação: default:  ddMMyyyyHHmmss dd = dia/ MM = mês/ yyyy = Ano/ HH = hora/ mm =Minuto/ ss = Segundo") @RequestParam(name = "identificacao") String identificacao) {
+            @ApiParam(example = "xxxxxxxxxx", value = "cpf do mecânico cadastrado") 
+            @RequestParam(name = "mecanicoCpf") String mecanicoCpf,
+            @ApiParam(example = "Tafarel Rivelino Ronaldo dinho 123123", 
+            value = "Código de Identificação: default:  ddMMyyyyHHmmss dd = dia/ MM = mês/ yyyy = Ano/ HH = hora/ mm =Minuto/ ss = Segundo")
+            @RequestParam(name = "identificacao") String identificacao) {
         Mecanico mecanico = _serviceMecanico.findValidExistsByCpf(mecanicoCpf);
+        
         Orcamento entity = this._serviceOrcamento.veiculoSemConcerto(identificacao, mecanico);
 
         _serviceOrcamento.update(entity);
