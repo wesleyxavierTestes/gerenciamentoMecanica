@@ -7,9 +7,11 @@ import com.mecanica.application.exceptions.ValidacaoControllerBaseException;
 import com.mecanica.domain.entities.BaseEntity;
 import com.mecanica.domain.services.BaseService;
 
+import lombok.Getter;
+
 public abstract class BaseValidations<T extends BaseEntity, Y extends BaseService> {
     
-    protected final Y _service;
+    @Getter protected final Y _service;
 
     public abstract String getNome();
 

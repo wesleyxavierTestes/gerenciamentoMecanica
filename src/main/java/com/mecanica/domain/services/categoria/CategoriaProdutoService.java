@@ -20,7 +20,7 @@ public class CategoriaProdutoService extends BaseService<CategoriaProduto, ICate
     public Page<CategoriaProduto> findAllByNomeContains(String nome, int page) {
         PageRequest paginacao = PageRequest.of((page - 1), 10);
 
-        Page<CategoriaProduto> list = this.repository.findAllByNomeContains(nome.toLowerCase(), paginacao);
+        Page<CategoriaProduto> list = this.repository.findByNomeContainingIgnoreCase(nome.toLowerCase(), paginacao);
 
         return list;
     }

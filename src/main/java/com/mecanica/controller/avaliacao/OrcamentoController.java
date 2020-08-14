@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import javax.validation.Valid;
 
+import com.mecanica.application.validation.orcamento.OrcamentoValidations;
 import com.mecanica.controller.BaseController;
 import com.mecanica.domain.entities.ordemServico.orcamento.Orcamento;
 import com.mecanica.domain.services.ordemServico.orcamento.OrcamentoService;
@@ -24,10 +25,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class OrcamentoController extends BaseController {
 
     private final OrcamentoService _serviceOrcamento;
+    private final OrcamentoValidations orcamentoValidations;
 
     @Autowired
-    public OrcamentoController(OrcamentoService orcamentoComum) {
+    public OrcamentoController(OrcamentoService orcamentoComum, OrcamentoValidations orcamentoValidations) {
         _serviceOrcamento = orcamentoComum;
+        this.orcamentoValidations = orcamentoValidations;
     }
 
     @GetMapping("list/filter")
@@ -88,6 +91,7 @@ public class OrcamentoController extends BaseController {
 
     @PostMapping("save")
     public ResponseEntity<Orcamento> save(@RequestBody @Valid Orcamento entity) {
+        orcamentoValidations.valida(entity);
 
         _serviceOrcamento.save(entity);
 
@@ -96,6 +100,7 @@ public class OrcamentoController extends BaseController {
 
     @PutMapping("update")
     public ResponseEntity<Orcamento> update(@RequestBody @Valid Orcamento entity) {
+        orcamentoValidations.valida(entity);
 
         entity = this._serviceOrcamento.update(entity);
 

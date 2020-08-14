@@ -15,4 +15,6 @@ public interface IServicoRepository extends IBaseRepository<Servico> {
         countQuery = "select c from #{#entityName} c where lower(c.nome) like %?1%"
     )
     Page<Servico> findAllByNomeContains(String nome, PageRequest pge);
+
+	Servico findByNomeIgnoreCase(String nome);
 }

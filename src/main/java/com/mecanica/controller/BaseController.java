@@ -1,5 +1,6 @@
 package com.mecanica.controller;
 
+import com.mecanica.application.exceptions.RegraBaseException;
 import com.mecanica.application.exceptions.ValidacaoControllerBaseException;
 import com.mecanica.application.validation.Validations;
 
@@ -25,6 +26,12 @@ public abstract class BaseController {
     @ExceptionHandler(ValidacaoControllerBaseException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<Object> handlerError(ValidacaoControllerBaseException ex) {
+        return ResponseEntity.badRequest().body(ex.getMessage());
+    }
+
+    @ExceptionHandler(RegraBaseException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<Object> RegraBaseException(RegraBaseException ex) {
         return ResponseEntity.badRequest().body(ex.getMessage());
     }
 

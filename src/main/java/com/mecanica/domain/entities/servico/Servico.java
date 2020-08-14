@@ -21,7 +21,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 public class Servico extends AbstractProduto implements IServico {
-
+    
     @JsonSetter("categoria")
     public void setJsonCategoria(CategoriaServico categoria) {
         this.setCategoria((ICategoria)categoria);

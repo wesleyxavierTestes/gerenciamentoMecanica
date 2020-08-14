@@ -11,10 +11,16 @@ import org.springframework.data.repository.NoRepositoryBean;
 
 @NoRepositoryBean
 public interface ICategoriaRepository<T extends ICategoria> extends IBaseRepository<T> {
+
+    /**
+     * Busca
+     * @param nome
+     * @param pge
+     * @return
+     */
     @Query(
-        value = "select c from #{#entityName} c where lower(c.nome) like %?1%",
-        countQuery = "select c from #{#entityName} c where lower(c.nome) like %?1%"
+        value = "select c from #{#entityName} c where LOWER(c.nome) LIKE LOWER(concat('%', concat(?1, '%')))",
+        countQuery = "select c from #{#entityName} c where LOWER(c.nome) LIKE LOWER(concat('%', concat(?1, '%')))"
     )
-    Page<T> findAllByNomeContains(String nome, PageRequest pge);
-    
+    Page<T> findByNomeContainingIgnoreCase(String nome, PageRequest pge);
 }

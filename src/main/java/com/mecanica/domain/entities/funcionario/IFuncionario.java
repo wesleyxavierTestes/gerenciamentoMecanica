@@ -1,5 +1,7 @@
 package com.mecanica.domain.entities.funcionario;
 
-public interface IFuncionario {
+import com.mecanica.domain.entities.IBaseEntity;
+
+public interface IFuncionario extends IBaseEntity {
     
 }

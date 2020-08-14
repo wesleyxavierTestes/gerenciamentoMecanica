@@ -1,7 +1,5 @@
 package com.mecanica.infra.repositorys.ordemServico;
 
-import java.util.UUID;
-
 import com.mecanica.domain.entities.ordemServico.AbstractOrdemServico;
 import com.mecanica.infra.repositorys.IBaseRepository;
 

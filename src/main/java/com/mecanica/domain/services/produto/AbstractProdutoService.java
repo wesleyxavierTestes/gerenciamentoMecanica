@@ -43,6 +43,7 @@ public class AbstractProdutoService<T extends IProduto, Y extends IBaseRepositor
         if (!optionalEntityUpdate.isPresent()) {
             return null;
         }
+        
         T entityUpdate = optionalEntityUpdate.get();
         entity.setCodigo(entityUpdate.getCodigo());
         entity.setDataCadastro(entityUpdate.getDataCadastro());

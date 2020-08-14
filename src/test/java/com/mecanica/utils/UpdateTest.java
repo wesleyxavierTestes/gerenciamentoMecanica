@@ -2,7 +2,6 @@ package com.mecanica.utils;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.UUID;
 
@@ -10,7 +9,6 @@ import com.mecanica.application.config.UpdateConfig;
 import com.mecanica.domain.entities.categoria.CategoriaProduto;
 import com.mecanica.domain.entities.cliente.Cliente;
 import com.mecanica.domain.entities.pessoa.Endereco;
-import com.mecanica.domain.entities.pessoa.Pessoa;
 
 import org.junit.jupiter.api.Test;
 
@@ -26,7 +24,6 @@ public class UpdateTest {
         assertNotEquals(entity.getNome(), entityUpdate.getNome());
 
         UpdateConfig.by(entity, entityUpdate);
-        Class<?>[] classes = entityUpdate.getClass().getDeclaredClasses();
 
         assertEquals(entity.getNome(), entityUpdate.getNome());
     }
@@ -47,14 +44,5 @@ public class UpdateTest {
         UpdateConfig.by(entity, entityUpdate);
 
         assertEquals(entity.getNome(), entityUpdate.getNome());
-    }
-
-    @Test
-    public void testClienteInstance() {
-        UpdateConfig update = new UpdateConfig();
-        Cliente[] entityUpdate = {new Cliente()};
-
-        boolean condition = entityUpdate instanceof Pessoa[];
-        assertTrue(condition);
     }
 }

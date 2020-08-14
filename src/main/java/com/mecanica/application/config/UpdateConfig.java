@@ -1,6 +1,5 @@
 package com.mecanica.application.config;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +38,6 @@ public class UpdateConfig {
             List<Field> declaredFields = getDeclaredFields(entityUpdate);
 
             for (final Field field : entityDeclaredFields) {
-                Constructor[] classes = field.getClass().getConstructors();
                 Optional<Field> optionalFieldUpdate = declaredFields.stream()
                         .filter(c -> c.getName().equals(field.getName())).findFirst();
 
