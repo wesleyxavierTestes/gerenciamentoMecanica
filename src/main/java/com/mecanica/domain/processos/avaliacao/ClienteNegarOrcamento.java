@@ -30,7 +30,6 @@ public class ClienteNegarOrcamento extends ServiceProcessos<Orcamento>  {
         }
 
         ordemServico.setServicoItens(servicos);
-
         ordemServico.setDataFinalizacao(LocalDateTime.now());
     }
 

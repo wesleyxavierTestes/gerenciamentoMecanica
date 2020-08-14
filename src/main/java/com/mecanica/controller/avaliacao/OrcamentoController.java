@@ -3,11 +3,11 @@ package com.mecanica.controller.avaliacao;
 import java.util.UUID;
 
 import javax.validation.Valid;
-import javax.websocket.server.PathParam;
 
 import com.mecanica.application.validation.orcamento.OrcamentoValidations;
 import com.mecanica.controller.BaseController;
 import com.mecanica.domain.entities.ordemServico.orcamento.Orcamento;
+import com.mecanica.domain.entities.ordemServico.ordemServico.OrdemServico;
 import com.mecanica.domain.enuns.EnumSituacaoOrcamento;
 import com.mecanica.domain.services.ordemServico.orcamento.OrcamentoService;
 import com.mecanica.domain.services.ordemServico.ordemServico.OrdemServicoService;
@@ -109,17 +109,23 @@ public class OrcamentoController extends BaseController {
         return ResponseEntity.ok(list);
     }
 
+    /**
+     * 
+     * @param identificacao
+     * @return
+     */
     @GetMapping("aceite")
-    @ApiOperation(value = "Registra que o Cliente aceitou um orçamento")
+    @ApiOperation(value = "Registra que o Cliente aceitou um orçamento e cria uma Ordem de Serviço")
     public ResponseEntity<Orcamento> aceite(
             @ApiParam(example = "Tafarel Rivelino Ronaldo dinho 123123", value = "Código de Identificação: default: ddMMyyyyHHmmss dd = dia/ MM = mês/ yyyy = Ano/ HH = hora/ mm =Minuto/ ss = Segundo") @RequestParam(name = "identificacao") String identificacao) {
 
         Orcamento entity = this._serviceOrcamento.aceitarOrcamento(identificacao);
 
-        _serviceOrcamento.update(entity);
+        //_serviceOrcamento.update(entity);
 
-        // deve criar uma ordem de serviço
-        _serviceOrdemServico.registrarNovaOrdemServicoViaOrcamento(entity);
+        OrdemServico ordemServico =_serviceOrdemServico.registrarNovaOrdemServicoViaOrcamento(entity);
+
+       // this._serviceOrdemServico.save(ordemServico);
 
         return ResponseEntity.ok(entity);
     }

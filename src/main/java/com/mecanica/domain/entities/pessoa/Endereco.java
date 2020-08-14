@@ -26,37 +26,37 @@ public class Endereco extends BaseEntity {
 
     @NotNull(message = ErrorCustomMessage.OBRIGATORIO)
     @Column(nullable = false, length = 8)
-    private String cep = "";
+    private String cep;
 
     @NotNull(message = ErrorCustomMessage.OBRIGATORIO)
     @Column(nullable = false, length = 50)
-    private String numero = "";
+    private String numero;
 
     @NotNull(message = ErrorCustomMessage.OBRIGATORIO)
     @Column(nullable = false, length = 100)
-    private String logradouro = "";
+    private String logradouro;
 
     @Column(nullable = true, length = 100)
-    private String complemento = "";
+    private String complemento;
 
     @NotNull(message = ErrorCustomMessage.OBRIGATORIO)
     @Column(nullable = false, length = 200)
-    private String bairro = "";
+    private String bairro;
 
     @NotNull(message = ErrorCustomMessage.OBRIGATORIO)
     @Column(nullable = false, length = 50)
-    private String localidade = "";
+    private String localidade;
 
     @NotNull(message = ErrorCustomMessage.OBRIGATORIO)
     @Column(nullable = false, length = 2)
-    private String uf = "";
+    private String uf;
 
     @Column(nullable = true, length = 30)
-    private String unidade = "";
+    private String unidade;
 
     @Column(nullable = true, length = 30)
-    private String ibge = "";
+    private String ibge;
 
     @Column(nullable = true, length = 14)
-    private String gia = "";
+    private String gia;
 }

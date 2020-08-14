@@ -7,8 +7,6 @@ import javax.validation.Valid;
 import com.mecanica.controller.BaseController;
 import com.mecanica.domain.entities.funcionario.Funcionario;
 import com.mecanica.domain.services.funcionario.FuncionarioService;
-import com.mecanica.domain.services.pessoa.EnderecoService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -28,12 +26,10 @@ import io.swagger.annotations.ApiParam;
 public class FuncionarioController extends BaseController {
 
     private final FuncionarioService _serviceFuncionario;
-    private final EnderecoService _serviceEndereco;
 
     @Autowired
-    public FuncionarioController(FuncionarioService funcionarioComum, EnderecoService serviceEndereco) {
+    public FuncionarioController(FuncionarioService funcionarioComum) {
         _serviceFuncionario = funcionarioComum;
-        _serviceEndereco = serviceEndereco;
     }
 
     @GetMapping("list/filter")

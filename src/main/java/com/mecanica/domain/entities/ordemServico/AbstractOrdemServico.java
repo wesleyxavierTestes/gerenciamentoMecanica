@@ -9,7 +9,7 @@ import java.util.Objects;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-
+import javax.persistence.FetchType;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinTable;
@@ -20,9 +20,10 @@ import javax.validation.constraints.Size;
 
 import com.mecanica.domain.entities.BaseEntity;
 import com.mecanica.domain.entities.cliente.Cliente;
+import com.mecanica.domain.entities.financeiro.AbstractFinanceiro;
+import com.mecanica.domain.entities.financeiro.IFinanceiro;
 import com.mecanica.domain.entities.funcionario.Funcionario;
 import com.mecanica.domain.entities.funcionario.IFuncionario;
-import com.mecanica.domain.entities.pessoa.Pessoa;
 import com.mecanica.domain.entities.servico.IServico;
 import com.mecanica.domain.entities.servico.Servico;
 import com.mecanica.domain.entities.veiculo.Veiculo;
@@ -68,6 +69,7 @@ public abstract class AbstractOrdemServico extends BaseEntity {
     }
 
     private int diasEstimadoServico;
+    private boolean pago;
 
     protected LocalDateTime dataInicial = LocalDateTime.now();
     protected LocalDateTime dataFinalizacao;
@@ -81,6 +83,11 @@ public abstract class AbstractOrdemServico extends BaseEntity {
     @OneToMany(cascade = CascadeType.DETACH, targetEntity = Servico.class)
     @JoinTable(name = "ServicoItens")
     protected List<IServico> servicoItens = new ArrayList<>();
+
+    @OneToMany(
+        fetch = FetchType.EAGER, cascade = CascadeType.ALL , targetEntity = AbstractFinanceiro.class)
+        @JoinTable(name = "FinanceiroItens")
+    protected List<IFinanceiro> itens = new ArrayList<>();
 
     public BigDecimal getValor() {
         return this.servicoItens.stream().map(IServico::getValor).reduce(BigDecimal.ZERO, BigDecimal::add);

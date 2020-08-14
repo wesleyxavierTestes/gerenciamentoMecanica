@@ -111,6 +111,7 @@ public class OrcamentoService extends BaseService<Orcamento, IOrcamentoRepositor
 
     public Orcamento findByIdentificacao(String identificacao) {
         Orcamento entity = this.repository.findByIdentificacao(identificacao);
+        
         return entity;
     }
 
@@ -128,7 +129,7 @@ public class OrcamentoService extends BaseService<Orcamento, IOrcamentoRepositor
      */
     public Orcamento aceitarOrcamento(String identificacao) {
         Orcamento entity = this.findByIdentificacao(identificacao);
-
+        
         ClienteAceitarOrcamento aceite = new ClienteAceitarOrcamento(entity);
 
         aceite.aceitarOrcamento();

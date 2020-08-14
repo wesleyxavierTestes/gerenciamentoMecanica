@@ -1,7 +1,6 @@
 package com.mecanica.domain.processos.servicos;
 
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import com.mecanica.domain.entities.ordemServico.AbstractOrdemServico;
