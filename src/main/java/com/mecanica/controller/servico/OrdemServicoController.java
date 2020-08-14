@@ -19,6 +19,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+
 @RestController
 @RequestMapping("/api/ordemServico")
 public class OrdemServicoController extends BaseController {
@@ -31,9 +34,10 @@ public class OrdemServicoController extends BaseController {
     }
 
     @GetMapping("list/filter")
+    @ApiOperation(value = "Lista models mediante paginação e Filtra mediante parametros do _model_. Default: 10 itens")
     public ResponseEntity<Page<OrdemServico>> listFilter(
-        @RequestParam(name = "page") int page, 
-        @RequestBody OrdemServico cliente) {
+            @ApiParam(example = "1", value = "Número pagina para paginação: Mínimo: 1") @RequestParam(name = "page") int page,
+            @RequestBody OrdemServico cliente) {
 
         Page<OrdemServico> list = this._serviceOrdemServico.findAllFilter(cliente, page);
 
@@ -41,7 +45,9 @@ public class OrdemServicoController extends BaseController {
     }
 
     @GetMapping("list")
-    public ResponseEntity<Page<OrdemServico>> list(@RequestParam(name = "page") int page) {
+    @ApiOperation(value = "Lista models mediante paginação. Default: 10 itens")
+    public ResponseEntity<Page<OrdemServico>> list(
+            @ApiParam(example = "1", value = "Número pagina para paginação: Mínimo: 1") @RequestParam(name = "page") int page) {
 
         Page<OrdemServico> list = this._serviceOrdemServico.findAll(page);
 
@@ -49,7 +55,8 @@ public class OrdemServicoController extends BaseController {
     }
 
     @GetMapping("find")
-    public ResponseEntity<OrdemServico> find(@RequestParam(name = "id") String id) {
+    @ApiOperation(value = "Busca um único _model_ referente ao específico id")
+    public ResponseEntity<OrdemServico> find(@ApiParam(example = "x67faa25-5a18-43ea-920a-ad3a654a8153", value = "id do _model_ cadastrado") @RequestParam(name = "id") String id) {
 
         OrdemServico entity = this._serviceOrdemServico.find(UUID.fromString(id));
 
@@ -57,6 +64,7 @@ public class OrdemServicoController extends BaseController {
     }
 
     @PostMapping("save")
+    @ApiOperation(value = "Salva _model_ se itens necessários estiverem válidos")
     public ResponseEntity<OrdemServico> save(@RequestBody @Valid OrdemServico entity) {
 
         _serviceOrdemServico.save(entity);
@@ -65,6 +73,7 @@ public class OrdemServicoController extends BaseController {
     }
 
     @PutMapping("update")
+    @ApiOperation(value = "Altera _model_  já cadastrado se itens necessários estiverem válidos")
     public ResponseEntity<OrdemServico> update(@RequestBody @Valid OrdemServico entity) {
 
         entity = this._serviceOrdemServico.update(entity);

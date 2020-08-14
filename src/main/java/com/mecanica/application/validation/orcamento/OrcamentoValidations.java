@@ -7,7 +7,7 @@ import com.mecanica.application.validation.mecanico.MecanicoValidations;
 import com.mecanica.application.validation.veiculo.VeiculoValidations;
 import com.mecanica.domain.entities.avaliacao.Avaliacao;
 import com.mecanica.domain.entities.cliente.Cliente;
-import com.mecanica.domain.entities.funcionario.Funcionario;
+import com.mecanica.domain.entities.funcionario.IFuncionario;
 import com.mecanica.domain.entities.mecanico.Mecanico;
 import com.mecanica.domain.entities.ordemServico.orcamento.Orcamento;
 import com.mecanica.domain.entities.veiculo.Veiculo;
@@ -23,9 +23,7 @@ public class OrcamentoValidations extends BaseValidations<Orcamento, OrcamentoSe
     private final ClienteValidations _serviceCliente;
     private final VeiculoValidations _serviceVeiculo;
 
-
-    public OrcamentoValidations(OrcamentoService serviceOrcamento, 
-    ClienteValidations serviceCliente,
+    public OrcamentoValidations(OrcamentoService serviceOrcamento, ClienteValidations serviceCliente,
             VeiculoValidations serviceVeiculo, FuncionarioValidations serviceFuncionario,
             MecanicoValidations serviceMecanico) {
         super(serviceOrcamento);
@@ -41,18 +39,24 @@ public class OrcamentoValidations extends BaseValidations<Orcamento, OrcamentoSe
     }
 
     public void valida(Orcamento entity) {
-       
-        Avaliacao avaliacao = entity.getAvaliacao();
-        Mecanico mecanico = _serviceMecanico.findValidExistsById(avaliacao.getMecanico().getId().toString());
-        avaliacao.setMecanico(mecanico);
 
-        Funcionario atendente = _serviceFuncionario.findValidExistsById(entity.getAtendente().getId().toString());
+        Avaliacao avaliacao = entity.getAvaliacao();
+        Mecanico mecanico = avaliacao.getMecanico();
+        if (mecanico !=  null) {
+            mecanico = _serviceMecanico.findValidExistsById(mecanico.getId().toString());
+            avaliacao.setMecanico(mecanico);
+        }
+
+        IFuncionario atendente = entity.getAtendente();
+        atendente = _serviceFuncionario.findValidExistsById(atendente.getId().toString());
         entity.setAtendente(atendente);
 
-        Cliente cliente = _serviceCliente.findValidExistsById(entity.getCliente().getId().toString());
+        Cliente cliente = entity.getCliente();
+        cliente = _serviceCliente.findValidExistsById(cliente.getId().toString());
         entity.setCliente(cliente);
 
-        Veiculo veiculo = _serviceVeiculo.findValidExistsByRenavam(entity.getVeiculo().getId().toString());
+        Veiculo veiculo = entity.getVeiculo();
+        veiculo = _serviceVeiculo.findValidExistsById(veiculo.getId().toString());
         entity.setVeiculo(veiculo);
     }
 }

@@ -4,7 +4,6 @@ import java.util.UUID;
 
 import javax.validation.Valid;
 
-import com.mecanica.application.exceptions.RegraBaseException;
 import com.mecanica.controller.BaseController;
 import com.mecanica.domain.entities.estoque.AbstractEstoque;
 import com.mecanica.domain.entities.estoque.EstoqueEntrada;
@@ -16,7 +15,6 @@ import com.mecanica.domain.services.estoque.EstoqueService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -24,6 +22,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 
 @RestController
 @RequestMapping("api/estoque")
@@ -41,13 +42,10 @@ public class EstoqueController extends BaseController {
         _serviceEntrada = serviceEntrada;
     }
 
-    @ExceptionHandler(RegraBaseException.class)
-    public ResponseEntity<String> error(RegraBaseException ex) {
-        return ResponseEntity.badRequest().body(ex.getMessage());
-    }
-
     @GetMapping("list")
-    public ResponseEntity<Page<AbstractEstoque>> list(@RequestParam(name = "page") int page) {
+    @ApiOperation(value = "Lista models mediante paginação. Default: 10 itens")
+    public ResponseEntity<Page<AbstractEstoque>> list(
+            @ApiParam(example = "1", value = "Número pagina para paginação: Mínimo: 1") @RequestParam(name = "page") int page) {
 
         Page<AbstractEstoque> list = this._service.findAll(page);
 
@@ -55,7 +53,9 @@ public class EstoqueController extends BaseController {
     }
 
     @GetMapping("list/entrada")
-    public ResponseEntity<Page<EstoqueEntrada>> listEntrada(@RequestParam(name = "page") int page) {
+    @ApiOperation(value = "Lista models de entrada mediante paginação. Default: 10 itens")
+    public ResponseEntity<Page<EstoqueEntrada>> listEntrada(
+            @ApiParam(example = "1", value = "Número pagina para paginação: Mínimo: 1") @RequestParam(name = "page") int page) {
 
         Page<EstoqueEntrada> list = this._serviceEntrada.findAll(page);
 
@@ -63,7 +63,9 @@ public class EstoqueController extends BaseController {
     }
 
     @GetMapping("list/saida")
-    public ResponseEntity<Page<EstoqueSaida>> listSaida(@RequestParam(name = "page") int page) {
+    @ApiOperation(value = "Lista models de saída mediante paginação. Default: 10 itens")
+    public ResponseEntity<Page<EstoqueSaida>> listSaida(
+            @ApiParam(example = "1", value = "Número pagina para paginação: Mínimo: 1") @RequestParam(name = "page") int page) {
 
         Page<EstoqueSaida> list = this._serviceSaida.findAll(page);
 
@@ -71,7 +73,8 @@ public class EstoqueController extends BaseController {
     }
 
     @GetMapping("find")
-    public ResponseEntity<AbstractEstoque> find(@RequestParam(name = "id") String id) {
+    @ApiOperation(value = "Busca um único _model_ referente ao específico id")
+    public ResponseEntity<AbstractEstoque> find(@ApiParam(example = "x67faa25-5a18-43ea-920a-ad3a654a8153", value = "id do _model_ cadastrado") @RequestParam(name = "id") String id) {
 
         AbstractEstoque entity = this._service.find(UUID.fromString(id));
 
@@ -79,7 +82,9 @@ public class EstoqueController extends BaseController {
     }
 
     @PostMapping("save/entrada")
-    public ResponseEntity<EstoqueEntrada> saveEntrada(@RequestBody @Valid EstoqueEntrada entity) {;
+    @ApiOperation(value = "Registra um _model_ de entrada mediante validações")
+    public ResponseEntity<EstoqueEntrada> saveEntrada(@RequestBody @Valid EstoqueEntrada entity) {
+        ;
 
         entity = this._serviceEntrada.save(entity);
 
@@ -87,6 +92,7 @@ public class EstoqueController extends BaseController {
     }
 
     @PutMapping("update/entrada")
+    @ApiOperation(value = "Altera um Registro um _model_ de entrada mediante validações")
     public ResponseEntity<EstoqueEntrada> updateEntrada(@RequestBody @Valid EstoqueEntrada entity) {
 
         entity = this._serviceEntrada.update(entity);
@@ -95,6 +101,7 @@ public class EstoqueController extends BaseController {
     }
 
     @PostMapping("save/saida")
+    @ApiOperation(value = "Registra um _model_ de saída mediante validações")
     public ResponseEntity<EstoqueSaida> saveSaida(@RequestBody @Valid EstoqueSaida entity) {
 
         entity = this._serviceSaida.save(entity);
@@ -103,6 +110,7 @@ public class EstoqueController extends BaseController {
     }
 
     @PutMapping("update/saida")
+    @ApiOperation(value = "Altera um Registro um _model_ de saída mediante validações")
     public ResponseEntity<EstoqueSaida> updateSaida(@RequestBody @Valid EstoqueSaida entity) {
 
         entity = this._serviceSaida.update(entity);

@@ -2,6 +2,7 @@
 package com.mecanica.domain.entities.cliente;
 
 import javax.persistence.Entity;
+
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
@@ -13,14 +14,17 @@ import com.mecanica.domain.entities.funcionario.Funcionario;
 import com.mecanica.domain.enuns.EnumTipoFormaContato;
 import com.mecanica.domain.enuns.EnumTipoPedido;
 
+
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
 @Entity
+
+
 public class ClienteHistoricoRetorno extends BaseEntity {
-    
+
     @NotNull(message = ErrorCustomMessage.OBRIGATORIO)
     @ManyToOne
     private Cliente cliente;
@@ -35,7 +39,7 @@ public class ClienteHistoricoRetorno extends BaseEntity {
 
     @NotNull(message = ErrorCustomMessage.OBRIGATORIO)
     private EnumTipoFormaContato tipoFormaContato;
-    
+
     @NotNull(message = ErrorCustomMessage.OBRIGATORIO)
     private String formaContato;
 

@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
@@ -16,6 +17,7 @@ import com.mecanica.domain.entities.categoria.ICategoria;
 import com.mecanica.domain.entities.estoque.AbstractEstoque;
 import com.mecanica.domain.entities.estoque.IEstoque;
 import com.mecanica.domain.entities.produto.baseentity.AbstractProduto;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,6 +31,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+
+
 public class Produto extends AbstractProduto {
 
     /**
@@ -45,11 +49,11 @@ public class Produto extends AbstractProduto {
 
     @JsonSetter("categoria")
     public void setJsonCategoria(CategoriaProduto categoria) {
-        this.setICategoria((ICategoria)categoria);
+        this.setICategoria((ICategoria) categoria);
     }
 
     @Override
     public <T extends ICategoria> void setICategoria(T categoria) {
-        this.setCategoria((ICategoria)categoria);
+        this.setCategoria((ICategoria) categoria);
     }
 }

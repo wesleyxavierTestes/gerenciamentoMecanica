@@ -12,6 +12,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import springfox.documentation.annotations.ApiIgnore;
+
 public abstract class BaseController {
 
     @Autowired
@@ -19,30 +21,35 @@ public abstract class BaseController {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ApiIgnore
     public Object handlerError(MethodArgumentNotValidException ex) {
         return ResponseEntity.ok(validations.by(ex.getBindingResult().getTarget()).getErros());
     }
 
     @ExceptionHandler(ValidacaoControllerBaseException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ApiIgnore
     public ResponseEntity<Object> handlerError(ValidacaoControllerBaseException ex) {
         return ResponseEntity.badRequest().body(ex.getMessage());
     }
 
     @ExceptionHandler(RegraBaseException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ApiIgnore
     public ResponseEntity<Object> RegraBaseException(RegraBaseException ex) {
         return ResponseEntity.badRequest().body(ex.getMessage());
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ApiIgnore
     public ResponseEntity<Object> illegalArgumentException(IllegalArgumentException ex) {
         return ResponseEntity.badRequest().body(ex.getMessage().replace("UUID", ""));
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ApiIgnore
     public ResponseEntity<Object> dataIntegrityViolationException(DataIntegrityViolationException ex) {
         return ResponseEntity.badRequest().body(ex.getRootCause().getMessage());
     }

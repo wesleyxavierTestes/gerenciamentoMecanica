@@ -19,6 +19,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+
 @RestController
 @RequestMapping("api/categoria")
 public class CategoriaController extends BaseController {
@@ -33,7 +36,10 @@ public class CategoriaController extends BaseController {
     }
 
     @GetMapping("list/servico")
-    public ResponseEntity<Page<CategoriaServico>> listServico(@RequestParam(name = "page") int page) {
+    @ApiOperation(value = "Lista models do tipo serviço mediante paginação. Default: 10 itens")
+    public ResponseEntity<Page<CategoriaServico>> listServico(
+            @ApiParam(example = "1", value = "Número pagina para paginação: Mínimo: 1") 
+            @RequestParam(name = "page") int page) {
 
         Page<CategoriaServico> list = this._categoriaServico.findAll(page);
 
@@ -41,8 +47,10 @@ public class CategoriaController extends BaseController {
     }
 
     @GetMapping("list/servico/filter")
+    @ApiOperation(value = "Lista models do tipo serviço mediante paginação e filtra por nome. Default: 10 itens")
     public ResponseEntity<Page<CategoriaServico>> listServicoFilter(
-        @RequestParam(name = "page") int page, @RequestParam(name = "nome") String nome) {
+            @ApiParam(example = "1", value = "Número pagina para paginação: Mínimo: 1") @RequestParam(name = "page") int page,
+            @ApiParam(example = "elétrica", value = "nome do _model_ cadastrado") @RequestParam(name = "nome") String nome) {
 
         Page<CategoriaServico> list = this._categoriaServico.findAllByNomeContains(nome, page);
 
@@ -50,7 +58,9 @@ public class CategoriaController extends BaseController {
     }
 
     @GetMapping("list/produto")
-    public ResponseEntity<Page<CategoriaProduto>> listProduto(@RequestParam(name = "page") int page) {
+    @ApiOperation(value = "Lista models do tipo produto mediante paginação. Default: 10 itens")
+    public ResponseEntity<Page<CategoriaProduto>> listProduto(
+            @ApiParam(example = "1", value = "Número pagina para paginação: Mínimo: 1") @RequestParam(name = "page") int page) {
 
         Page<CategoriaProduto> list = this._categoriaProduto.findAll(page);
 
@@ -58,8 +68,10 @@ public class CategoriaController extends BaseController {
     }
 
     @GetMapping("list/produto/filter")
-    public ResponseEntity<Page<CategoriaProduto>> listProdutoFilter(@RequestParam(name = "page") int page,
-            @RequestParam(name = "nome") String nome) {
+    @ApiOperation(value = "Lista models do tipo produto mediante paginação e filtra por nome. Default: 10 itens")
+    public ResponseEntity<Page<CategoriaProduto>> listProdutoFilter(
+            @ApiParam(example = "1", value = "Número pagina para paginação: Mínimo: 1") @RequestParam(name = "page") int page,
+            @ApiParam(example = "elétrica", value = "nome do _model_ cadastrado") @RequestParam(name = "nome") String nome) {
 
         Page<CategoriaProduto> list = this._categoriaProduto.findAllByNomeContains(nome, page);
 
@@ -67,6 +79,7 @@ public class CategoriaController extends BaseController {
     }
 
     @PostMapping("save/servico")
+    @ApiOperation(value = "Registra um _model_ de serviço mediante validações")
     public ResponseEntity<CategoriaServico> saveServico(@RequestBody @Valid CategoriaServico entity) {
 
         _categoriaServico.save(entity);
@@ -75,6 +88,7 @@ public class CategoriaController extends BaseController {
     }
 
     @PostMapping("save/produto")
+    @ApiOperation(value = "Registra um _model_ de produto mediante validações")
     public ResponseEntity<CategoriaProduto> saveProduto(@RequestBody() @Valid CategoriaProduto entity) {
 
         _categoriaProduto.save(entity);
@@ -83,6 +97,7 @@ public class CategoriaController extends BaseController {
     }
 
     @PutMapping("update/produto")
+    @ApiOperation(value = "Altera um Registra de _model_ de produto mediante validações")
     public ResponseEntity<CategoriaProduto> update(@RequestBody @Valid CategoriaProduto entity) {
 
         entity = this._categoriaProduto.update(entity);
@@ -91,8 +106,9 @@ public class CategoriaController extends BaseController {
     }
 
     @PutMapping("update/servico")
+    @ApiOperation(value = "Altera um Registra de _model_ de serviço mediante validações")
     public ResponseEntity<CategoriaServico> update(@RequestBody @Valid CategoriaServico entity) {
-        
+
         entity = this._categoriaServico.update(entity);
 
         return ResponseEntity.ok(entity);

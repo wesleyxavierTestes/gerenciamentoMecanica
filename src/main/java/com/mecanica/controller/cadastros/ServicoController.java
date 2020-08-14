@@ -21,6 +21,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+
 @RestController
 @RequestMapping("/api/servico")
 public class ServicoController extends BaseController {
@@ -35,8 +38,10 @@ public class ServicoController extends BaseController {
     }
 
     @GetMapping("list/filter/nome")
+    @ApiOperation(value = "Lista models mediante paginação e filtra por pelo Nome do item. Default: 10 itens")
     public ResponseEntity<Page<Servico>> listFilter(
-        @RequestParam(name = "page") int page, @RequestParam(name = "nome") String nome) {
+            @ApiParam(example = "1", value = "Número pagina para paginação: Mínimo: 1") @RequestParam(name = "page") int page,
+            @ApiParam(example = "Tafarel Rivelino Ronaldo dinho", value = "Nome do serviço cadastrado") @RequestParam(name = "nome") String nome) {
 
         Page<Servico> list = this._serviceServico.findAllByNomeContains(nome, page);
 
@@ -44,7 +49,9 @@ public class ServicoController extends BaseController {
     }
 
     @GetMapping("list")
-    public ResponseEntity<Page<Servico>> list(@RequestParam(name = "page") int page) {
+    @ApiOperation(value = "Lista models mediante paginação. Default: 10 itens")
+    public ResponseEntity<Page<Servico>> list(
+            @ApiParam(example = "1", value = "Número pagina para paginação: Mínimo: 1") @RequestParam(name = "page") int page) {
 
         Page<Servico> list = this._serviceServico.findAll(page);
 
@@ -52,7 +59,8 @@ public class ServicoController extends BaseController {
     }
 
     @GetMapping("find")
-    public ResponseEntity<Servico> find(@RequestParam(name = "id") String id) {
+    @ApiOperation(value = "Busca um único _model_ referente ao específico id")
+    public ResponseEntity<Servico> find(@ApiParam(example = "x67faa25-5a18-43ea-920a-ad3a654a8153", value = "id do _model_ cadastrado") @RequestParam(name = "id") String id) {
 
         Servico entity = this._serviceServico.find(UUID.fromString(id));
 
@@ -60,6 +68,7 @@ public class ServicoController extends BaseController {
     }
 
     @PostMapping("save")
+    @ApiOperation(value = "Salva _model_ se itens necessários estiverem válidos")
     public ResponseEntity<Servico> save(@RequestBody @Valid Servico entity) {
         String categoriaId = entity.getCategoria().getId().toString();
         CategoriaServico categoria = _serviceCategoriaServico.findValidExistsById(categoriaId);
@@ -70,6 +79,7 @@ public class ServicoController extends BaseController {
     }
 
     @PutMapping("update")
+    @ApiOperation(value = "Altera _model_  já cadastrado se itens necessários estiverem válidos")
     public ResponseEntity<Servico> update(@RequestBody @Valid Servico entity) {
         String categoriaId = entity.getCategoria().getId().toString();
         CategoriaServico categoria = _serviceCategoriaServico.findValidExistsById(categoriaId);

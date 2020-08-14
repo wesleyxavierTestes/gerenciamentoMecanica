@@ -28,6 +28,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+
 @RestController
 @RequestMapping("/api/avaliacao")
 public class AvaliacaoController extends BaseController {
@@ -52,7 +55,9 @@ public class AvaliacaoController extends BaseController {
     }
 
     @GetMapping("list")
-    public ResponseEntity<Page<Orcamento>> list(@RequestParam(name = "page") int page) {
+    @ApiOperation(value = "Lista models mediante paginação. Default: 10 itens")
+    public ResponseEntity<Page<Orcamento>> list(
+            @ApiParam(example = "1", value = "Número pagina para paginação: Mínimo: 1") @RequestParam(name = "page") int page) {
 
         Page<Orcamento> list = this._serviceOrcamento.findAllSituacao(EnumSituacaoOrcamento.Aguardando, page);
 
@@ -60,11 +65,12 @@ public class AvaliacaoController extends BaseController {
     }
 
     @GetMapping("pedidoAvaliacao")
+    @ApiOperation(value = "Faz um novo pedido de orçamento com avaliação do mecânico")
     public ResponseEntity<Orcamento> pedidoAvaliacao(
-            @RequestParam(name = "funcionarioCpf") String funcionarioCpf,
-            @RequestParam(name = "clienteId") String clienteId,
-            @RequestParam(name = "veiculoRenavam") String veiculoRenavam,
-            @RequestParam(name = "causas") String causas) {
+            @ApiParam(example = "x67faa25-5a18-43ea-920a-ad3a654a8153", value = "id do funcionário cadastrado") @RequestParam(name = "funcionarioCpf") String funcionarioCpf,
+            @ApiParam(example = "x67faa25-5a18-43ea-920a-ad3a654a8153", value = "id do cliente cadastrado") @RequestParam(name = "clienteId") String clienteId,
+            @ApiParam(example = "123", value = "número do renavam do veículo cadastrado") @RequestParam(name = "veiculoRenavam") String veiculoRenavam,
+            @ApiParam(example = "Carro não está freando", value = "descrição das causas do problema relatados pelo cliente") @RequestParam(name = "causas") String causas) {
         Funcionario atendente = _serviceFuncionario.findValidExistsByCpf(funcionarioCpf);
         Cliente cliente = _serviceCliente.findValidExistsById(clienteId);
         Veiculo veiculo = _serviceVeiculo.findValidExistsByRenavam(veiculoRenavam);
@@ -84,8 +90,12 @@ public class AvaliacaoController extends BaseController {
      * @return
      */
     @PostMapping("incluir/avaliacao")
+    @ApiOperation(value = "Permite um mecânico incluir a avaliação e Serviços ou indicar que não há conserto")
     public ResponseEntity<Orcamento> incluirAvaliacao(
+            @ApiParam(example = "xxxxxxxxxx", value = "cpf do mecânico cadastrado") 
             @RequestParam(name = "mecanicoCpf") String mecanicoCpf,
+            @ApiParam(example = "Tafarel Rivelino Ronaldo dinho 123123", 
+            value = "Código de Identificação: default:  ddMMyyyyHHmmss dd = dia/ MM = mês/ yyyy = Ano/ HH = hora/ mm =Minuto/ ss = Segundo") 
             @RequestParam(name = "identificacao") String identificacao,
             @RequestBody @Valid AvaliacaoMecanicoDto avaliacaoMecanico) {
 
@@ -102,10 +112,10 @@ public class AvaliacaoController extends BaseController {
     }
 
     @GetMapping("semconcerto")
+    @ApiOperation(value = "O Avaliador indica que o veículo não tem conserto")
     public ResponseEntity<Orcamento> semconcerto(
-        @RequestParam(name = "mecanicoCpf") String mecanicoCpf,
-        @RequestParam(name = "identificacao") String identificacao
-        ) {
+            @ApiParam(example = "xxxxxxxxxx", value = "cpf do mecânico cadastrado") @RequestParam(name = "mecanicoCpf") String mecanicoCpf,
+            @ApiParam(example = "Tafarel Rivelino Ronaldo dinho 123123", value = "Código de Identificação: default:  ddMMyyyyHHmmss dd = dia/ MM = mês/ yyyy = Ano/ HH = hora/ mm =Minuto/ ss = Segundo") @RequestParam(name = "identificacao") String identificacao) {
         Mecanico mecanico = _serviceMecanico.findValidExistsByCpf(mecanicoCpf);
         Orcamento entity = this._serviceOrcamento.veiculoSemConcerto(identificacao, mecanico);
 
@@ -123,9 +133,10 @@ public class AvaliacaoController extends BaseController {
      * @return
      */
     @PostMapping("informar/cliente")
+    @ApiOperation(value = "Registra as comunicação com o cliente")
     public ResponseEntity<ClienteHistoricoRetorno> informarCliente(
-        @RequestParam(name = "funcionarioCpf") String funcionarioCpf,
-        @RequestBody @Valid ClienteHistoricoRetorno clienteHistoricoRetorno) {
+            @ApiParam(example = "xxxxxxxxxx", value = "cpf do funcionário cadastrado") @RequestParam(name = "funcionarioCpf") String funcionarioCpf,
+            @RequestBody @Valid ClienteHistoricoRetorno clienteHistoricoRetorno) {
 
         Funcionario atendente = _serviceFuncionario.findValidExistsByCpf(funcionarioCpf);
         Orcamento orcamento = this._serviceOrcamento.findByIdentificacao(clienteHistoricoRetorno.getIdentificacao());

@@ -9,8 +9,15 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.NoRepositoryBean;
 
 @NoRepositoryBean
-public interface AbstractOrdemServicoRepository<T extends AbstractOrdemServico>  extends IBaseRepository<T>  {
-    Page<T> findAllBySituacao(String situacao, PageRequest of);
+public interface AbstractOrdemServicoRepository<T extends AbstractOrdemServico> extends IBaseRepository<T> {
+
+    @Query(
+        value = "select v from #{#entityName} as v " +
+                "where v.situacao like ?1 ",
+		countQuery = "select v from #{#entityName} as v " +
+                    "where v.situacao like ?1 "
+	)
+    Page<T> findAllBySituacao(Object situacao, PageRequest of);
 
     @Query(
         value = "select v from #{#entityName} as v " +

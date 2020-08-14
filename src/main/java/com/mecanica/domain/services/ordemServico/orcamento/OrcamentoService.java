@@ -86,7 +86,7 @@ public class OrcamentoService extends BaseService<Orcamento, IOrcamentoRepositor
     }
 
     public Page<Orcamento> findAllSituacao(EnumSituacaoOrcamento situacao, int page) {
-        return this.repository.findAllBySituacao(situacao.name(), PageRequest.of(page - 1, 10));
+        return this.repository.findAllBySituacao(situacao, PageRequest.of(page - 1, 10));
     }
 
     /**
@@ -128,6 +128,8 @@ public class OrcamentoService extends BaseService<Orcamento, IOrcamentoRepositor
 
         ClienteAceitarOrcamento aceite = new ClienteAceitarOrcamento(entity);
 
+        aceite.aceitarOrcamento();
+
         return aceite.getordemServico();
     }
 
@@ -135,6 +137,8 @@ public class OrcamentoService extends BaseService<Orcamento, IOrcamentoRepositor
         Orcamento entity = this.findByIdentificacao(identificacao);
 
         ClienteNegarOrcamento negar = new ClienteNegarOrcamento(entity);
+
+        negar.negarOrcamento();
 
         return negar.getordemServico();
     }

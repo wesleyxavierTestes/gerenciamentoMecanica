@@ -9,6 +9,7 @@ import java.util.Objects;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinTable;
@@ -21,10 +22,14 @@ import com.mecanica.domain.entities.BaseEntity;
 import com.mecanica.domain.entities.cliente.Cliente;
 import com.mecanica.domain.entities.funcionario.Funcionario;
 import com.mecanica.domain.entities.funcionario.IFuncionario;
+import com.mecanica.domain.entities.pessoa.Pessoa;
 import com.mecanica.domain.entities.servico.IServico;
 import com.mecanica.domain.entities.servico.Servico;
 import com.mecanica.domain.entities.veiculo.Veiculo;
 import com.mecanica.utils.CustomConst;
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import com.mecanica.application.errors.ErrorCustomMessage;
 
 import lombok.Getter;
@@ -33,6 +38,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
+
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class AbstractOrdemServico extends BaseEntity {
 
@@ -47,10 +53,23 @@ public abstract class AbstractOrdemServico extends BaseEntity {
     @ManyToOne
     protected Veiculo veiculo;
 
+    @JsonIgnore
     @ManyToOne(targetEntity = Funcionario.class)
     protected IFuncionario atendente;
 
-    protected LocalDateTime dataInicial = LocalDateTime.now();;
+    @JsonGetter("atendente")
+    public IFuncionario getJsonAtendente() {
+        return this.getAtendente();
+    }
+
+    @JsonSetter("atendente")
+    public void getJsonAtendente(Funcionario atendente) {
+        this.atendente = atendente;
+    }
+
+    private int diasEstimadoServico;
+
+    protected LocalDateTime dataInicial = LocalDateTime.now();
     protected LocalDateTime dataFinalizacao;
 
     @Column(nullable = false)
@@ -59,7 +78,7 @@ public abstract class AbstractOrdemServico extends BaseEntity {
     @Column(nullable = false)
     protected BigDecimal valorTotal = BigDecimal.ZERO;
 
-    @OneToMany(cascade = CascadeType.ALL, targetEntity = Servico.class)
+    @OneToMany(cascade = CascadeType.DETACH, targetEntity = Servico.class)
     @JoinTable(name = "ServicoItens")
     protected List<IServico> servicoItens = new ArrayList<>();
 

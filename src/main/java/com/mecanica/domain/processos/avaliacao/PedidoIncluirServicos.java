@@ -29,7 +29,7 @@ public class PedidoIncluirServicos<T extends AbstractOrdemServico> {
             boolean isOrdemServico = this.ordemServico instanceof OrdemServico && servico instanceof ServicoOrdemServico;
             boolean isOrcamento = this.ordemServico instanceof Orcamento && servico instanceof ServicoOrcamento;
             
-            if (!isOrdemServico || !isOrcamento) {
+            if (!isOrdemServico && !isOrcamento) {
                 throw new RegraBaseException(String.format("Servico código %s tem tipo Inválido para operação", servico.getCodigo()));
             }
 

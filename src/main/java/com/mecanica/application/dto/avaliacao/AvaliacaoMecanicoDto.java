@@ -8,6 +8,7 @@ import com.mecanica.application.errors.ErrorCustomMessage;
 import com.mecanica.domain.entities.avaliacao.Avaliacao;
 import com.mecanica.domain.entities.servico.ServicoOrcamento;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,11 +18,14 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+
 public class AvaliacaoMecanicoDto {
 
     @NotNull(message = ErrorCustomMessage.OBRIGATORIO)
     private Avaliacao avaliacao;
 
     private List<ServicoOrcamento> servicos;
+
+    private int dias;
     
 }

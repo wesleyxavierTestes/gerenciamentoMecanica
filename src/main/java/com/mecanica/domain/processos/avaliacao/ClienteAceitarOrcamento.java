@@ -20,7 +20,7 @@ public class ClienteAceitarOrcamento extends ServiceProcessos<Orcamento>  {
     public void aceitarOrcamento() {
 
         if (ordemServico.getAvaliacao().getDiagnostico() != EnumDiagnosticoAvaliacao.TemConcerto) {
-            throw new RegraBaseException("Orçamento inválido, verifique o Diagnóstico");
+            throw new RegraBaseException("Verifique o Diagnóstico");
         }
 
         ordemServico.setSituacao(EnumSituacaoOrcamento.Aceito);

@@ -2,7 +2,6 @@ package com.mecanica.domain.processos.avaliacao;
 
 import java.time.LocalDateTime;
 import java.util.List;
-
 import com.mecanica.application.exceptions.RegraBaseException;
 import com.mecanica.domain.entities.ordemServico.orcamento.Orcamento;
 import com.mecanica.domain.entities.servico.IServico;
@@ -20,7 +19,7 @@ public class ClienteNegarOrcamento extends ServiceProcessos<Orcamento>  {
     public void negarOrcamento() {
     
         if (ordemServico.getAvaliacao().getDiagnostico() != EnumDiagnosticoAvaliacao.TemConcerto) {
-            throw new RegraBaseException("Orçamento inválido, verifique o Diagnóstico");
+            throw new RegraBaseException("Verifique o Diagnóstico");
         }
 
         ordemServico.setSituacao(EnumSituacaoOrcamento.Negado);

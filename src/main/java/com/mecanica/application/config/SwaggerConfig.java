@@ -20,19 +20,20 @@ public class SwaggerConfig {
 
     @Bean
     public Docket config() {
-        return new Docket(DocumentationType.SWAGGER_2).select()
+        return new Docket(DocumentationType.SWAGGER_2)
+                .select()
                 .apis(RequestHandlerSelectors.basePackage("com.mecanica.controller"))
                 .paths(PathSelectors.any())
-                .build()
-                .apiInfo(apiInfo());
+                .build().apiInfo(apiInfo());
     }
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                    .contact(new Contact("Wesley xavier", "http://www.wesleyxavier.online", "wesleyxavier@sgsistemas.com.br"))
-                    .description("Api para gerenciar Mecânica")
-                    .title("Api Mecânica")
-                    .version("1.0.0")
-                    .build();
+                .contact(new Contact("Wesley xavier", "http://www.wesleyxavier.online",
+                        "wesleyxavier@sgsistemas.com.br"))
+                .description("Api para gerenciar Mecânica")
+                .title("Api Mecânica")
+                .version("1.0.0")
+                .build();
     }
 }

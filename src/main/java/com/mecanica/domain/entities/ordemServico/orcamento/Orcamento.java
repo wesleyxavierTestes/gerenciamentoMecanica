@@ -1,10 +1,13 @@
 package com.mecanica.domain.entities.ordemServico.orcamento;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
@@ -16,6 +19,9 @@ import com.mecanica.domain.entities.avaliacao.Avaliacao;
 import com.mecanica.domain.entities.ordemServico.AbstractOrdemServico;
 import com.mecanica.domain.enuns.EnumSituacaoOrcamento;
 import com.mecanica.utils.CustomConst;
+
+
+
 import com.mecanica.application.errors.ErrorCustomMessage;
 
 import lombok.AllArgsConstructor;
@@ -30,6 +36,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+
+
 public class Orcamento extends AbstractOrdemServico {
 
     @NotNull(message = ErrorCustomMessage.OBRIGATORIO)
@@ -46,12 +54,13 @@ public class Orcamento extends AbstractOrdemServico {
     private Avaliacao avaliacao;
 
     /**
-     * Gera Identificação com base no nome cliente e renavam do carro
+     * Gera Identificação com base no nome cliente e renavam do veículo
+     * 
      * @return
      */
     public String getCustoIdentificacao() {
         try {
-            final String identificacao = String.format("%s- %s", this.cliente.getNome(), this.veiculo.getRenavam());
+            String identificacao = LocalDateTime.now().format(DateTimeFormatter.ofPattern("ddMMyyyHHmmss"));
             return identificacao;
         } catch (Exception e) {
             return UUID.randomUUID().toString();

@@ -5,10 +5,12 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
+import com.mecanica.application.errors.ErrorCustomMessage;
 import com.mecanica.domain.entities.BaseEntity;
 import com.mecanica.domain.entities.cliente.Cliente;
-import com.mecanica.application.errors.ErrorCustomMessage;
 
+
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,12 +21,22 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+
 public class Veiculo extends BaseEntity {
-    
+
+    @ApiModelProperty(name = "Cliente")
     @NotNull(message = ErrorCustomMessage.OBRIGATORIO)
     @ManyToOne
     private Cliente cliente;
-    
+
+    @NotNull(message = ErrorCustomMessage.OBRIGATORIO)
+    @Column(nullable = false)
+    private String nome;
+
+    @NotNull(message = ErrorCustomMessage.OBRIGATORIO)
+    @Column(nullable = false)
+    private String cor;
+
     @NotNull(message = ErrorCustomMessage.OBRIGATORIO)
     @Column(nullable = false)
     private String placa;
@@ -32,16 +44,16 @@ public class Veiculo extends BaseEntity {
     @NotNull(message = ErrorCustomMessage.OBRIGATORIO)
     @Column(nullable = false)
     private String renavam;
-    
+
     @NotNull(message = ErrorCustomMessage.OBRIGATORIO)
     @Column(nullable = false)
     private String modelo;
-    
+
     @NotNull(message = ErrorCustomMessage.OBRIGATORIO)
     @Column(nullable = false)
     private String marca;
-    
+
     @NotNull(message = ErrorCustomMessage.OBRIGATORIO)
     @Column(nullable = false)
-	private String ano;
+    private String ano;
 }

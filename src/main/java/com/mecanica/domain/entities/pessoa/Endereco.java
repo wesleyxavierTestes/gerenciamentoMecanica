@@ -2,9 +2,13 @@ package com.mecanica.domain.entities.pessoa;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+
 import javax.validation.constraints.NotNull;
 
 import com.mecanica.domain.entities.BaseEntity;
+
+
+
 import com.mecanica.application.errors.ErrorCustomMessage;
 
 import lombok.AllArgsConstructor;
@@ -19,6 +23,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+
 public class Endereco extends BaseEntity {
 
     @NotNull(message = ErrorCustomMessage.OBRIGATORIO)
@@ -28,7 +33,7 @@ public class Endereco extends BaseEntity {
     @NotNull(message = ErrorCustomMessage.OBRIGATORIO)
     @Column(nullable = true, length = 50)
     private String numero;
-    
+
     @NotNull(message = ErrorCustomMessage.OBRIGATORIO)
     @Column(nullable = false, length = 100)
     private String logradouro;

@@ -8,12 +8,14 @@ import java.util.UUID;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinTable;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
@@ -22,6 +24,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mecanica.domain.entities.BaseEntity;
 import com.mecanica.domain.entities.categoria.Categoria;
 import com.mecanica.domain.entities.categoria.ICategoria;
+import com.mecanica.domain.entities.ordemServico.AbstractOrdemServico;
 import com.mecanica.domain.enuns.produto.EnumTipoProduto;
 
 import lombok.AllArgsConstructor;
@@ -34,6 +37,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class AbstractProduto extends BaseEntity implements IProduto {
 
