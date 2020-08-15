@@ -44,9 +44,9 @@ public class OrcamentoService extends BaseService<Orcamento, IOrcamentoRepositor
      * @return
      */
     public Orcamento criarPedidoAvaliacao(final IFuncionario atendente, final Cliente cliente, final Veiculo veiculo,
-            final String causas) {
+            final String descricaoProblema) {
         final OrcamentoEsperaAvaliacao orcamentoEsperaAvaliacao = new OrcamentoEsperaAvaliacao(atendente, cliente,
-                veiculo, causas);
+                veiculo, descricaoProblema);
 
         orcamentoEsperaAvaliacao.criarPedidoAvaliacao();
 
@@ -97,8 +97,19 @@ public class OrcamentoService extends BaseService<Orcamento, IOrcamentoRepositor
         return pedidoIncluirServicos.getOrdemServico();
     }
 
-    public Page<Orcamento> findAllSituacao(EnumSituacaoOrcamento situacao, int page) {
-        return this.repository.findAllBySituacao(situacao, PageRequest.of(page - 1, 10));
+    /**
+     * Busca Situação do tipo enum, qual no banco é string
+     * 
+     * @param situacao
+     * @param page
+     * @return
+     */
+    public Page<Orcamento> findAllBySituacaoEquals(EnumSituacaoOrcamento situacao, int page) {
+        PageRequest paginacao = PageRequest.of((page - 1), 10);
+
+        Page<Orcamento> list = this.repository.findAllBySituacaoEquals(situacao, paginacao);
+
+        return list;
     }
 
     /**
@@ -124,15 +135,29 @@ public class OrcamentoService extends BaseService<Orcamento, IOrcamentoRepositor
     }
 
     public Orcamento findByIdentificacao(String identificacao) {
-        Orcamento entity = this.repository.findByIdentificacao(identificacao);
+        Orcamento entity = this.repository.findByIdentificacaoEquals(identificacao);
 
         return entity;
     }
 
+    /**
+     * Pesquisa por nome ou cpf ou cnpj do cliente caso não for pesquisa por nome,
+     * coloca-se caracteres inválido no nome para ignorar pesquisa
+     * 
+     * @param clienteNome
+     * @param clienteCpfCnpj
+     * @param page
+     * @return
+     */
     public Page<Orcamento> findAllByClienteIdOrNomeOrCpfOrCnpj(String clienteNome, String clienteCpfCnpj, int page) {
 
-        return this.repository.findAllByClienteIdOrNomeOrCpfOrCnpj(clienteNome, clienteCpfCnpj,
-                PageRequest.of((page - 1), 10));
+        if (!clienteCpfCnpj.isEmpty())
+            clienteNome = ".##@$@$";
+
+        Page<Orcamento> orcamentos = this.repository
+                .findAllByClienteNomeContainingIgnoreCaseOrClienteCpfEqualsOrClienteCnpjEquals(clienteNome,
+                        clienteCpfCnpj, clienteCpfCnpj, PageRequest.of((page - 1), 10));
+        return orcamentos;
     }
 
     /**

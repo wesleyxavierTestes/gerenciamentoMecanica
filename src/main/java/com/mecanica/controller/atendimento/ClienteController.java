@@ -61,7 +61,7 @@ public class ClienteController extends BaseController {
             @RequestParam(name = "page") int page,
             @ApiParam(example = "Tafarel Rivelino Ronaldo dinho", value = "Nome do cliente") @RequestParam(name = "nome") String nome) {
 
-        Page<Cliente> list = this._serviceCliente.findAllByNomeContains(nome, page);
+        Page<Cliente> list = this._serviceCliente.findAllByNomeContainsIgnoreCase(nome, page);
 
         return ResponseEntity.ok(list);
     }

@@ -4,7 +4,7 @@ import java.util.UUID;
 
 import javax.validation.Valid;
 
-import com.mecanica.application.validation.categoriaProduto.CategoriaProdutoValidations;
+import com.mecanica.application.applicationServices.categoriaProduto.CategoriaProdutoValidations;
 import com.mecanica.controller.BaseController;
 import com.mecanica.domain.entities.categoria.CategoriaProduto;
 import com.mecanica.domain.entities.produto.Produto;

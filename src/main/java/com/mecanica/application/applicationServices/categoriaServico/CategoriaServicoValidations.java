@@ -1,6 +1,6 @@
-package com.mecanica.application.validation.categoriaServico;
+package com.mecanica.application.applicationServices.categoriaServico;
 
-import com.mecanica.application.validation.BaseValidations;
+import com.mecanica.application.applicationServices.BaseValidations;
 import com.mecanica.domain.entities.categoria.CategoriaServico;
 import com.mecanica.domain.services.categoria.CategoriaServicoService;
 

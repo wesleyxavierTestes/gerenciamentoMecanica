@@ -1,9 +1,9 @@
-package com.mecanica.application.validation.funcionario;
+package com.mecanica.application.applicationServices.funcionario;
 
 import java.util.Objects;
 
+import com.mecanica.application.applicationServices.BaseValidations;
 import com.mecanica.application.exceptions.ValidacaoControllerBaseException;
-import com.mecanica.application.validation.BaseValidations;
 import com.mecanica.domain.entities.funcionario.Funcionario;
 import com.mecanica.domain.services.funcionario.FuncionarioService;
 

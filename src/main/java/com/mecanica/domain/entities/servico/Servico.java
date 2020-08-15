@@ -11,8 +11,6 @@ import com.mecanica.domain.entities.ordemServico.AbstractOrdemServico;
 import com.mecanica.domain.entities.produto.baseentity.AbstractProduto;
 import com.mecanica.utils.CustomConst;
 
-import org.modelmapper.ModelMapper;
-
 import com.mecanica.application.errors.ErrorCustomMessage;
 
 import lombok.AllArgsConstructor;

@@ -17,10 +17,10 @@ import com.mecanica.domain.enuns.EnumSituacaoOrcamento;
 public class OrcamentoEsperaAvaliacao extends ServiceProcessos<Orcamento> {
 
     private Cliente cliente;
-    
+
     private Veiculo veiculo;
 
-    private String causas;
+    private String descricaoProblema;
 
     private IFuncionario atendente;
 
@@ -28,21 +28,23 @@ public class OrcamentoEsperaAvaliacao extends ServiceProcessos<Orcamento> {
         super(ordemServico);
     }
 
-    public OrcamentoEsperaAvaliacao(final IFuncionario atendente, final Cliente cliente, final Veiculo veiculo, final String causas) {
+    public OrcamentoEsperaAvaliacao(final IFuncionario atendente, final Cliente cliente, final Veiculo veiculo,
+            final String descricaoProblema) {
         super(new Orcamento());
         this.atendente = atendente;
         this.cliente = cliente;
         this.veiculo = veiculo;
-        this.causas = causas;
+        this.descricaoProblema = descricaoProblema;
     }
 
     /**
      * Orçamento prévio para aguardar Avaliação do mecânico
+     * 
      * @return
      */
     public void criarPedidoAvaliacao() {
 
-        ordemServico.setDescricaoProblema(causas);
+        ordemServico.setDescricaoProblema(descricaoProblema);
         ordemServico.setSituacao(EnumSituacaoOrcamento.Aguardando);
         ordemServico.setAvaliacao(gerarNovaAvaliacaoDeEspera());
         ordemServico.setAtendente(atendente);
@@ -54,11 +56,12 @@ public class OrcamentoEsperaAvaliacao extends ServiceProcessos<Orcamento> {
 
     /**
      * Aguarda mecânico fazer avaliação
+     * 
      * @return
      */
     private Avaliacao gerarNovaAvaliacaoDeEspera() {
         final Avaliacao avaliacao = new Avaliacao();
-        
+
         avaliacao.setDataInicial(LocalDateTime.now());
         avaliacao.setMecanico(null);
         avaliacao.setDiagnostico(EnumDiagnosticoAvaliacao.Analise);

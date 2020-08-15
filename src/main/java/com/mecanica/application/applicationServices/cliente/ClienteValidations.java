@@ -1,6 +1,6 @@
-package com.mecanica.application.validation.cliente;
+package com.mecanica.application.applicationServices.cliente;
 
-import com.mecanica.application.validation.BaseValidations;
+import com.mecanica.application.applicationServices.BaseValidations;
 import com.mecanica.domain.entities.cliente.Cliente;
 import com.mecanica.domain.services.cliente.ClienteService;
 

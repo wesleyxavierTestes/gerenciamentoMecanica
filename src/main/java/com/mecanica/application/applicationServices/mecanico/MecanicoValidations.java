@@ -1,9 +1,9 @@
-package com.mecanica.application.validation.mecanico;
+package com.mecanica.application.applicationServices.mecanico;
 
 import java.util.Objects;
 
+import com.mecanica.application.applicationServices.BaseValidations;
 import com.mecanica.application.exceptions.ValidacaoControllerBaseException;
-import com.mecanica.application.validation.BaseValidations;
 import com.mecanica.domain.entities.mecanico.Mecanico;
 import com.mecanica.domain.services.mecanico.MecanicoService;
 

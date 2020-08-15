@@ -20,7 +20,7 @@ public class ServicoService extends AbstractProdutoService<Servico, IServicoRepo
     }
 
     public Page<Servico> findAllByNomeContains(String nome, int page) {
-        return this.repository.findAllByNomeContains(nome, PageRequest.of((page - 1), 10));
+        return this.repository.findAllByNomeContainingIgnoreCase(nome, PageRequest.of((page - 1), 10));
     }
 
     public Servico save(Servico entity, CategoriaServico categoria) {
@@ -40,7 +40,7 @@ public class ServicoService extends AbstractProdutoService<Servico, IServicoRepo
     }
 
     private void validarNomeDuplicado(Servico entity) {
-        Servico entityExists = this.repository.findByNomeIgnoreCase(entity.getNome());
+        Servico entityExists = this.repository.findByNomeContainingIgnoreCase(entity.getNome());
 
         if (Objects.nonNull(entityExists)) {
             throw new RegraBaseException("Nome existênte");

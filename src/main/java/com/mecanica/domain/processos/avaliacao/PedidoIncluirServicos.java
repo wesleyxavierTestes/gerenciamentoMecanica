@@ -6,7 +6,6 @@ import com.mecanica.application.exceptions.RegraBaseException;
 import com.mecanica.domain.entities.ordemServico.AbstractOrdemServico;
 import com.mecanica.domain.entities.ordemServico.orcamento.Orcamento;
 import com.mecanica.domain.entities.ordemServico.ordemServico.OrdemServico;
-import com.mecanica.domain.entities.produto.Produto;
 import com.mecanica.domain.entities.servico.IServico;
 import com.mecanica.domain.entities.servico.ItemServico;
 import com.mecanica.domain.entities.servico.ServicoOrcamento;

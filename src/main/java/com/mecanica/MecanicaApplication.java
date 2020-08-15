@@ -1,6 +1,6 @@
 package com.mecanica;
 
-import com.mecanica.application.validation.Validations;
+import com.mecanica.application.applicationServices.Validations;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -11,11 +11,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @ComponentScan({
 	"com.mecanica.controller",
-	"com.mecanica.controller.cadastros",
-	"om.mecanica.controller.atendimento",
-	"com.mecanica.controller.avaliacao",
 	"com.mecanica.domain.services",
-	"com.mecanica.application.validation",
+	"com.mecanica.application.applicationServices",
 	"com.mecanica.application.config"
 })
 @EntityScan("com.mecanica.domain.entities")

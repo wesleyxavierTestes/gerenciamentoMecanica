@@ -2,10 +2,10 @@ package com.mecanica.controller;
 
 import java.util.List;
 
+import com.mecanica.application.applicationServices.Validations;
 import com.mecanica.application.errors.CustomErro;
 import com.mecanica.application.exceptions.RegraBaseException;
 import com.mecanica.application.exceptions.ValidacaoControllerBaseException;
-import com.mecanica.application.validation.Validations;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;

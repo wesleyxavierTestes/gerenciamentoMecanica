@@ -5,16 +5,16 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import com.mecanica.application.applicationServices.cliente.ClienteValidations;
+import com.mecanica.application.applicationServices.funcionario.FuncionarioValidations;
+import com.mecanica.application.applicationServices.mecanico.MecanicoValidations;
+import com.mecanica.application.applicationServices.orcamento.OrcamentoValidations;
+import com.mecanica.application.applicationServices.produto.ProdutoValidations;
+import com.mecanica.application.applicationServices.servico.ServicoValidations;
+import com.mecanica.application.applicationServices.veiculo.VeiculoValidations;
 import com.mecanica.application.dto.avaliacao.AvaliacaoMecanicoDto;
 import com.mecanica.application.dto.avaliacao.PedidoAvaliacaoDto;
 import com.mecanica.application.dto.avaliacao.SemConsertoDto;
-import com.mecanica.application.validation.cliente.ClienteValidations;
-import com.mecanica.application.validation.funcionario.FuncionarioValidations;
-import com.mecanica.application.validation.mecanico.MecanicoValidations;
-import com.mecanica.application.validation.orcamento.OrcamentoValidations;
-import com.mecanica.application.validation.produto.ProdutoValidations;
-import com.mecanica.application.validation.servico.ServicoValidations;
-import com.mecanica.application.validation.veiculo.VeiculoValidations;
 import com.mecanica.controller.BaseController;
 import com.mecanica.domain.entities.avaliacao.Avaliacao;
 import com.mecanica.domain.entities.cliente.Cliente;
@@ -77,7 +77,7 @@ public class AvaliacaoController extends BaseController {
     public ResponseEntity<Page<Orcamento>> list(
             @ApiParam(example = "1", value = "Número pagina para paginação: Mínimo: 1") @RequestParam(name = "page") int page) {
 
-        Page<Orcamento> list = this._serviceOrcamento.get_service().findAllSituacao(EnumSituacaoOrcamento.Aguardando, page);
+        Page<Orcamento> list = this._serviceOrcamento.findAllBySituacaoEquals(EnumSituacaoOrcamento.Aguardando, page);
 
         return ResponseEntity.ok(list);
     }
@@ -90,10 +90,10 @@ public class AvaliacaoController extends BaseController {
         Funcionario atendente = _serviceFuncionario.findValidExistsByCpf(pedidoAvaliacao.getFuncionarioCpf());
         Cliente cliente = _serviceCliente.findValidExistsById(pedidoAvaliacao.getClienteId());
         Veiculo veiculo = _serviceVeiculo.findValidExistsByRenavam(pedidoAvaliacao.getVeiculoRenavam());
-        Orcamento entity = this._serviceOrcamento.get_service()
+        Orcamento entity = this._serviceOrcamento
         .criarPedidoAvaliacao(atendente, cliente, veiculo, pedidoAvaliacao.getDescricaoProblema());
 
-        _serviceOrcamento.get_service().save(entity);
+        _serviceOrcamento.save(entity);
 
         return ResponseEntity.ok(entity);
     }
@@ -120,12 +120,12 @@ public class AvaliacaoController extends BaseController {
         int dias = avaliacaoMecanico.getDias();
         LocalDate dataPrevisaoInicio = avaliacaoMecanico.getDataPrevisaoInicio();
 
-        entity = this._serviceOrcamento.get_service().configurarAvaliacao(entity, avaliacao, mecanico, dias, dataPrevisaoInicio);
-        entity = this._serviceOrcamento.get_service().configurarServicos(entity, servicosServicoOrcamento);
-        entity = this._serviceOrcamento.get_service().configurarItemServico(entity, servicosItemServico);
-        entity = this._serviceOrcamento.get_service().configurarSituacaoOrcamento(entity);
+        entity = this._serviceOrcamento.configurarAvaliacao(entity, avaliacao, mecanico, dias, dataPrevisaoInicio);
+        entity = this._serviceOrcamento.configurarServicos(entity, servicosServicoOrcamento);
+        entity = this._serviceOrcamento.configurarItemServico(entity, servicosItemServico);
+        entity = this._serviceOrcamento.configurarSituacaoOrcamento(entity);
 
-        _serviceOrcamento.get_service().save(entity);        
+        _serviceOrcamento.save(entity);        
 
         return ResponseEntity.ok(entity);
     }
@@ -135,10 +135,10 @@ public class AvaliacaoController extends BaseController {
     public ResponseEntity<Orcamento> semconcerto(@RequestBody @Valid SemConsertoDto semConserto) {
         Mecanico mecanico = _serviceMecanico.findValidExistsByCpf(semConserto.getMecanicoCpf());
         
-        Orcamento entity = this._serviceOrcamento.get_service()
+        Orcamento entity = this._serviceOrcamento
         .veiculoSemConcerto(semConserto.getIdentificacao(), mecanico);
 
-        _serviceOrcamento.get_service().update(entity);
+        _serviceOrcamento.update(entity);
 
         return ResponseEntity.ok(entity);
     }

@@ -31,9 +31,9 @@ public abstract class BaseService<T extends IBaseEntity, Y extends IBaseReposito
         return list;
     }
 
-    public Page<T> findAllFilter(T produtoExample, int page) {
+    public Page<T> findAllFilter(T entityExample, int page) {
         
-        Example<T> example = Example.of(produtoExample,
+        Example<T> example = Example.of(entityExample,
                                 ExampleMatcher.matching()
                                     .withIgnoreCase()
                                     .withIgnorePaths("id")

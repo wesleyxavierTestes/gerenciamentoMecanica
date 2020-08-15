@@ -73,7 +73,7 @@ public class CategoriaController extends BaseController {
             @ApiParam(example = "1", value = "Número pagina para paginação: Mínimo: 1") @RequestParam(name = "page") int page,
             @ApiParam(example = "elétrica", value = "nome do _model_ cadastrado") @RequestParam(name = "nome") String nome) {
 
-        Page<CategoriaProduto> list = this._categoriaProduto.findAllByNomeContains(nome, page);
+        Page<CategoriaProduto> list = this._categoriaProduto.findAllByNomeContainsIgnoreCase(nome, page);
 
         return ResponseEntity.ok(list);
     }

@@ -8,6 +8,7 @@ import com.mecanica.domain.entities.categoria.CategoriaProduto;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,10 +18,10 @@ public class CategoriaProdutoService extends BaseService<CategoriaProduto, ICate
         super(repository);
     }
 
-    public Page<CategoriaProduto> findAllByNomeContains(String nome, int page) {
-        PageRequest paginacao = PageRequest.of((page - 1), 10);
+    public Page<CategoriaProduto> findAllByNomeContainsIgnoreCase(String nome, int page) {
+        Pageable paginacao = PageRequest.of((page - 1), 10);
 
-        Page<CategoriaProduto> list = this.repository.findByNomeContainingIgnoreCase(nome.toLowerCase(), paginacao);
+        Page<CategoriaProduto> list = this.repository.findAllByNomeContainingIgnoreCase(nome.toLowerCase(), paginacao);
 
         return list;
     }

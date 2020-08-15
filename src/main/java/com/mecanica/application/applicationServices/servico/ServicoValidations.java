@@ -1,4 +1,4 @@
-package com.mecanica.application.validation.servico;
+package com.mecanica.application.applicationServices.servico;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
+import com.mecanica.application.applicationServices.BaseValidations;
 import com.mecanica.application.dto.avaliacao.ItemServicoDto;
 import com.mecanica.application.exceptions.ValidacaoControllerBaseException;
-import com.mecanica.application.validation.BaseValidations;
 import com.mecanica.domain.entities.produto.Produto;
 import com.mecanica.domain.entities.servico.ItemServico;
 import com.mecanica.domain.entities.servico.Servico;

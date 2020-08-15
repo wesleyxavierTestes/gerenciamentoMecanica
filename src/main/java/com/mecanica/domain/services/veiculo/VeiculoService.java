@@ -28,7 +28,7 @@ public class VeiculoService extends BaseService<Veiculo, IVeiculoRepository> {
     }
 
 	public Veiculo findByRenavam(String veiculoRenavam) {
-		return this.repository.findByRenavam(veiculoRenavam);
+		return this.repository.findByRenavamEquals(veiculoRenavam);
 	}
 
 	public Page<Veiculo> findAllByClienteId(String clienteId, int page) {

@@ -4,8 +4,8 @@ import java.util.UUID;
 
 import javax.validation.Valid;
 
-import com.mecanica.application.validation.cliente.ClienteValidations;
-import com.mecanica.application.validation.veiculo.VeiculoValidations;
+import com.mecanica.application.applicationServices.cliente.ClienteValidations;
+import com.mecanica.application.applicationServices.veiculo.VeiculoValidations;
 import com.mecanica.controller.BaseController;
 import com.mecanica.domain.entities.cliente.Cliente;
 import com.mecanica.domain.entities.veiculo.Veiculo;
@@ -31,12 +31,12 @@ import io.swagger.annotations.ApiParam;
 @RequestMapping("/api/veiculo")
 public class VeiculoController extends BaseController {
 
-    private final VeiculoService _service;
+    private final VeiculoValidations _service;
     private final VeiculoValidations _serviceVeiculo;
     private final ClienteValidations _serviceCliente;
 
     @Autowired
-    public VeiculoController(VeiculoService veiculo, VeiculoValidations serviceVeiculo,
+    public VeiculoController(VeiculoValidations veiculo, VeiculoValidations serviceVeiculo,
             ClienteValidations serviceCliente) {
         _service = veiculo;
         _serviceCliente = serviceCliente;
@@ -77,7 +77,7 @@ public class VeiculoController extends BaseController {
             @ApiParam(example = "1", value = "Número pagina para paginação: Mínimo: 1") @RequestParam(name = "page") int page,
             @ApiParam(example = "x67faa25-5a18-43ea-920a-ad3a654a8153", value = "id do cliente cadastrado") @RequestParam(name = "clienteId") String clienteId) {
 
-        Page<Veiculo> list = this._service.findAllByClienteId((clienteId), page);
+        Page<Veiculo> list = this._service.findAllByClienteId(clienteId, page);
 
         return ResponseEntity.ok(list);
     }
@@ -101,6 +101,7 @@ public class VeiculoController extends BaseController {
     public ResponseEntity<Veiculo> save(@RequestBody @Valid Veiculo entity) {
 
         Cliente cliente = _serviceCliente.findValidExistsById(entity.getCliente().getId().toString());
+        Veiculo veiculo = _service.findValidExistsById(entity.getCliente().getId().toString());
 
         entity = _service.save(entity, cliente);
 

@@ -18,7 +18,7 @@ public class CategoriaServicoService extends BaseService<CategoriaServico, ICate
 	public Page<CategoriaServico> findAllByNomeContains(String nome, int page) {
 		PageRequest paginacao = PageRequest.of((page - 1), 10);
         
-        Page<CategoriaServico> list = this.repository.findByNomeContainingIgnoreCase(nome.toLowerCase(), paginacao);
+        Page<CategoriaServico> list = this.repository.findAllByNomeContainingIgnoreCase(nome.toLowerCase(), paginacao);
 
         return list;
 	}

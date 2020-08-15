@@ -4,7 +4,7 @@ import java.util.UUID;
 
 import javax.validation.Valid;
 
-import com.mecanica.application.validation.orcamento.OrcamentoValidations;
+import com.mecanica.application.applicationServices.orcamento.OrcamentoValidations;
 import com.mecanica.controller.BaseController;
 import com.mecanica.domain.entities.ordemServico.orcamento.Orcamento;
 import com.mecanica.domain.entities.ordemServico.ordemServico.OrdemServico;
@@ -71,7 +71,7 @@ public class OrcamentoController extends BaseController {
         @ApiParam(example = "1", value = "Número pagina para paginação: Mínimo: 1") 
         @RequestParam(name = "page") int page) {
 
-        Page<Orcamento> list = this._serviceOrcamento.findAllSituacao(situacao, page);
+        Page<Orcamento> list = this._serviceOrcamento.findAllBySituacaoEquals(situacao, page);
 
         return ResponseEntity.ok(list);
     }
@@ -96,7 +96,7 @@ public class OrcamentoController extends BaseController {
         return ResponseEntity.ok(entity);
     }
 
-    @GetMapping("list/cliente/nome")
+    @GetMapping("list/cliente")
     @ApiOperation(value = "Lista models mediante paginação e filtra pelo nome do cliente. Default: 10 itens")
     public ResponseEntity<Page<Orcamento>> listCliente(
             @ApiParam(example = "1", value = "Número pagina para paginação: Mínimo: 1") @RequestParam(name = "page") int page,
