@@ -24,6 +24,8 @@ import com.mecanica.domain.entities.categoria.Categoria;
 import com.mecanica.domain.entities.categoria.ICategoria;
 import com.mecanica.domain.enuns.produto.EnumTipoProduto;
 
+import org.modelmapper.ModelMapper;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -55,6 +57,7 @@ public abstract class AbstractProduto extends BaseEntity implements IProduto {
     @Enumerated(EnumType.STRING)
     protected EnumTipoProduto tipoProduto;
 
+
     @OneToMany(
         fetch = FetchType.EAGER, cascade = CascadeType.ALL , targetEntity = AbstractProduto.class)
         @JoinTable(name = "ProdutoItens")
@@ -68,5 +71,9 @@ public abstract class AbstractProduto extends BaseEntity implements IProduto {
     @JsonGetter("categoria")
     public ICategoria getJsonCategoria() {
         return this.getCategoria();
+    }
+
+    public <T extends IProduto> T getClone(Class<T> type) {
+        return new ModelMapper().map(this, type);
     }
 }

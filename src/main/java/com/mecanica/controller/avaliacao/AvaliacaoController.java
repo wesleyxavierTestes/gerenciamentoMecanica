@@ -1,14 +1,19 @@
 package com.mecanica.controller.avaliacao;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.validation.Valid;
 
 import com.mecanica.application.dto.avaliacao.AvaliacaoMecanicoDto;
+import com.mecanica.application.dto.avaliacao.PedidoAvaliacaoDto;
+import com.mecanica.application.dto.avaliacao.SemConsertoDto;
 import com.mecanica.application.validation.cliente.ClienteValidations;
 import com.mecanica.application.validation.funcionario.FuncionarioValidations;
 import com.mecanica.application.validation.mecanico.MecanicoValidations;
 import com.mecanica.application.validation.orcamento.OrcamentoValidations;
+import com.mecanica.application.validation.produto.ProdutoValidations;
+import com.mecanica.application.validation.servico.ServicoValidations;
 import com.mecanica.application.validation.veiculo.VeiculoValidations;
 import com.mecanica.controller.BaseController;
 import com.mecanica.domain.entities.avaliacao.Avaliacao;
@@ -17,6 +22,7 @@ import com.mecanica.domain.entities.cliente.ClienteHistoricoRetorno;
 import com.mecanica.domain.entities.funcionario.Funcionario;
 import com.mecanica.domain.entities.mecanico.Mecanico;
 import com.mecanica.domain.entities.ordemServico.orcamento.Orcamento;
+import com.mecanica.domain.entities.servico.ItemServico;
 import com.mecanica.domain.entities.servico.ServicoOrcamento;
 import com.mecanica.domain.entities.veiculo.Veiculo;
 import com.mecanica.domain.enuns.EnumSituacaoOrcamento;
@@ -40,6 +46,9 @@ import io.swagger.annotations.ApiParam;
 public class AvaliacaoController extends BaseController {
 
     private final OrcamentoValidations _serviceOrcamento;
+    private final ProdutoValidations _serviceProduto;
+    private final ServicoValidations _serviceServico;
+
     private final FuncionarioValidations _serviceFuncionario;
     private final MecanicoValidations _serviceMecanico;
     private final ClienteValidations _serviceCliente;
@@ -47,10 +56,15 @@ public class AvaliacaoController extends BaseController {
     private final ClienteHistoricoRetornoService _clienteHistoricoRetornoService;
 
     @Autowired
-    public AvaliacaoController(OrcamentoValidations orcamentoComum, ClienteValidations serviceCliente,
+    public AvaliacaoController(
+        ProdutoValidations serviceProduto,
+        ServicoValidations serviceServico,
+        OrcamentoValidations orcamentoComum, ClienteValidations serviceCliente,
             VeiculoValidations serviceVeiculo, FuncionarioValidations serviceFuncionario,
             MecanicoValidations serviceMecanico, ClienteHistoricoRetornoService clienteHistoricoRetornoService) {
         _serviceOrcamento = orcamentoComum;
+        _serviceProduto = serviceProduto;
+        _serviceServico = serviceServico;
         _serviceCliente = serviceCliente;
         _serviceVeiculo = serviceVeiculo;
         _serviceFuncionario = serviceFuncionario;
@@ -68,17 +82,16 @@ public class AvaliacaoController extends BaseController {
         return ResponseEntity.ok(list);
     }
 
-    @GetMapping("pedidoAvaliacao")
+    @PostMapping("pedidoAvaliacao")
     @ApiOperation(value = "Faz um novo pedido de orçamento com avaliação do mecânico")
     public ResponseEntity<Orcamento> pedidoAvaliacao(
-            @ApiParam(example = "x67faa25-5a18-43ea-920a-ad3a654a8153", value = "id do funcionário cadastrado") @RequestParam(name = "funcionarioCpf") String funcionarioCpf,
-            @ApiParam(example = "x67faa25-5a18-43ea-920a-ad3a654a8153", value = "id do cliente cadastrado") @RequestParam(name = "clienteId") String clienteId,
-            @ApiParam(example = "123", value = "número do renavam do veículo cadastrado") @RequestParam(name = "veiculoRenavam") String veiculoRenavam,
-            @ApiParam(example = "Carro não está freando", value = "descrição das causas do problema relatados pelo cliente") @RequestParam(name = "causas") String causas) {
-        Funcionario atendente = _serviceFuncionario.findValidExistsByCpf(funcionarioCpf);
-        Cliente cliente = _serviceCliente.findValidExistsById(clienteId);
-        Veiculo veiculo = _serviceVeiculo.findValidExistsByRenavam(veiculoRenavam);
-        Orcamento entity = this._serviceOrcamento.get_service().criarPedidoAvaliacao(atendente, cliente, veiculo, causas);
+        @RequestBody @Valid PedidoAvaliacaoDto pedidoAvaliacao
+    ) {
+        Funcionario atendente = _serviceFuncionario.findValidExistsByCpf(pedidoAvaliacao.getFuncionarioCpf());
+        Cliente cliente = _serviceCliente.findValidExistsById(pedidoAvaliacao.getClienteId());
+        Veiculo veiculo = _serviceVeiculo.findValidExistsByRenavam(pedidoAvaliacao.getVeiculoRenavam());
+        Orcamento entity = this._serviceOrcamento.get_service()
+        .criarPedidoAvaliacao(atendente, cliente, veiculo, pedidoAvaliacao.getDescricaoProblema());
 
         _serviceOrcamento.get_service().save(entity);
 
@@ -95,19 +108,21 @@ public class AvaliacaoController extends BaseController {
      */
     @PostMapping("incluir/avaliacao")
     @ApiOperation(value = "Permite um mecânico incluir a avaliação e Serviços ou indicar que não há conserto")
-    public ResponseEntity<Orcamento> incluirAvaliacao(
-            @ApiParam(example = "xxxxxxxxxx", value = "cpf do mecânico cadastrado") @RequestParam(name = "mecanicoCpf") String mecanicoCpf,
-            @ApiParam(example = "Tafarel Rivelino Ronaldo dinho 123123", value = "Código de Identificação: default:  ddMMyyyyHHmmss dd = dia/ MM = mês/ yyyy = Ano/ HH = hora/ mm =Minuto/ ss = Segundo") @RequestParam(name = "identificacao") String identificacao,
-            @RequestBody @Valid AvaliacaoMecanicoDto avaliacaoMecanico) {
-        Mecanico mecanico = _serviceMecanico.findValidExistsByCpf(mecanicoCpf);
-        Orcamento entity = this._serviceOrcamento.findValidExistsByIdentificacao(identificacao);
+    public ResponseEntity<Orcamento> incluirAvaliacao(@RequestBody @Valid AvaliacaoMecanicoDto avaliacaoMecanico) {
+
+        Mecanico mecanico = _serviceMecanico.findValidExistsByCpf(avaliacaoMecanico.getMecanicoCpf());
+        Orcamento entity = this._serviceOrcamento.findValidExistsByIdentificacao(avaliacaoMecanico.getIdentificacao());
         
+        List<ServicoOrcamento> servicosServicoOrcamento = _serviceServico.findAllValidExistsByFilter(avaliacaoMecanico.getServicos());
+        List<ItemServico> servicosItemServico = _serviceProduto.findAllValidExistsByFilter(avaliacaoMecanico.getItensServico());
+
         Avaliacao avaliacao = avaliacaoMecanico.getAvaliacao();
         int dias = avaliacaoMecanico.getDias();
-        List<ServicoOrcamento> servicos = avaliacaoMecanico.getServicos();
+        LocalDate dataPrevisaoInicio = avaliacaoMecanico.getDataPrevisaoInicio();
 
-        entity = this._serviceOrcamento.get_service().configurarAvaliacao(entity, avaliacao, mecanico, dias);
-        entity = this._serviceOrcamento.get_service().configurarServicos(entity, servicos);
+        entity = this._serviceOrcamento.get_service().configurarAvaliacao(entity, avaliacao, mecanico, dias, dataPrevisaoInicio);
+        entity = this._serviceOrcamento.get_service().configurarServicos(entity, servicosServicoOrcamento);
+        entity = this._serviceOrcamento.get_service().configurarItemServico(entity, servicosItemServico);
         entity = this._serviceOrcamento.get_service().configurarSituacaoOrcamento(entity);
 
         _serviceOrcamento.get_service().save(entity);        
@@ -115,17 +130,13 @@ public class AvaliacaoController extends BaseController {
         return ResponseEntity.ok(entity);
     }
 
-    @GetMapping("semconcerto")
+    @PostMapping("semconcerto")
     @ApiOperation(value = "O Avaliador indica que o veículo não tem conserto")
-    public ResponseEntity<Orcamento> semconcerto(
-            @ApiParam(example = "xxxxxxxxxx", value = "cpf do mecânico cadastrado") 
-            @RequestParam(name = "mecanicoCpf") String mecanicoCpf,
-            @ApiParam(example = "Tafarel Rivelino Ronaldo dinho 123123", 
-            value = "Código de Identificação: default:  ddMMyyyyHHmmss dd = dia/ MM = mês/ yyyy = Ano/ HH = hora/ mm =Minuto/ ss = Segundo")
-            @RequestParam(name = "identificacao") String identificacao) {
-        Mecanico mecanico = _serviceMecanico.findValidExistsByCpf(mecanicoCpf);
+    public ResponseEntity<Orcamento> semconcerto(@RequestBody @Valid SemConsertoDto semConserto) {
+        Mecanico mecanico = _serviceMecanico.findValidExistsByCpf(semConserto.getMecanicoCpf());
         
-        Orcamento entity = this._serviceOrcamento.get_service().veiculoSemConcerto(identificacao, mecanico);
+        Orcamento entity = this._serviceOrcamento.get_service()
+        .veiculoSemConcerto(semConserto.getIdentificacao(), mecanico);
 
         _serviceOrcamento.get_service().update(entity);
 

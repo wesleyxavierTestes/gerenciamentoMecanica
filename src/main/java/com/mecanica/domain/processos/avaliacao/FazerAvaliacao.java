@@ -1,5 +1,7 @@
 package com.mecanica.domain.processos.avaliacao;
 
+import java.time.LocalDate;
+
 import com.mecanica.domain.entities.avaliacao.Avaliacao;
 import com.mecanica.domain.entities.mecanico.Mecanico;
 import com.mecanica.domain.entities.ordemServico.orcamento.Orcamento;
@@ -11,8 +13,9 @@ public class FazerAvaliacao extends ServiceProcessos<Orcamento>  {
         super(ordemServico);
     }
 
-	public void incluirDados(int dias, Mecanico mecanico, Avaliacao avaliacao) {
+	public void incluirDados(int dias, LocalDate dataPrevisaoInicio, Mecanico mecanico, Avaliacao avaliacao) {
         ordemServico.setDiasEstimadoServico(dias);
+        ordemServico.setDataPrevisaoInicio(dataPrevisaoInicio);
         avaliacao.setMecanico(mecanico);
         ordemServico.setAvaliacao(avaliacao);
 

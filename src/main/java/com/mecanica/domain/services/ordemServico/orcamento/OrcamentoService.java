@@ -1,5 +1,6 @@
 package com.mecanica.domain.services.ordemServico.orcamento;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -10,6 +11,7 @@ import com.mecanica.domain.entities.cliente.Cliente;
 import com.mecanica.domain.entities.funcionario.IFuncionario;
 import com.mecanica.domain.entities.mecanico.Mecanico;
 import com.mecanica.domain.entities.ordemServico.orcamento.Orcamento;
+import com.mecanica.domain.entities.servico.ItemServico;
 import com.mecanica.domain.entities.servico.ServicoOrcamento;
 import com.mecanica.domain.entities.veiculo.Veiculo;
 import com.mecanica.domain.enuns.EnumDiagnosticoAvaliacao;
@@ -59,7 +61,8 @@ public class OrcamentoService extends BaseService<Orcamento, IOrcamentoRepositor
      * @param mecanico
      * @return
      */
-    public Orcamento configurarAvaliacao(Orcamento entity, final Avaliacao avaliacao, final Mecanico mecanico, int dias) {
+    public Orcamento configurarAvaliacao(Orcamento entity, Avaliacao avaliacao, Mecanico mecanico, int dias,
+            LocalDate dataPrevisaoInicio) {
 
         if (entity.getSituacao() != EnumSituacaoOrcamento.Aguardando) {
             throw new RegraBaseException("Orçamento Finalizado");
@@ -67,7 +70,7 @@ public class OrcamentoService extends BaseService<Orcamento, IOrcamentoRepositor
 
         final FazerAvaliacao fazerAvaliacao = new FazerAvaliacao(entity);
 
-        fazerAvaliacao.incluirDados(dias, mecanico, avaliacao);
+        fazerAvaliacao.incluirDados(dias, dataPrevisaoInicio, mecanico, avaliacao);
 
         return fazerAvaliacao.getordemServico();
     }
@@ -75,10 +78,21 @@ public class OrcamentoService extends BaseService<Orcamento, IOrcamentoRepositor
     /**
      * Seta Serviços no Orçamento
      */
-    public Orcamento configurarServicos(final Orcamento entity, final List<ServicoOrcamento> servicos) {
+    public Orcamento configurarServicos(final Orcamento entity, List<ServicoOrcamento> servicos) {
         final PedidoIncluirServicos<Orcamento> pedidoIncluirServicos = new PedidoIncluirServicos<>(entity);
 
         pedidoIncluirServicos.incluirServicos(servicos);
+
+        return pedidoIncluirServicos.getOrdemServico();
+    }
+
+    /**
+     * Seta item de Produtos no Orçamento
+     */
+    public Orcamento configurarItemServico(final Orcamento entity, List<ItemServico> servicos) {
+        final PedidoIncluirServicos<Orcamento> pedidoIncluirServicos = new PedidoIncluirServicos<>(entity);
+
+        pedidoIncluirServicos.incluirItemServicos(servicos);
 
         return pedidoIncluirServicos.getOrdemServico();
     }
@@ -111,25 +125,25 @@ public class OrcamentoService extends BaseService<Orcamento, IOrcamentoRepositor
 
     public Orcamento findByIdentificacao(String identificacao) {
         Orcamento entity = this.repository.findByIdentificacao(identificacao);
-        
+
         return entity;
     }
 
-    public Page<Orcamento> findAllByClienteIdOrNomeOrCpfOrCnpj(String clienteNome,
-            String clienteCpfCnpj, int page) {
+    public Page<Orcamento> findAllByClienteIdOrNomeOrCpfOrCnpj(String clienteNome, String clienteCpfCnpj, int page) {
 
         return this.repository.findAllByClienteIdOrNomeOrCpfOrCnpj(clienteNome, clienteCpfCnpj,
                 PageRequest.of((page - 1), 10));
     }
 
     /**
-     * Caso o cliente aceite orçamento 
+     * Caso o cliente aceite orçamento
+     * 
      * @param identificacao
      * @return
      */
     public Orcamento aceitarOrcamento(String identificacao) {
         Orcamento entity = this.findByIdentificacao(identificacao);
-        
+
         ClienteAceitarOrcamento aceite = new ClienteAceitarOrcamento(entity);
 
         aceite.aceitarOrcamento();
@@ -138,7 +152,8 @@ public class OrcamentoService extends BaseService<Orcamento, IOrcamentoRepositor
     }
 
     /**
-     * * Caso o cliente negue orçamento 
+     * * Caso o cliente negue orçamento
+     * 
      * @param identificacao
      * @return
      */
@@ -154,17 +169,18 @@ public class OrcamentoService extends BaseService<Orcamento, IOrcamentoRepositor
 
     /**
      * Caso o Mecânico verificar que não há conserto
+     * 
      * @param identificacao
      * @param mecanico
      * @return
      */
-	public Orcamento veiculoSemConcerto(String identificacao, Mecanico mecanico) {
+    public Orcamento veiculoSemConcerto(String identificacao, Mecanico mecanico) {
         Orcamento entity = this.findByIdentificacao(identificacao);
 
         AvaliacaoVeiculoSemConcerto semConcerto = new AvaliacaoVeiculoSemConcerto(entity);
 
         semConcerto.veiculoSemConcerto(mecanico);
 
-		return semConcerto.getordemServico();
-	}
+        return semConcerto.getordemServico();
+    }
 }

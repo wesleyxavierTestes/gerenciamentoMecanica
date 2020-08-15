@@ -4,5 +4,6 @@ public enum EnumTipoProduto {
     Produto,
     Servico,
     Limpeza,
-    Outros
+    Outros,
+    ItemServico
 }

@@ -1,6 +1,7 @@
 package com.mecanica.domain.entities.ordemServico;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -69,6 +70,7 @@ public abstract class AbstractOrdemServico extends BaseEntity {
     private int diasEstimadoServico;
     private boolean pago;
 
+    protected LocalDate dataPrevisaoInicio;
     protected LocalDateTime dataInicial = LocalDateTime.now();
     protected LocalDateTime dataFinalizacao;
 

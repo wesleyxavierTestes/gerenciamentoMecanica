@@ -42,10 +42,4 @@ public class Servico extends AbstractProduto implements IServico {
     public <T extends ICategoria> void setICategoria(T categoria) {
         this.setCategoria((ICategoria) categoria);
     }
-
-    @Override
-    public <T extends IServico> T getClone(Class<T> type) {
-        
-        return new ModelMapper().map(this, type);
-    }
 }

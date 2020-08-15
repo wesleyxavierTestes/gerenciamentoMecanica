@@ -26,5 +26,5 @@ public class ServicoOrcamento extends Servico {
     @NotNull(message = ErrorCustomMessage.OBRIGATORIO)
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private EnumSituacaoOrcamento situacao;
+    private EnumSituacaoOrcamento situacao = EnumSituacaoOrcamento.Aguardando;
 }
