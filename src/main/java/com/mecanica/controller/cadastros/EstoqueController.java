@@ -4,10 +4,12 @@ import java.util.UUID;
 
 import javax.validation.Valid;
 
+import com.mecanica.application.applicationServices.produto.ProdutoValidations;
 import com.mecanica.controller.BaseController;
 import com.mecanica.domain.entities.estoque.AbstractEstoque;
 import com.mecanica.domain.entities.estoque.EstoqueEntrada;
 import com.mecanica.domain.entities.estoque.EstoqueSaida;
+import com.mecanica.domain.entities.produto.Produto;
 import com.mecanica.domain.services.estoque.EstoqueEntradaService;
 import com.mecanica.domain.services.estoque.EstoqueSaidaService;
 import com.mecanica.domain.services.estoque.EstoqueService;
@@ -15,9 +17,9 @@ import com.mecanica.domain.services.estoque.EstoqueService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -33,13 +35,16 @@ public class EstoqueController extends BaseController {
     private final EstoqueService _service;
     private final EstoqueSaidaService _serviceSaida;
     private final EstoqueEntradaService _serviceEntrada;
+    private final ProdutoValidations _serviceProduto;
 
     @Autowired
     public EstoqueController(EstoqueService service, EstoqueSaidaService serviceSaida,
-            EstoqueEntradaService serviceEntrada) {
+            EstoqueEntradaService serviceEntrada,
+            ProdutoValidations serviceProduto) {
         _service = service;
         _serviceSaida = serviceSaida;
         _serviceEntrada = serviceEntrada;
+        _serviceProduto = serviceProduto;
     }
 
     @GetMapping("list")
@@ -89,18 +94,10 @@ public class EstoqueController extends BaseController {
     @PostMapping("save/entrada")
     @ApiOperation(value = "Registra um _model_ de entrada mediante validações")
     public ResponseEntity<EstoqueEntrada> saveEntrada(@RequestBody @Valid EstoqueEntrada entity) {
-        ;
+        Produto produto = _serviceProduto.findValidExistsById(entity.getProduto().getId().toString());
+        entity.setProduto(produto);
 
         entity = this._serviceEntrada.save(entity);
-
-        return ResponseEntity.ok(entity);
-    }
-
-    @PutMapping("update/entrada")
-    @ApiOperation(value = "Altera um Registro um _model_ de entrada mediante validações")
-    public ResponseEntity<EstoqueEntrada> updateEntrada(@RequestBody @Valid EstoqueEntrada entity) {
-
-        entity = this._serviceEntrada.update(entity);
 
         return ResponseEntity.ok(entity);
     }
@@ -108,17 +105,20 @@ public class EstoqueController extends BaseController {
     @PostMapping("save/saida")
     @ApiOperation(value = "Registra um _model_ de saída mediante validações")
     public ResponseEntity<EstoqueSaida> saveSaida(@RequestBody @Valid EstoqueSaida entity) {
+         Produto produto = _serviceProduto.findValidExistsById(entity.getProduto().getId().toString());
+        entity.setProduto(produto);
 
         entity = this._serviceSaida.save(entity);
 
         return ResponseEntity.ok(entity);
     }
 
-    @PutMapping("update/saida")
+    @DeleteMapping("delete")
     @ApiOperation(value = "Altera um Registro um _model_ de saída mediante validações")
-    public ResponseEntity<EstoqueSaida> updateSaida(@RequestBody @Valid EstoqueSaida entity) {
+    public ResponseEntity<AbstractEstoque> delete(  @ApiParam(example = "x67faa25-5a18-43ea-920a-ad3a654a8153", value = "id do _model_ cadastrado") 
+    @RequestParam(name = "id") String id) {
 
-        entity = this._serviceSaida.update(entity);
+        AbstractEstoque entity = this._service.remove(UUID.fromString(id));
 
         return ResponseEntity.ok(entity);
     }

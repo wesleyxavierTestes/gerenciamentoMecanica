@@ -95,7 +95,7 @@ public class OrcamentoController extends BaseController {
             @ApiParam(example = "2512201012100", value = "identificacao do _model_ cadastrado") 
             @RequestParam(name = "identificacao") String identificacao) {
 
-        Orcamento entity = this._serviceOrcamento.findByIdentificacao(identificacao);
+        Orcamento entity = this._serviceOrcamento.findByIdentificacaoEquals(identificacao);
 
         return ResponseEntity.ok(entity);
     }
@@ -148,7 +148,22 @@ public class OrcamentoController extends BaseController {
             "ddMMyyyyHHmmss dd = dia/ MM = mês/ yyyy = Ano/ HH = hora/ mm =Minuto/ ss = Segundo") 
             @RequestParam(name = "identificacao") String identificacao) {
 
-        Orcamento entity = this._serviceOrcamento.negarOrcamento(identificacao);
+        Orcamento entity = this._serviceOrcamento.rejeitarOrcamento(identificacao);
+
+        _serviceOrcamento.update(entity);
+
+        return ResponseEntity.ok(entity);
+    }
+
+    @GetMapping("cancelar")
+    @ApiOperation(value = "Registra cancelamento do orçamento")
+    public ResponseEntity<Orcamento> cancelar(
+            @ApiParam(example = "Tafarel Rivelino Ronaldo dinho 123123", 
+            value = "Código de Identificação: default: " +
+            "ddMMyyyyHHmmss dd = dia/ MM = mês/ yyyy = Ano/ HH = hora/ mm =Minuto/ ss = Segundo") 
+            @RequestParam(name = "identificacao") String identificacao) {
+
+        Orcamento entity = this._serviceOrcamento.cancelarOrcamento(identificacao);
 
         _serviceOrcamento.update(entity);
 

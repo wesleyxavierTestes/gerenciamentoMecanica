@@ -49,6 +49,22 @@ public class ProdutoController extends BaseController {
         return ResponseEntity.ok(list);
     }
 
+    @GetMapping("list/estoque")
+    public ResponseEntity<Page<Produto>> findAllByCountEstoque(@RequestParam(name = "page") int page) {
+
+        Page<Produto> list = this._serviceProduto.findAllByCountEstoque(page);
+
+        return ResponseEntity.ok(list);
+    }
+
+    @GetMapping("list/estoque/zero")
+    public ResponseEntity<Page<Produto>> findAllByCountEstoqueZero(@RequestParam(name = "page") int page) {
+
+        Page<Produto> list = this._serviceProduto.findAllByCountEstoqueZero(page);
+
+        return ResponseEntity.ok(list);
+    }
+
     @GetMapping("list")
     @ApiOperation(value = "Lista models mediante paginação. Default: 10 itens")
     public ResponseEntity<Page<Produto>> list(

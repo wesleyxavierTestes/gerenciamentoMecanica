@@ -73,6 +73,7 @@ public abstract class AbstractOrdemServico extends BaseEntity {
     protected LocalDate dataPrevisaoInicio;
     protected LocalDateTime dataInicial = LocalDateTime.now();
     protected LocalDateTime dataFinalizacao;
+    public LocalDate dataCancelamento;
 
     @Column(nullable = false)
     protected BigDecimal valor = BigDecimal.ZERO;

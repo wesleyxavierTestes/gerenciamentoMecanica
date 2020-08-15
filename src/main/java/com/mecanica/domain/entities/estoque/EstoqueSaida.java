@@ -11,9 +11,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-
 @DiscriminatorValue("S")
-
 public class EstoqueSaida extends AbstractEstoque {
 
     @Override

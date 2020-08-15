@@ -9,7 +9,8 @@ import com.mecanica.domain.entities.produto.baseentity.IProduto;
 import com.mecanica.domain.services.BaseService;
 import com.mecanica.infra.repositorys.IBaseRepository;
 
-public class AbstractProdutoService<T extends IProduto, Y extends IBaseRepository<T>>  extends BaseService<T, Y> {
+public class AbstractProdutoService<T extends IProduto, Y extends IBaseRepository<T>>  
+extends BaseService<T, Y> {
 
     public AbstractProdutoService(Y repository) {
         super(repository);

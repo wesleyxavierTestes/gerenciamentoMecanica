@@ -17,8 +17,9 @@ import com.mecanica.domain.entities.veiculo.Veiculo;
 import com.mecanica.domain.enuns.EnumDiagnosticoAvaliacao;
 import com.mecanica.domain.enuns.EnumSituacaoOrcamento;
 import com.mecanica.domain.processos.avaliacao.AvaliacaoVeiculoSemConcerto;
+import com.mecanica.domain.processos.avaliacao.CancelarOrcamento;
 import com.mecanica.domain.processos.avaliacao.ClienteAceitarOrcamento;
-import com.mecanica.domain.processos.avaliacao.ClienteNegarOrcamento;
+import com.mecanica.domain.processos.avaliacao.ClienteRejeitarOrcamento;
 import com.mecanica.domain.processos.avaliacao.FazerAvaliacao;
 import com.mecanica.domain.processos.avaliacao.OrcamentoEsperaAvaliacao;
 import com.mecanica.domain.processos.avaliacao.PedidoIncluirServicos;
@@ -134,7 +135,7 @@ public class OrcamentoService extends BaseService<Orcamento, IOrcamentoRepositor
         return entity;
     }
 
-    public Orcamento findByIdentificacao(String identificacao) {
+    public Orcamento findByIdentificacaoEquals(String identificacao) {
         Orcamento entity = this.repository.findByIdentificacaoEquals(identificacao);
 
         return entity;
@@ -167,7 +168,7 @@ public class OrcamentoService extends BaseService<Orcamento, IOrcamentoRepositor
      * @return
      */
     public Orcamento aceitarOrcamento(String identificacao) {
-        Orcamento entity = this.findByIdentificacao(identificacao);
+        Orcamento entity = this.findByIdentificacaoEquals(identificacao);
 
         ClienteAceitarOrcamento aceite = new ClienteAceitarOrcamento(entity);
 
@@ -182,12 +183,12 @@ public class OrcamentoService extends BaseService<Orcamento, IOrcamentoRepositor
      * @param identificacao
      * @return
      */
-    public Orcamento negarOrcamento(String identificacao) {
-        Orcamento entity = this.findByIdentificacao(identificacao);
+    public Orcamento rejeitarOrcamento(String identificacao) {
+        Orcamento entity = this.findByIdentificacaoEquals(identificacao);
 
-        ClienteNegarOrcamento negar = new ClienteNegarOrcamento(entity);
+        ClienteRejeitarOrcamento negar = new ClienteRejeitarOrcamento(entity);
 
-        negar.negarOrcamento();
+        negar.rejeitarOrcamento();
 
         return negar.getordemServico();
     }
@@ -200,7 +201,7 @@ public class OrcamentoService extends BaseService<Orcamento, IOrcamentoRepositor
      * @return
      */
     public Orcamento veiculoSemConcerto(String identificacao, Mecanico mecanico) {
-        Orcamento entity = this.findByIdentificacao(identificacao);
+        Orcamento entity = this.findByIdentificacaoEquals(identificacao);
 
         AvaliacaoVeiculoSemConcerto semConcerto = new AvaliacaoVeiculoSemConcerto(entity);
 
@@ -208,4 +209,21 @@ public class OrcamentoService extends BaseService<Orcamento, IOrcamentoRepositor
 
         return semConcerto.getordemServico();
     }
+
+    /**
+     * Cancela um orçamento avaliado
+     * 
+     * @param identificacao
+     * @param mecanico
+     * @return
+     */
+	public Orcamento cancelarOrcamento(String identificacao) {
+        Orcamento entity = this.findByIdentificacaoEquals(identificacao);
+
+        CancelarOrcamento cancelar = new CancelarOrcamento(entity);
+
+        cancelar.cancelarOrcamento();
+
+        return cancelar.getordemServico();
+	}
 }

@@ -1,5 +1,6 @@
 package com.mecanica.domain.processos.avaliacao;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import com.mecanica.application.exceptions.RegraBaseException;
@@ -8,21 +9,22 @@ import com.mecanica.domain.enuns.EnumDiagnosticoAvaliacao;
 import com.mecanica.domain.enuns.EnumSituacaoOrcamento;
 import com.mecanica.domain.processos.baseDefault.ServiceProcessos;
 
-public class ClienteNegarOrcamento extends ServiceProcessos<Orcamento>  {
+public class CancelarOrcamento extends ServiceProcessos<Orcamento>  {
 
-    public ClienteNegarOrcamento(Orcamento ordemServico) {
+    public CancelarOrcamento(Orcamento ordemServico) {
         super(ordemServico);
     }
 
-    public void negarOrcamento() {
-    
-        if (ordemServico.getAvaliacao().getDiagnostico() != EnumDiagnosticoAvaliacao.TemConcerto) {
+    public void cancelarOrcamento() {    
+        if (!(ordemServico.getSituacao() == EnumSituacaoOrcamento.Avaliado &&
+            ordemServico.getAvaliacao().getDiagnostico() == EnumDiagnosticoAvaliacao.TemConcerto)) {
             throw new RegraBaseException("Verifique o Diagnóstico");
         }
 
-        ordemServico.setSituacao(EnumSituacaoOrcamento.Negado);
+        ordemServico.setSituacao(EnumSituacaoOrcamento.Cancelado);
 
         ordemServico.setDataFinalizacao(LocalDateTime.now());
+        ordemServico.setDataCancelamento(LocalDate.now());
     }
 
 }

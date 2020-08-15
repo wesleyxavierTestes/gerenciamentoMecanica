@@ -3,7 +3,8 @@ package com.mecanica.domain.enuns;
 public enum EnumSituacaoOrcamento {
     Aguardando,
     Avaliado,
-    Negado, 
+    Rejeitado, 
     Aceito,
-    SemConserto
+    SemConserto,
+    Cancelado
 }

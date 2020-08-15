@@ -67,7 +67,7 @@ public class OrcamentoValidations extends BaseValidations<Orcamento, OrcamentoSe
 
     public Orcamento findValidExistsByIdentificacao(String identificacao) {
         try {
-            Orcamento entity = this._service.findByIdentificacao(identificacao);
+            Orcamento entity = this._service.findByIdentificacaoEquals(identificacao);
             if (!Objects.nonNull(entity))
                 throw new ValidacaoControllerBaseException(this.getNome() + " inexistênte");
             return entity;
@@ -99,10 +99,10 @@ public class OrcamentoValidations extends BaseValidations<Orcamento, OrcamentoSe
 	}
 
 	public Orcamento configurarSituacaoOrcamento(Orcamento entity) {
-		return this.configurarSituacaoOrcamento(entity);
+		return this._service.configurarSituacaoOrcamento(entity);
 	}
 
 	public Orcamento veiculoSemConcerto(String identificacao, Mecanico mecanico) {
-		return this.veiculoSemConcerto(identificacao, mecanico);
+		return this._service.veiculoSemConcerto(identificacao, mecanico);
 	}
 }
