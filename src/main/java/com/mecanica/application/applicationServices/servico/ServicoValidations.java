@@ -9,8 +9,6 @@ import java.util.UUID;
 import com.mecanica.application.applicationServices.BaseValidations;
 import com.mecanica.application.dto.avaliacao.ItemServicoDto;
 import com.mecanica.application.exceptions.ValidacaoControllerBaseException;
-import com.mecanica.domain.entities.produto.Produto;
-import com.mecanica.domain.entities.servico.ItemServico;
 import com.mecanica.domain.entities.servico.Servico;
 import com.mecanica.domain.entities.servico.ServicoOrcamento;
 import com.mecanica.domain.services.servico.ServicoService;
@@ -22,11 +20,6 @@ public class ServicoValidations extends BaseValidations<Servico, ServicoService>
 
     public ServicoValidations(ServicoService serviceServico) {
         super(serviceServico);
-    }
-
-    @Override
-    public String getNome() {
-        return "Servico";
     }
 
     public List<ServicoOrcamento> findAllValidExistsByFilter(List<ItemServicoDto> servicos) {

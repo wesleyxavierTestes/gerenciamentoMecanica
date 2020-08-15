@@ -75,7 +75,8 @@ public class AvaliacaoController extends BaseController {
     @GetMapping("list")
     @ApiOperation(value = "Lista models mediante paginação. Default: 10 itens")
     public ResponseEntity<Page<Orcamento>> list(
-            @ApiParam(example = "1", value = "Número pagina para paginação: Mínimo: 1") @RequestParam(name = "page") int page) {
+            @ApiParam(example = "1", value = "Número pagina para paginação: Mínimo: 1") 
+            @RequestParam(name = "page") int page) {
 
         Page<Orcamento> list = this._serviceOrcamento.findAllBySituacaoEquals(EnumSituacaoOrcamento.Aguardando, page);
 
@@ -108,7 +109,8 @@ public class AvaliacaoController extends BaseController {
      */
     @PostMapping("incluir/avaliacao")
     @ApiOperation(value = "Permite um mecânico incluir a avaliação e Serviços ou indicar que não há conserto")
-    public ResponseEntity<Orcamento> incluirAvaliacao(@RequestBody @Valid AvaliacaoMecanicoDto avaliacaoMecanico) {
+    public ResponseEntity<Orcamento> incluirAvaliacao(
+        @RequestBody @Valid AvaliacaoMecanicoDto avaliacaoMecanico) {
 
         Mecanico mecanico = _serviceMecanico.findValidExistsByCpf(avaliacaoMecanico.getMecanicoCpf());
         Orcamento entity = this._serviceOrcamento.findValidExistsByIdentificacao(avaliacaoMecanico.getIdentificacao());
@@ -154,7 +156,8 @@ public class AvaliacaoController extends BaseController {
     @PostMapping("informar/cliente")
     @ApiOperation(value = "Registra as comunicação com o cliente")
     public ResponseEntity<ClienteHistoricoRetorno> informarCliente(
-            @ApiParam(example = "xxxxxxxxxx", value = "cpf do funcionário cadastrado") @RequestParam(name = "funcionarioCpf") String funcionarioCpf,
+            @ApiParam(example = "xxxxxxxxxx", value = "cpf do funcionário cadastrado") 
+            @RequestParam(name = "funcionarioCpf") String funcionarioCpf,
             @RequestBody @Valid ClienteHistoricoRetorno clienteHistoricoRetorno) {
 
         Funcionario atendente = _serviceFuncionario.findValidExistsByCpf(funcionarioCpf);

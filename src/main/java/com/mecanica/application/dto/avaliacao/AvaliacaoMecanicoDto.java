@@ -7,9 +7,6 @@ import javax.validation.constraints.NotNull;
 
 import com.mecanica.application.errors.ErrorCustomMessage;
 import com.mecanica.domain.entities.avaliacao.Avaliacao;
-import com.mecanica.domain.entities.produto.Produto;
-import com.mecanica.domain.entities.servico.ServicoOrcamento;
-
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

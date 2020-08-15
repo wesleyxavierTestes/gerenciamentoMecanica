@@ -2,6 +2,8 @@ package com.mecanica.application.applicationServices.veiculo;
 
 import java.util.Objects;
 
+import javax.validation.Valid;
+
 import com.mecanica.application.applicationServices.BaseValidations;
 import com.mecanica.application.exceptions.RegraBaseException;
 import com.mecanica.application.exceptions.ValidacaoControllerBaseException;
@@ -19,11 +21,6 @@ public class VeiculoValidations extends BaseValidations<Veiculo, VeiculoService>
         super(serviceVeiculo);
     }
 
-    @Override
-    public String getNome() {
-        return "Veiculo";
-    }
-
     public Veiculo findValidExistsByRenavam(String veiculoRenavam) {
         Veiculo entity = this._service.findByRenavam(veiculoRenavam);
         if (!Objects.nonNull(entity))
@@ -32,14 +29,14 @@ public class VeiculoValidations extends BaseValidations<Veiculo, VeiculoService>
         return entity;
     }
 
-    public Veiculo validaClienteReferenteDoCarro(Veiculo entity, Cliente cliente) {
+    public Veiculo validaClienteReferenteDoVeiculo(Veiculo entity, Cliente cliente) {
         Veiculo entityUpdate = this._service.find(entity.getId());
         if (!Objects.nonNull(entityUpdate)) {
             throw new ValidacaoControllerBaseException(this.getNome() + " inexistênte");
         }
 
         if (!entityUpdate.getCliente().getId().equals(cliente.getId())) {
-            throw new RegraBaseException("Carro não pertencente ao cliente informado");
+            throw new RegraBaseException("Veículo não pertencente ao cliente informado");
         }
 
         entity.setCliente(entityUpdate.getCliente());
@@ -54,4 +51,12 @@ public class VeiculoValidations extends BaseValidations<Veiculo, VeiculoService>
     public Veiculo save(Veiculo entity, Cliente cliente) {
         return this._service.save(entity, cliente);
     }
+
+	public void findValidBusiness(@Valid Veiculo entity) {
+
+        Page<Veiculo> entitys =  this._service.findAllFilter(entity, 1);
+        if (!entitys.isEmpty()) {
+            throw new RegraBaseException("Veículo é existente");
+        }
+	}
 }

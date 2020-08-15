@@ -16,11 +16,6 @@ public class MecanicoValidations extends BaseValidations<Mecanico, MecanicoServi
         super(serviceMecanico);
     }
 
-    @Override
-    public String getNome() {
-        return "Mecânico";
-    }
-
     public Mecanico findValidExistsByCpf(String cpf) {
         Mecanico entity = this._service.findByCpf(cpf);
         if (!Objects.nonNull(entity))

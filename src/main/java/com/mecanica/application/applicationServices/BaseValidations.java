@@ -13,7 +13,9 @@ public abstract class BaseValidations<T extends BaseEntity, Y extends BaseServic
 
   protected final Y _service;
 
-  public abstract String getNome();
+  public String getNome() {
+      return this.getClass().getName().replace("Validations", "");
+  }
 
   public BaseValidations(Y service) {
     _service = service;

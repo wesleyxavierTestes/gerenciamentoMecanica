@@ -16,11 +16,6 @@ public class FuncionarioValidations extends BaseValidations<Funcionario, Funcion
         super(serviceFuncionario);
     }
 
-    @Override
-    public String getNome() {
-        return "Funcionario";
-    }
-
     public Funcionario findValidExistsByCpf(String cpf) {
         Funcionario entity = this._service.findByCpf(cpf);
         if (!Objects.nonNull(entity))

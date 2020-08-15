@@ -43,11 +43,6 @@ public class OrcamentoValidations extends BaseValidations<Orcamento, OrcamentoSe
         _serviceMecanico = serviceMecanico;
     }
 
-    @Override
-    public String getNome() {
-        return "Orcamento";
-    }
-
     public void valida(Orcamento entity) {
 
         Avaliacao avaliacao = entity.getAvaliacao();

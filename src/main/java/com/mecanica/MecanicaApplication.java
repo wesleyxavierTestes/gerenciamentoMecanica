@@ -1,6 +1,6 @@
 package com.mecanica;
 
-import com.mecanica.application.applicationServices.Validations;
+import com.mecanica.application.validations.Validations;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

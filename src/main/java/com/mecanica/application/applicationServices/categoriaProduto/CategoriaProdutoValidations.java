@@ -12,9 +12,4 @@ public class CategoriaProdutoValidations extends BaseValidations<CategoriaProdut
     public CategoriaProdutoValidations(CategoriaProdutoService serviceCategoriaProduto) {
         super(serviceCategoriaProduto);
     }
-
-    @Override
-    public String getNome() {
-        return "CategoriaProduto";
-    }
 }

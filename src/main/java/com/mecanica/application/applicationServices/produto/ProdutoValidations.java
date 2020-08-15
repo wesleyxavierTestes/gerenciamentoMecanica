@@ -22,11 +22,6 @@ public class ProdutoValidations extends BaseValidations<Produto, ProdutoService>
         super(serviceProduto);
     }
 
-    @Override
-    public String getNome() {
-        return "Produto";
-    }
-
     public List<ItemServico> findAllValidExistsByFilter(List<ItemServicoDto> itensServico) {
         List<ItemServico> lista = new ArrayList<>();
         for (ItemServicoDto item : itensServico) {

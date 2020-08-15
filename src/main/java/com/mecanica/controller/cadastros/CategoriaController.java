@@ -49,8 +49,10 @@ public class CategoriaController extends BaseController {
     @GetMapping("list/servico/filter")
     @ApiOperation(value = "Lista models do tipo serviço mediante paginação e filtra por nome. Default: 10 itens")
     public ResponseEntity<Page<CategoriaServico>> listServicoFilter(
-            @ApiParam(example = "1", value = "Número pagina para paginação: Mínimo: 1") @RequestParam(name = "page") int page,
-            @ApiParam(example = "elétrica", value = "nome do _model_ cadastrado") @RequestParam(name = "nome") String nome) {
+            @ApiParam(example = "1", value = "Número pagina para paginação: Mínimo: 1") 
+            @RequestParam(name = "page") int page,
+            @ApiParam(example = "elétrica", value = "nome do _model_ cadastrado") 
+            @RequestParam(name = "nome") String nome) {
 
         Page<CategoriaServico> list = this._categoriaServico.findAllByNomeContains(nome, page);
 
@@ -60,7 +62,8 @@ public class CategoriaController extends BaseController {
     @GetMapping("list/produto")
     @ApiOperation(value = "Lista models do tipo produto mediante paginação. Default: 10 itens")
     public ResponseEntity<Page<CategoriaProduto>> listProduto(
-            @ApiParam(example = "1", value = "Número pagina para paginação: Mínimo: 1") @RequestParam(name = "page") int page) {
+            @ApiParam(example = "1", value = "Número pagina para paginação: Mínimo: 1") 
+            @RequestParam(name = "page") int page) {
 
         Page<CategoriaProduto> list = this._categoriaProduto.findAll(page);
 
@@ -70,8 +73,10 @@ public class CategoriaController extends BaseController {
     @GetMapping("list/produto/filter")
     @ApiOperation(value = "Lista models do tipo produto mediante paginação e filtra por nome. Default: 10 itens")
     public ResponseEntity<Page<CategoriaProduto>> listProdutoFilter(
-            @ApiParam(example = "1", value = "Número pagina para paginação: Mínimo: 1") @RequestParam(name = "page") int page,
-            @ApiParam(example = "elétrica", value = "nome do _model_ cadastrado") @RequestParam(name = "nome") String nome) {
+            @ApiParam(example = "1", value = "Número pagina para paginação: Mínimo: 1") 
+            @RequestParam(name = "page") int page,
+            @ApiParam(example = "elétrica", value = "nome do _model_ cadastrado") 
+            @RequestParam(name = "nome") String nome) {
 
         Page<CategoriaProduto> list = this._categoriaProduto.findAllByNomeContainsIgnoreCase(nome, page);
 

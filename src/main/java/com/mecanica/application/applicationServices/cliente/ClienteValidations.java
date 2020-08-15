@@ -12,9 +12,4 @@ public class ClienteValidations extends BaseValidations<Cliente, ClienteService>
     public ClienteValidations(ClienteService serviceCliente) {
         super(serviceCliente);
     }
-
-    @Override
-    public String getNome() {
-        return "Cliente";
-    }
 }

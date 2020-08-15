@@ -12,9 +12,4 @@ public class CategoriaServicoValidations extends BaseValidations<CategoriaServic
     public CategoriaServicoValidations(CategoriaServicoService serviceCategoriaServico) {
         super(serviceCategoriaServico);
     }
-
-    @Override
-    public String getNome() {
-        return "CategoriaServico";
-    }
 }
