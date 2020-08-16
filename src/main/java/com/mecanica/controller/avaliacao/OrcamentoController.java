@@ -15,6 +15,7 @@ import com.mecanica.domain.services.ordemServico.ordemServico.OrdemServicoServic
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -32,14 +33,14 @@ public class OrcamentoController extends BaseController {
 
     private final OrcamentoService _serviceOrcamento;
     private final OrdemServicoService _serviceOrdemServico;
-    private final OrcamentoValidations orcamentoValidations;
+    private final OrcamentoValidations _orcamentoValidations;
 
     @Autowired
     public OrcamentoController(OrcamentoService orcamentoComum, OrdemServicoService serviceOrdemServico,
             OrcamentoValidations orcamentoValidations) {
         _serviceOrcamento = orcamentoComum;
         _serviceOrdemServico = serviceOrdemServico;
-        this.orcamentoValidations = orcamentoValidations;
+        this._orcamentoValidations = orcamentoValidations;
     }
 
     @GetMapping("list/filter")
@@ -124,7 +125,7 @@ public class OrcamentoController extends BaseController {
     @GetMapping("aceite")
     @ApiOperation(value = "Registra que o Cliente aceitou um orçamento e cria uma Ordem de Serviço")
     public ResponseEntity<Orcamento> aceite(
-            @ApiParam(example = "Tafarel Rivelino Ronaldo dinho 123123", 
+            @ApiParam(example = "16082020122006", 
             value = "Código de Identificação: default: " +
             "ddMMyyyyHHmmss dd = dia/ MM = mês/ yyyy = Ano/ HH = hora/ mm =Minuto/ ss = Segundo") 
             @RequestParam(name = "identificacao") String identificacao) {
@@ -143,7 +144,7 @@ public class OrcamentoController extends BaseController {
     @GetMapping("rejeitar")
     @ApiOperation(value = "Registra que o cliente negou o orçamento")
     public ResponseEntity<Orcamento> rejeitar(
-            @ApiParam(example = "Tafarel Rivelino Ronaldo dinho 123123", 
+            @ApiParam(example = "16082020122006", 
             value = "Código de Identificação: default: " +
             "ddMMyyyyHHmmss dd = dia/ MM = mês/ yyyy = Ano/ HH = hora/ mm =Minuto/ ss = Segundo") 
             @RequestParam(name = "identificacao") String identificacao) {
@@ -155,10 +156,10 @@ public class OrcamentoController extends BaseController {
         return ResponseEntity.ok(entity);
     }
 
-    @GetMapping("cancelar")
+    @DeleteMapping("cancelar")
     @ApiOperation(value = "Registra cancelamento do orçamento")
     public ResponseEntity<Orcamento> cancelar(
-            @ApiParam(example = "Tafarel Rivelino Ronaldo dinho 123123", 
+            @ApiParam(example = "16082020122006", 
             value = "Código de Identificação: default: " +
             "ddMMyyyyHHmmss dd = dia/ MM = mês/ yyyy = Ano/ HH = hora/ mm =Minuto/ ss = Segundo") 
             @RequestParam(name = "identificacao") String identificacao) {
@@ -173,7 +174,7 @@ public class OrcamentoController extends BaseController {
     @PostMapping("save")
     @ApiOperation(value = "Salva _model_ se itens necessários estiverem válidos")
     public ResponseEntity<Orcamento> save(@RequestBody @Valid Orcamento entity) {
-        orcamentoValidations.valida(entity);
+        _orcamentoValidations.valida(entity);
 
         _serviceOrcamento.save(entity);
 
@@ -183,7 +184,9 @@ public class OrcamentoController extends BaseController {
     @PutMapping("update")
     @ApiOperation(value = "Altera _model_  já cadastrado se itens necessários estiverem válidos")
     public ResponseEntity<Orcamento> update(@RequestBody @Valid Orcamento entity) {
-        orcamentoValidations.valida(entity);
+        _orcamentoValidations.valida(entity);
+
+        entity.configureServicos();
 
         entity = this._serviceOrcamento.update(entity);
 

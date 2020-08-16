@@ -15,7 +15,9 @@ public class ClienteRejeitarOrcamento extends ServiceProcessos<Orcamento>  {
     }
 
     public void rejeitarOrcamento() {    
-        if (ordemServico.getAvaliacao().getDiagnostico() != EnumDiagnosticoAvaliacao.TemConcerto) {
+        if (ordemServico.getSituacao() == EnumSituacaoOrcamento.Rejeitado ||
+            ordemServico.getSituacao() != EnumSituacaoOrcamento.Avaliado ||
+            ordemServico.getAvaliacao().getDiagnostico() != EnumDiagnosticoAvaliacao.TemConcerto) {
             throw new RegraBaseException("Verifique o Diagnóstico");
         }
 

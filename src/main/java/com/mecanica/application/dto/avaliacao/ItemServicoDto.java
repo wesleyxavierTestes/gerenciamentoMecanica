@@ -16,5 +16,5 @@ import lombok.Setter;
 public class ItemServicoDto {
 
     @NotNull(message = ErrorCustomMessage.OBRIGATORIO)
-    private String Id;
+    private String id;
 }

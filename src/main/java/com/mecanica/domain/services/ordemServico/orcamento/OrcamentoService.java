@@ -11,7 +11,7 @@ import com.mecanica.domain.entities.cliente.Cliente;
 import com.mecanica.domain.entities.funcionario.IFuncionario;
 import com.mecanica.domain.entities.mecanico.Mecanico;
 import com.mecanica.domain.entities.ordemServico.orcamento.Orcamento;
-import com.mecanica.domain.entities.servico.ItemServico;
+import com.mecanica.domain.entities.servico.ItemOrcamento;
 import com.mecanica.domain.entities.servico.ServicoOrcamento;
 import com.mecanica.domain.entities.veiculo.Veiculo;
 import com.mecanica.domain.enuns.EnumDiagnosticoAvaliacao;
@@ -90,7 +90,7 @@ public class OrcamentoService extends BaseService<Orcamento, IOrcamentoRepositor
     /**
      * Seta item de Produtos no Orçamento
      */
-    public Orcamento configurarItemServico(final Orcamento entity, List<ItemServico> servicos) {
+    public Orcamento configurarItemOrcamento(final Orcamento entity, List<ItemOrcamento> servicos) {
         final PedidoIncluirServicos<Orcamento> pedidoIncluirServicos = new PedidoIncluirServicos<>(entity);
 
         pedidoIncluirServicos.incluirItemServicos(servicos);
@@ -132,6 +132,17 @@ public class OrcamentoService extends BaseService<Orcamento, IOrcamentoRepositor
             entity.setAvaliacao(avaliacao);
         }
 
+        return entity;
+    }
+
+    public Orcamento save(Orcamento entity) {
+        Orcamento entityExists = this.findByIdentificacaoEquals(entity.getIdentificacao());
+        
+        if (Objects.nonNull(entityExists))
+            throw new RegraBaseException("Orçamento duplicada");
+
+        entity = super.save(entity);
+        
         return entity;
     }
 

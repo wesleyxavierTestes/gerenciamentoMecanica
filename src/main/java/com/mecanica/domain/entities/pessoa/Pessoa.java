@@ -11,6 +11,9 @@ import javax.validation.constraints.NotNull;
 
 import com.mecanica.domain.entities.BaseEntity;
 import com.mecanica.domain.enuns.EnumTipoPessoa;
+
+import io.swagger.annotations.ApiModelProperty;
+
 import com.mecanica.application.errors.ErrorCustomMessage;
 
 import lombok.AllArgsConstructor;
@@ -36,9 +39,11 @@ public abstract class Pessoa extends BaseEntity {
     @Column(nullable = true, length = 9)
     protected String rg;
 
+    @ApiModelProperty(example = "01212345648", name = "cpf sem nenhum caracter especial")
     @Column(nullable = true, unique = true, length = 11)
     protected String cpf;
-  
+
+    @ApiModelProperty(example = "0121234564812345", name = "cnpj sem nenhum caracter especial")
     @Column(nullable = true, unique = true, length = 14)
     protected String cnpj;
 
@@ -47,7 +52,7 @@ public abstract class Pessoa extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     protected EnumTipoPessoa tipoPessoa;
-   
+
     @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "endereco_id")
     protected Endereco endereco;

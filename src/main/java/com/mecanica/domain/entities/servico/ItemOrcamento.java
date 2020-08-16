@@ -8,6 +8,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-public class ItemServico extends Servico {
+public class ItemOrcamento extends Servico {
 
 }

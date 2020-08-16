@@ -16,7 +16,8 @@ public class CancelarOrcamento extends ServiceProcessos<Orcamento>  {
     }
 
     public void cancelarOrcamento() {    
-        if (!(ordemServico.getSituacao() == EnumSituacaoOrcamento.Avaliado &&
+        if (ordemServico.getSituacao() == EnumSituacaoOrcamento.Cancelado ||
+            !(ordemServico.getSituacao() == EnumSituacaoOrcamento.Avaliado &&
             ordemServico.getAvaliacao().getDiagnostico() == EnumDiagnosticoAvaliacao.TemConcerto)) {
             throw new RegraBaseException("Verifique o Diagnóstico");
         }

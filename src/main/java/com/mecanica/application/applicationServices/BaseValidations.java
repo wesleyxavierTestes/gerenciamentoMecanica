@@ -23,8 +23,23 @@ public abstract class BaseValidations<T extends BaseEntity, Y extends BaseServic
     _service = service;
   }
 
-  public T findValidExistsById(String clienteId) {
+  public T findValidExistsById(String clienteId) {  
     T entity = (T) this._service.find(UUID.fromString(clienteId));
+  
+    return this.findValidExistsById(entity);
+  }
+
+  public T findValidExistsById(T entity) {
+
+    if (!Objects.nonNull(entity))
+      throw new ValidacaoControllerBaseException(this.getNome() + " obrigatório");
+    
+    UUID id = entity.getId();
+
+    if (!Objects.nonNull(id))
+      throw new ValidacaoControllerBaseException(this.getNome() + " obrigatório");
+
+    entity = (T) this._service.find(id);
     if (!Objects.nonNull(entity))
       throw new ValidacaoControllerBaseException(this.getNome() + " inexistênte");
 

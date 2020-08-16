@@ -22,7 +22,7 @@ import com.mecanica.domain.entities.cliente.ClienteHistoricoRetorno;
 import com.mecanica.domain.entities.funcionario.Funcionario;
 import com.mecanica.domain.entities.mecanico.Mecanico;
 import com.mecanica.domain.entities.ordemServico.orcamento.Orcamento;
-import com.mecanica.domain.entities.servico.ItemServico;
+import com.mecanica.domain.entities.servico.ItemOrcamento;
 import com.mecanica.domain.entities.servico.ServicoOrcamento;
 import com.mecanica.domain.entities.veiculo.Veiculo;
 import com.mecanica.domain.enuns.EnumSituacaoOrcamento;
@@ -83,6 +83,11 @@ public class AvaliacaoController extends BaseController {
         return ResponseEntity.ok(list);
     }
 
+    /**
+     * Cria novo orçamento
+     * @param pedidoAvaliacao
+     * @return
+     */
     @PostMapping("pedidoAvaliacao")
     @ApiOperation(value = "Faz um novo pedido de orçamento com avaliação do mecânico")
     public ResponseEntity<Orcamento> pedidoAvaliacao(
@@ -91,6 +96,7 @@ public class AvaliacaoController extends BaseController {
         Funcionario atendente = _serviceFuncionario.findValidExistsByCpf(pedidoAvaliacao.getFuncionarioCpf());
         Cliente cliente = _serviceCliente.findValidExistsById(pedidoAvaliacao.getClienteId());
         Veiculo veiculo = _serviceVeiculo.findValidExistsByRenavam(pedidoAvaliacao.getVeiculoRenavam());
+        
         Orcamento entity = this._serviceOrcamento
         .criarPedidoAvaliacao(atendente, cliente, veiculo, pedidoAvaliacao.getDescricaoProblema());
 
@@ -113,10 +119,10 @@ public class AvaliacaoController extends BaseController {
         @RequestBody @Valid AvaliacaoMecanicoDto avaliacaoMecanico) {
 
         Mecanico mecanico = _serviceMecanico.findValidExistsByCpf(avaliacaoMecanico.getMecanicoCpf());
-        Orcamento entity = this._serviceOrcamento.findValidExistsByIdentificacao(avaliacaoMecanico.getIdentificacao());
+        Orcamento entity = this._serviceOrcamento.findByIdentificacaoEquals(avaliacaoMecanico.getIdentificacao());
         
         List<ServicoOrcamento> servicosServicoOrcamento = _serviceServico.findAllValidExistsByFilter(avaliacaoMecanico.getServicos());
-        List<ItemServico> servicosItemServico = _serviceProduto.findAllValidExistsByFilter(avaliacaoMecanico.getItensServico());
+        List<ItemOrcamento> servicosItemServico = _serviceProduto.findAllValidExistsByFilterOrcamento(avaliacaoMecanico.getItensServico());
 
         Avaliacao avaliacao = avaliacaoMecanico.getAvaliacao();
         int dias = avaliacaoMecanico.getDias();
@@ -124,10 +130,10 @@ public class AvaliacaoController extends BaseController {
 
         entity = this._serviceOrcamento.configurarAvaliacao(entity, avaliacao, mecanico, dias, dataPrevisaoInicio);
         entity = this._serviceOrcamento.configurarServicos(entity, servicosServicoOrcamento);
-        entity = this._serviceOrcamento.configurarItemServico(entity, servicosItemServico);
+        entity = this._serviceOrcamento.configurarItemOrcament(entity, servicosItemServico);
         entity = this._serviceOrcamento.configurarSituacaoOrcamento(entity);
 
-        _serviceOrcamento.save(entity);        
+        _serviceOrcamento.update(entity);        
 
         return ResponseEntity.ok(entity);
     }

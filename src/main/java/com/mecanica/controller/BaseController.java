@@ -15,6 +15,7 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import springfox.documentation.annotations.ApiIgnore;
 
@@ -46,6 +47,14 @@ public abstract class BaseController {
     @ApiIgnore
     public ResponseEntity<Object> HttpMessageNotReadableException(HttpMessageNotReadableException ex) {
         return ResponseEntity.badRequest().body(ex.getRootCause().getMessage());
+    }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ApiIgnore
+    public ResponseEntity<Object> methodArgumentTypeMismatchException(MethodArgumentTypeMismatchException ex) {
+        return ResponseEntity.badRequest().body("Item inválido: " + ex.getRootCause().getMessage()
+        .substring(ex.getRootCause().getMessage().lastIndexOf(".") + 1));
     }
 
     @ExceptionHandler(RegraBaseException.class)

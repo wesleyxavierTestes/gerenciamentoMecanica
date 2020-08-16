@@ -11,14 +11,12 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-
 @DiscriminatorValue("S")
-
 public class FinanceiroSaida extends AbstractFinanceiro {
 
     @Override
     public void configure() {
-        if (this.getQuantidade() > 0)
+        if (this.getValor().doubleValue() > 0)
             this.baseConfigure();
     }
 }

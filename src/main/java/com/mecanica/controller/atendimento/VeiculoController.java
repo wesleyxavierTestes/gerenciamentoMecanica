@@ -98,7 +98,7 @@ public class VeiculoController extends BaseController {
     @ApiOperation(value = "Salva _model_ se itens necessários estiverem válidos")
     public ResponseEntity<Veiculo> save(@RequestBody @Valid Veiculo entity) {
 
-        Cliente cliente = _serviceCliente.findValidExistsById(entity.getCliente().getId().toString());
+        Cliente cliente = _serviceCliente.findValidExistsById(entity.getCliente());
 
         _service.findValidBusiness(entity);
 
@@ -111,7 +111,7 @@ public class VeiculoController extends BaseController {
     @ApiOperation(value = "Altera _model_  já cadastrado se itens necessários estiverem válidos")
     public ResponseEntity<Veiculo> update(@RequestBody @Valid Veiculo entity) {
 
-        Cliente cliente = _serviceCliente.findValidExistsById(entity.getCliente().getId().toString());
+        Cliente cliente = _serviceCliente.findValidExistsById(entity.getCliente());
         Veiculo entityUpdate = _serviceVeiculo.validaClienteReferenteDoVeiculo(entity, cliente);
 
         entity = this._service.update(entity, entityUpdate);

@@ -1,17 +1,18 @@
 package com.mecanica.domain.entities;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.UUID;
 
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonSetter;
+import com.mecanica.application.converters.LocalDateConverter;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -29,7 +30,6 @@ public abstract class BaseEntity implements IBaseEntity {
     protected UUID id = UUID.randomUUID();
 
     @Column(nullable = false)
-    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @Convert(converter = LocalDateConverter.class)
     protected LocalDateTime dataCadastro = LocalDateTime.now();
 }

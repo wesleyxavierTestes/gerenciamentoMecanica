@@ -7,7 +7,7 @@ import com.mecanica.domain.entities.ordemServico.AbstractOrdemServico;
 import com.mecanica.domain.entities.ordemServico.orcamento.Orcamento;
 import com.mecanica.domain.entities.ordemServico.ordemServico.OrdemServico;
 import com.mecanica.domain.entities.servico.IServico;
-import com.mecanica.domain.entities.servico.ItemServico;
+import com.mecanica.domain.entities.servico.Servico;
 import com.mecanica.domain.entities.servico.ServicoOrcamento;
 import com.mecanica.domain.entities.servico.ServicoOrdemServico;
 import com.mecanica.domain.enuns.produto.EnumTipoProduto;
@@ -38,15 +38,14 @@ public class PedidoIncluirServicos<T extends AbstractOrdemServico> {
             servico.setTipoProduto(EnumTipoProduto.Servico);
             this.ordemServico.setServicoItem(servico);
 
-            this.ordemServico.setValor(this.ordemServico.getSomaValor());
-            this.ordemServico.setValorTotal(this.ordemServico.getSomaValorTotal());
+            this.ordemServico.calcularValorTotal();
         }
     }
 
-	public void incluirItemServicos(List<ItemServico> servicos) {
+	public <Y extends Servico> void incluirItemServicos(List<Y> servicos) {
         for (IServico servico : servicos) {
-            boolean isOrdemServico = this.ordemServico instanceof OrdemServico && servico instanceof ItemServico;
-            boolean isOrcamento = this.ordemServico instanceof Orcamento && servico instanceof ItemServico;
+            boolean isOrdemServico = this.ordemServico instanceof OrdemServico && servico instanceof Servico;
+            boolean isOrcamento = this.ordemServico instanceof Orcamento && servico instanceof Servico;
             
             if (!isOrdemServico && !isOrcamento) {
                 throw new RegraBaseException(String.format("Item de Servico código %s tem tipo Inválido para operação", servico.getCodigo()));
@@ -55,8 +54,7 @@ public class PedidoIncluirServicos<T extends AbstractOrdemServico> {
             servico.setTipoProduto(EnumTipoProduto.ItemServico);
             this.ordemServico.setServicoItem(servico);
 
-            this.ordemServico.setValor(this.ordemServico.getSomaValor());
-            this.ordemServico.setValorTotal(this.ordemServico.getSomaValorTotal());
+            this.ordemServico.calcularValorTotal();
         }
 	}
 }

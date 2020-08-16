@@ -2,7 +2,9 @@ package com.mecanica.domain.entities.ordemServico.orcamento;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -17,10 +19,14 @@ import javax.validation.constraints.Size;
 
 import com.mecanica.domain.entities.avaliacao.Avaliacao;
 import com.mecanica.domain.entities.ordemServico.AbstractOrdemServico;
+import com.mecanica.domain.entities.servico.IServico;
+import com.mecanica.domain.entities.servico.ItemOrcamento;
+import com.mecanica.domain.entities.servico.ServicoOrcamento;
 import com.mecanica.domain.enuns.EnumSituacaoOrcamento;
+import com.mecanica.domain.enuns.produto.EnumTipoProduto;
 import com.mecanica.utils.CustomConst;
 
-
+import org.modelmapper.ModelMapper;
 
 import com.mecanica.application.errors.ErrorCustomMessage;
 
@@ -65,5 +71,16 @@ public class Orcamento extends AbstractOrdemServico {
         } catch (Exception e) {
             return UUID.randomUUID().toString();
         }
+    }
+
+    public void configureServicos() {
+        List<IServico> list = this.getServicoItens().stream().map(servico -> {
+            IServico servicoConvert = (servico.getTipoProduto() == EnumTipoProduto.Servico)
+                    ? new ModelMapper().map(servico, ServicoOrcamento.class)
+                    : new ModelMapper().map(servico, ItemOrcamento.class);
+            return servicoConvert;
+        }).collect(Collectors.toList());
+
+        this.setServicoItens(list);
     }
 }

@@ -94,7 +94,7 @@ public class EstoqueController extends BaseController {
     @PostMapping("save/entrada")
     @ApiOperation(value = "Registra um _model_ de entrada mediante validações")
     public ResponseEntity<EstoqueEntrada> saveEntrada(@RequestBody @Valid EstoqueEntrada entity) {
-        Produto produto = _serviceProduto.findValidExistsById(entity.getProduto().getId().toString());
+        Produto produto = _serviceProduto.findValidExistsById(entity.getProduto());
         entity.setProduto(produto);
 
         entity = this._serviceEntrada.save(entity);
@@ -105,7 +105,7 @@ public class EstoqueController extends BaseController {
     @PostMapping("save/saida")
     @ApiOperation(value = "Registra um _model_ de saída mediante validações")
     public ResponseEntity<EstoqueSaida> saveSaida(@RequestBody @Valid EstoqueSaida entity) {
-         Produto produto = _serviceProduto.findValidExistsById(entity.getProduto().getId().toString());
+         Produto produto = _serviceProduto.findValidExistsById(entity.getProduto());
         entity.setProduto(produto);
 
         entity = this._serviceSaida.save(entity);

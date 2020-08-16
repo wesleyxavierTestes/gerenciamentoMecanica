@@ -25,7 +25,7 @@ public class ServicoValidations extends BaseValidations<Servico, ServicoService>
     public List<ServicoOrcamento> findAllValidExistsByFilter(List<ItemServicoDto> servicos) {
         List<ServicoOrcamento> lista = new ArrayList<>();
         for (ItemServicoDto item : servicos) {
-            Servico entity = this._service.find(UUID.fromString(item.getId()));
+            Servico entity = Objects.nonNull(item.getId()) ? this._service.find(UUID.fromString(item.getId())) : null;
             if (!Objects.nonNull(entity))
                 throw new ValidacaoControllerBaseException(this.getNome() + " inexistênte");
 

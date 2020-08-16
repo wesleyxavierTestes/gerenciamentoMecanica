@@ -36,4 +36,7 @@ public class AvaliacaoMecanicoDto {
     
     @NotNull(message = ErrorCustomMessage.OBRIGATORIO)
     private LocalDate dataPrevisaoInicio;
+
+    @NotNull(message = ErrorCustomMessage.OBRIGATORIO)
+    private LocalDate dataPrevisaoFinalizacao;
 }

@@ -11,5 +11,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface IOrdemServicoRepository extends AbstractOrdemServicoRepository<OrdemServico> {
 
+	OrdemServico findByIdentificacaoEquals(String identificacao);
+
 	Page<OrdemServico> findAllBySituacaoEquals(EnumSituacaoOrdemServico situacao, Pageable paginacao);
 }

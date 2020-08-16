@@ -1,5 +1,7 @@
 package com.mecanica.domain.entities.financeiro;
 
+import java.math.BigDecimal;
+
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
@@ -29,9 +31,9 @@ public abstract class AbstractFinanceiro extends BaseEntity implements IFinancei
     protected OrdemServico ordemServico;
 
     @Column(nullable = false)
-    protected int quantidade;
+    protected BigDecimal valor;
 
     protected void baseConfigure() {
-        this.setQuantidade(this.getQuantidade() * (-1));
+        this.setValor(this.getValor().multiply(BigDecimal.valueOf(-1l)));
     }
 }

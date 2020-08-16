@@ -14,7 +14,6 @@ public class PedidoAvaliacaoDto {
     private String funcionarioCpf;
     private String clienteId;
     private String veiculoRenavam;
-
     
     private String descricaoProblema;
 }
