@@ -62,8 +62,7 @@ public class OrcamentoService extends BaseService<Orcamento, IOrcamentoRepositor
      * @param mecanico
      * @return
      */
-    public Orcamento configurarAvaliacao(Orcamento entity, Avaliacao avaliacao, Mecanico mecanico, int dias,
-            LocalDate dataPrevisaoInicio) {
+    public Orcamento configurarAvaliacao(Orcamento entity, Avaliacao avaliacao, Mecanico mecanico, LocalDate dataPrevisaoInicio, LocalDate dataPrevisaoFinalizacao) {
 
         if (entity.getSituacao() != EnumSituacaoOrcamento.Aguardando) {
             throw new RegraBaseException("Orçamento Finalizado");
@@ -71,7 +70,7 @@ public class OrcamentoService extends BaseService<Orcamento, IOrcamentoRepositor
 
         final FazerAvaliacao fazerAvaliacao = new FazerAvaliacao(entity);
 
-        fazerAvaliacao.incluirDados(dias, dataPrevisaoInicio, mecanico, avaliacao);
+        fazerAvaliacao.incluirDados(dataPrevisaoInicio, dataPrevisaoFinalizacao, mecanico, avaliacao);
 
         return fazerAvaliacao.getordemServico();
     }
@@ -124,7 +123,7 @@ public class OrcamentoService extends BaseService<Orcamento, IOrcamentoRepositor
         Avaliacao avaliacao = entity.getAvaliacao();
 
         if (avaliacao.getDiagnostico() != EnumDiagnosticoAvaliacao.Analise
-                && !Objects.nonNull(avaliacao.getDataFinalizacao())) {
+        && entity.getSituacao() == EnumSituacaoOrcamento.Aguardando) {
             entity.setSituacao(EnumSituacaoOrcamento.Avaliado);
 
             avaliacao.setDataFinalizacao(LocalDateTime.now());
@@ -148,7 +147,6 @@ public class OrcamentoService extends BaseService<Orcamento, IOrcamentoRepositor
 
     public Orcamento findByIdentificacaoEquals(String identificacao) {
         Orcamento entity = this.repository.findByIdentificacaoEquals(identificacao);
-
         return entity;
     }
 

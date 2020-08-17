@@ -4,9 +4,9 @@ import java.util.UUID;
 
 import javax.validation.Valid;
 
+import com.mecanica.application.applicationServices.cliente.ClienteValidations;
 import com.mecanica.controller.BaseController;
 import com.mecanica.domain.entities.cliente.Cliente;
-import com.mecanica.domain.services.cliente.ClienteService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -26,10 +26,10 @@ import io.swagger.annotations.ApiParam;
 @RequestMapping("/api/cliente")
 public class ClienteController extends BaseController {
 
-    private final ClienteService _serviceCliente;
+    private final ClienteValidations _serviceCliente;
 
     @Autowired
-    public ClienteController(ClienteService clienteComum) {
+    public ClienteController(ClienteValidations clienteComum) {
         _serviceCliente = clienteComum;
     }
 
@@ -83,6 +83,7 @@ public class ClienteController extends BaseController {
     @PostMapping("save")
     @ApiOperation(value = "Salva _model_ se itens necessários estiverem válidos")
     public ResponseEntity<Cliente> save(@RequestBody @Valid Cliente entity) {
+        _serviceCliente.validExistsByCpfCpj(entity);
 
         _serviceCliente.save(entity);
 
@@ -92,6 +93,7 @@ public class ClienteController extends BaseController {
     @PutMapping("update")
     @ApiOperation(value = "Altera _model_  já cadastrado se itens necessários estiverem válidos")
     public ResponseEntity<Cliente> update(@RequestBody Cliente entity) {
+        _serviceCliente.validExistsByCpfCpj(entity);
 
         entity = this._serviceCliente.update(entity);
 

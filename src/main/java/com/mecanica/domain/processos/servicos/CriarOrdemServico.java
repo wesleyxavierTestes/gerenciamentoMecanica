@@ -35,6 +35,8 @@ public class CriarOrdemServico extends ServiceProcessos<Orcamento> {
 
         novaOrdemServico.setId(UUID.randomUUID());
         novaOrdemServico.setDataCadastro(LocalDateTime.now());
+        novaOrdemServico.setDataInicial(null);
+        novaOrdemServico.setDataFinalizacao(null);
 
         novaOrdemServico.setSituacao(EnumSituacaoOrdemServico.Aguardando);
         

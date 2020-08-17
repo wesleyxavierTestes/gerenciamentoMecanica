@@ -125,10 +125,10 @@ public class AvaliacaoController extends BaseController {
         List<ItemOrcamento> servicosItemServico = _serviceProduto.findAllValidExistsByFilterOrcamento(avaliacaoMecanico.getItensServico());
 
         Avaliacao avaliacao = avaliacaoMecanico.getAvaliacao();
-        int dias = avaliacaoMecanico.getDias();
+        LocalDate dataPrevisaoFinalizacao = avaliacaoMecanico.getDataPrevisaoFinalizacao();
         LocalDate dataPrevisaoInicio = avaliacaoMecanico.getDataPrevisaoInicio();
 
-        entity = this._serviceOrcamento.configurarAvaliacao(entity, avaliacao, mecanico, dias, dataPrevisaoInicio);
+        entity = this._serviceOrcamento.configurarAvaliacao(entity, avaliacao, mecanico, dataPrevisaoInicio, dataPrevisaoFinalizacao);
         entity = this._serviceOrcamento.configurarServicos(entity, servicosServicoOrcamento);
         entity = this._serviceOrcamento.configurarItemOrcament(entity, servicosItemServico);
         entity = this._serviceOrcamento.configurarSituacaoOrcamento(entity);

@@ -1,5 +1,8 @@
 package com.mecanica.domain.entities.diasTrabalhados;
 
+import java.time.LocalDateTime;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 
 import javax.persistence.ManyToOne;
@@ -19,6 +22,9 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 public class DiasTrabalhados extends BaseEntity {
+    
+    @Column(nullable = false)
+    private LocalDateTime dia;
 
     @ManyToOne
     private OrdemServico ordemServico;

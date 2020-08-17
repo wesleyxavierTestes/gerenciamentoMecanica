@@ -5,6 +5,7 @@ import java.util.Objects;
 
 import com.mecanica.application.exceptions.RegraBaseException;
 import com.mecanica.domain.entities.ordemServico.ordemServico.OrdemServico;
+import com.mecanica.domain.enuns.EnumSituacaoOrdemServico;
 import com.mecanica.domain.processos.baseDefault.ServiceProcessos;
 
 public class IncluirFinalizacao extends ServiceProcessos<OrdemServico> {
@@ -14,6 +15,10 @@ public class IncluirFinalizacao extends ServiceProcessos<OrdemServico> {
     }
 
     public void incluirFinalizacao(String data) {
+        if (ordemServico.getSituacao() != EnumSituacaoOrdemServico.Executando) {
+            throw new RegraBaseException("Verifique o Diagnóstico");
+        }
+
         if (!Objects.nonNull(ordemServico.getDataInicial())) {
             throw new RegraBaseException("Serviço não iniciado");
         }
@@ -23,5 +28,6 @@ public class IncluirFinalizacao extends ServiceProcessos<OrdemServico> {
         }
 
         ordemServico.setDataFinalizacao(LocalDateTime.parse(data));
+        ordemServico.setSituacao(EnumSituacaoOrdemServico.Finalizado);
     }
 }

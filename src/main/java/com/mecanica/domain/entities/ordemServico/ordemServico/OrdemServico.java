@@ -1,9 +1,7 @@
 package com.mecanica.domain.entities.ordemServico.ordemServico;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
@@ -44,7 +42,7 @@ public class OrdemServico extends AbstractOrdemServico {
     private EnumSituacaoOrdemServico situacao;
 
     @OneToMany(cascade = CascadeType.ALL)
-    private Set<DiasTrabalhados> diasTrabalhados = new HashSet<>();
+    private List<DiasTrabalhados> diasTrabalhados = new ArrayList<>();
 
     @OneToMany
     private List<Mecanico> mecanicos = new ArrayList<>();

@@ -30,9 +30,6 @@ public class AvaliacaoMecanicoDto {
 
     private List<ItemServicoDto> servicos;
     private List<ItemServicoDto> itensServico;
-
-    @NotNull(message = ErrorCustomMessage.OBRIGATORIO)
-    private Integer dias;
     
     @NotNull(message = ErrorCustomMessage.OBRIGATORIO)
     private LocalDate dataPrevisaoInicio;

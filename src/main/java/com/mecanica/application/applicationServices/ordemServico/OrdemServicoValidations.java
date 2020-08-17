@@ -7,6 +7,7 @@ import com.mecanica.domain.entities.financeiro.FinanceiroEntrada;
 import com.mecanica.domain.entities.ordemServico.ordemServico.OrdemServico;
 import com.mecanica.domain.entities.produto.Produto;
 import com.mecanica.domain.entities.servico.Servico;
+import com.mecanica.domain.enuns.EnumSituacaoOrdemServico;
 import com.mecanica.domain.services.ordemServico.ordemServico.OrdemServicoService;
 import com.mecanica.domain.services.produto.ProdutoService;
 import com.mecanica.domain.services.servico.ServicoService;
@@ -58,5 +59,10 @@ public class OrdemServicoValidations extends BaseServicoValidations<OrdemServico
 
 	public OrdemServico receberPagamento(OrdemServico entity, FinanceiroEntrada entrada) {
         return this._service.receberPagamento(entity, entrada);
+	}
+
+
+	public Page<OrdemServico> findAllBySituacaoEquals(EnumSituacaoOrdemServico situacao, int page) {
+		return this._service.findAllBySituacaoEquals(situacao, page);
 	}
 }

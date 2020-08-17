@@ -12,4 +12,8 @@ import org.springframework.stereotype.Repository;
 public interface IClienteRepository extends IBaseRepository<Cliente> {
 
 	Page<Cliente> findAllByNomeContainingIgnoreCase(String nome, Pageable of);
+
+	Cliente findByCpfEquals(String cpf);
+
+	Cliente findByCnpjEquals(String cnpj);
 }

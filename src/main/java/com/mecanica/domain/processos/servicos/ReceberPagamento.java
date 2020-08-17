@@ -3,6 +3,7 @@ package com.mecanica.domain.processos.servicos;
 import java.math.BigDecimal;
 import java.util.List;
 
+import com.mecanica.application.exceptions.RegraBaseException;
 import com.mecanica.domain.entities.financeiro.FinanceiroEntrada;
 import com.mecanica.domain.entities.financeiro.FinanceiroSaida;
 import com.mecanica.domain.entities.financeiro.IFinanceiro;
@@ -15,7 +16,11 @@ public class ReceberPagamento extends ServiceProcessos<OrdemServico> {
         super(ordemServico);
     }
 
-    public void receberPagamento(FinanceiroEntrada entrada) {        
+    public void receberPagamento(FinanceiroEntrada entrada) {   
+        if (this.ordemServico.getPago()) {
+            throw new RegraBaseException("Item pago");
+        }
+
         configureValores(entrada);
 
         List<IFinanceiro> list = addEntradaList(entrada);
@@ -35,14 +40,14 @@ public class ReceberPagamento extends ServiceProcessos<OrdemServico> {
     }
 
     private boolean validarPago(BigDecimal valorRestrante) {
-        boolean pago = (BigDecimal.ZERO.equals(valorRestrante));
+        boolean pago = (BigDecimal.ZERO.doubleValue() == (valorRestrante.doubleValue()));
         ordemServico.setPago(pago);
         return pago;
     }
 
     private BigDecimal calcularValoresRestante(List<IFinanceiro> list) {
         BigDecimal valorTotal = list.stream().map(IFinanceiro::getValor).reduce(BigDecimal.ZERO, BigDecimal::add);
-        BigDecimal valorRestrante = valorTotal.subtract(ordemServico.getValor());
+        BigDecimal valorRestrante = valorTotal.subtract(ordemServico.getValorTotal());
         return valorRestrante;
     }
 

@@ -1,7 +1,8 @@
 package com.mecanica.domain.processos.servicos;
 
 import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 import com.mecanica.application.exceptions.RegraBaseException;
@@ -17,17 +18,24 @@ public class IncluirDataTrabalhada extends ServiceProcessos<OrdemServico> {
     }
 
     public void incluirDataTrabalhada(String data) {
-        if (ordemServico.getSituacao() == EnumSituacaoOrdemServico.Cancelado
-                || ordemServico.getSituacao() == EnumSituacaoOrdemServico.Finalizado) {
+        if (ordemServico.getSituacao() != EnumSituacaoOrdemServico.Executando) {
             throw new RegraBaseException("Verifique o Diagnóstico");
         }
 
-        Set<DiasTrabalhados> list = ordemServico.getDiasTrabalhados();
+        if (!Objects.nonNull(ordemServico.getDataInicial())) {
+            throw new RegraBaseException("Serviço não iniciado");
+        }
+
+        if (Objects.nonNull(ordemServico.getDataFinalizacao())) {
+            throw new RegraBaseException("Serviço já Finalizado");
+        }
+
+        List<DiasTrabalhados> list = ordemServico.getDiasTrabalhados();
 
         DiasTrabalhados diasTrabalhados = new DiasTrabalhados();
+        
         diasTrabalhados.setId(UUID.randomUUID());
-        diasTrabalhados.setDataCadastro(LocalDateTime.parse(data));
-        diasTrabalhados.setOrdemServico(ordemServico);
+        diasTrabalhados.setDia(LocalDateTime.parse(data));
 
         list.add(diasTrabalhados);
 

@@ -10,6 +10,7 @@ import com.mecanica.domain.entities.financeiro.FinanceiroEntrada;
 import com.mecanica.domain.entities.ordemServico.ordemServico.OrdemServico;
 import com.mecanica.domain.entities.produto.Produto;
 import com.mecanica.domain.entities.servico.Servico;
+import com.mecanica.domain.enuns.EnumSituacaoOrdemServico;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -45,6 +46,19 @@ public class OrdemServicoController extends BaseController {
             @RequestBody OrdemServico cliente) {
 
         Page<OrdemServico> list = this._serviceOrdemServico.findAllFilter(cliente, page);
+
+        return ResponseEntity.ok(list);
+    }
+
+    @GetMapping("list/situacao")
+    @ApiOperation(value = "Lista models mediante a situação e mediante a paginação. Default: 10 itens")
+    public ResponseEntity<Page<OrdemServico>> listSituacao(
+        @ApiParam(example = "Aceito", value = "Situação do Orçamento")
+        @RequestParam(name = "situacao") EnumSituacaoOrdemServico situacao,
+        @ApiParam(example = "1", value = "Número pagina para paginação: Mínimo: 1") 
+        @RequestParam(name = "page") int page) {
+
+        Page<OrdemServico> list = this._serviceOrdemServico.findAllBySituacaoEquals(situacao, page);
 
         return ResponseEntity.ok(list);
     }
@@ -139,7 +153,7 @@ public class OrdemServicoController extends BaseController {
    * @return
    */
   @GetMapping("incluir/finalizacao")
-  @ApiOperation(value = "Registra Inicio serviço")
+  @ApiOperation(value = "Registra finalizavao ordem de serviço")
   public ResponseEntity<OrdemServico> incluirFinalizacao(
           @ApiParam(example = "16082020122006", value = "Código de Identificação: default: "
                   + "ddMMyyyyHHmmss dd = dia/ MM = mês/ yyyy = Ano/ HH = hora/ mm =Minuto/ ss = Segundo") 
@@ -156,7 +170,7 @@ public class OrdemServicoController extends BaseController {
   }
 
     @GetMapping("incluir/servico")
-    @ApiOperation(value = "Incluir no Registro um novo servico")
+    @ApiOperation(value = "Incluir um novo servico")
     public ResponseEntity<OrdemServico> incluirServico(
             @ApiParam(example = "16082020122006", value = "Código de Identificação: default: "
                     + "ddMMyyyyHHmmss dd = dia/ MM = mês/ yyyy = Ano/ HH = hora/ mm =Minuto/ ss = Segundo") 
@@ -175,7 +189,7 @@ public class OrdemServicoController extends BaseController {
     }
 
     @GetMapping("incluir/itemservico")
-    @ApiOperation(value = "Registra nova ordem de serviço com base no Orçamento")
+    @ApiOperation(value = "inclui novo item de serviço")
     public ResponseEntity<OrdemServico> incluirItemServico(
             @ApiParam(example = "16082020122006", value = "Código de Identificação: default: "
                     + "ddMMyyyyHHmmss dd = dia/ MM = mês/ yyyy = Ano/ HH = hora/ mm =Minuto/ ss = Segundo") 
@@ -221,7 +235,7 @@ public class OrdemServicoController extends BaseController {
         return ResponseEntity.ok(entity);
     }
 
-    @PostMapping("receberPagamento")
+    @PostMapping("incluir/pagamento")
     @ApiOperation(value = "Altera _model_  já cadastrado se itens necessários estiverem válidos")
     public ResponseEntity<OrdemServico> receberPagamento(
         @ApiParam(example = "16082020122006", 

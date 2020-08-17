@@ -66,7 +66,7 @@ public class Orcamento extends AbstractOrdemServico {
      */
     public String getCustoIdentificacao() {
         try {
-            String identificacao = LocalDateTime.now().format(DateTimeFormatter.ofPattern("ddMMyyyHHmmss"));
+            String identificacao = LocalDateTime.now().format(DateTimeFormatter.ofPattern("ddMMyyyHHmmssSSS"));
             return identificacao;
         } catch (Exception e) {
             return UUID.randomUUID().toString();

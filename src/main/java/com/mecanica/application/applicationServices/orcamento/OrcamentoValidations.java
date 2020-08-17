@@ -89,9 +89,8 @@ public class OrcamentoValidations extends BaseServicoValidations<Orcamento, Orca
         return this._service.criarPedidoAvaliacao(atendente, cliente, veiculo, descricaoProblema);
     }
 
-    public Orcamento configurarAvaliacao(Orcamento entity, Avaliacao avaliacao, Mecanico mecanico, int dias,
-            LocalDate dataPrevisaoInicio) {
-        return this._service.configurarAvaliacao(entity, avaliacao, mecanico, dias, dataPrevisaoInicio);
+    public Orcamento configurarAvaliacao(Orcamento entity, Avaliacao avaliacao, Mecanico mecanico, LocalDate dataPrevisaoInicio, LocalDate dataPrevisaoFinalizacao) {
+        return this._service.configurarAvaliacao(entity, avaliacao, mecanico, dataPrevisaoInicio, dataPrevisaoFinalizacao);
     }
 
     public Orcamento configurarServicos(Orcamento entity, List<ServicoOrcamento> servicos) {

@@ -50,7 +50,7 @@ public class OrcamentoEsperaAvaliacao extends ServiceProcessos<Orcamento> {
         ordemServico.setAtendente(atendente);
         ordemServico.setCliente(cliente);
         ordemServico.setVeiculo(veiculo);
-
+       
         ordemServico.setIdentificacao(ordemServico.getCustoIdentificacao());
     }
 

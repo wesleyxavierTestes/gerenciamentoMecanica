@@ -19,4 +19,12 @@ public class ClienteService extends BaseService<Cliente, IClienteRepository> {
 	public Page<Cliente> findAllByNomeContainsIgnoreCase(String nome, int page) {
 		return this.repository.findAllByNomeContainingIgnoreCase(nome, PageRequest.of((page - 1), 10));
 	}
+
+	public Cliente findByCnpjEquals(String cnpj) {
+		return this.repository.findByCnpjEquals(cnpj);
+	}
+
+	public Cliente findByCpfEquals(String cpf) {
+		return this.repository.findByCpfEquals(cpf);
+	}
 }

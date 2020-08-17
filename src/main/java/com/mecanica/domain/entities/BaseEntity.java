@@ -1,7 +1,6 @@
 package com.mecanica.domain.entities;
 
 import java.time.LocalDateTime;
-import java.util.Objects;
 import java.util.UUID;
 
 import javax.persistence.Column;
@@ -10,8 +9,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
-import com.fasterxml.jackson.annotation.JsonGetter;
-import com.fasterxml.jackson.annotation.JsonSetter;
 import com.mecanica.application.converters.LocalDateConverter;
 
 import org.hibernate.annotations.GenericGenerator;
