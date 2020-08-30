@@ -1,9 +1,7 @@
 package com.mecanica.domain.entities.estoque;
 
-import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-
-
+import javax.persistence.PrimaryKeyJoinColumn;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -11,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@DiscriminatorValue("S")
+@PrimaryKeyJoinColumn(name = "estoque_id")
 public class EstoqueSaida extends AbstractEstoque {
 
     @Override

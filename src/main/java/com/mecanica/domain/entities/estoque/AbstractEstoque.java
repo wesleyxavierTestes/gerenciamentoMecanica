@@ -21,7 +21,6 @@ import lombok.Setter;
 @Inheritance(strategy = InheritanceType.JOINED)
 @Entity(name = "estoque")
 @Table(name = "estoque")
-@DiscriminatorColumn(name = "estoque_tipo")
 public abstract class AbstractEstoque extends BaseEntity implements IEstoque {
 
     @Column(nullable = false)
